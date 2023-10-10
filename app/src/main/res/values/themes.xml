@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Shopnstock" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/app_base_dark</item>
+    </style>
+
+    <style name="Theme.Shopnstock" parent="Base.Theme.Shopnstock" />
+</resources>
