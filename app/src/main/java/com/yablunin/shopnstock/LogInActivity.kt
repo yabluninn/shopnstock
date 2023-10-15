@@ -3,6 +3,7 @@ package com.yablunin.shopnstock
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 
 class LogInActivity : AppCompatActivity() {
@@ -14,6 +15,12 @@ class LogInActivity : AppCompatActivity() {
 
         signupLink.setOnClickListener{
             val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
+
+        val logInButton: Button = findViewById(R.id.login_button)
+        logInButton.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
     }

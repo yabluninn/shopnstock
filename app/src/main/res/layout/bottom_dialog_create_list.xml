@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:backgroundDimEnabled="true"
+    android:background="@drawable/custom_bottom_sheet"
+    >
+    <!--    android:background="@drawable/custom_bottom_sheet"-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Create new list"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        style="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <EditText
+        android:id="@+id/create_list_name_input"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_input"
+        android:hint="List name"
+        android:textSize="22sp"
+        android:textColorHint="@color/input_hint"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:inputType="text"
+        />
+
+    <Button
+        android:id="@+id/create_list_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:text="Create"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:background="@drawable/custom_button_white"
+        />
+
+</LinearLayout>

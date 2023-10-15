@@ -3,7 +3,9 @@ package com.yablunin.shopnstock
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import com.yablunin.shopnstock.kotlinpractice.KotlinLearn
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,5 +23,17 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
+
+        Log.d(KotlinLearn.DEBUG_TAG, "Sum is: ${KotlinLearn.sumOf(KotlinLearn.sumArray)}")
+        KotlinLearn.getWeekDay(1)
+        KotlinLearn.getWeekDay(4)
+
+        KotlinLearn.loadFile(this)
+
+        KotlinLearn.loadFile()
+
+        KotlinLearn.unloadFile()
+
+        KotlinLearn.launchCoroutines()
     }
 }

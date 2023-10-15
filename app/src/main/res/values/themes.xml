@@ -6,5 +6,19 @@
         <item name="android:statusBarColor">@color/app_base_dark</item>
     </style>
 
+    <!-- Стиль для основного Bottom Sheet Dialog -->
+<!--    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">-->
+<!--        <item name="android:background">@android:color/transparent</item> &lt;!&ndash; Фон &ndash;&gt;-->
+<!--        <item name="android:windowIsFloating">true</item> &lt;!&ndash; Окно "плавающее" &ndash;&gt;-->
+<!--        <item name="android:windowIsTranslucent">true</item> &lt;!&ndash; Прозрачное окно &ndash;&gt;-->
+<!--        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation</item> &lt;!&ndash; Анимация появления/исчезновения &ndash;&gt;-->
+<!--    </style>-->
+
+    <!-- Стиль для анимации Bottom Sheet Dialog -->
+    <style name="BottomSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/bottom_sheet_slide_in</item> <!-- Анимация появления -->
+        <item name="android:windowExitAnimation">@anim/bottom_sheet_slide_out</item> <!-- Анимация исчезновения -->
+    </style>
+
     <style name="Theme.Shopnstock" parent="Base.Theme.Shopnstock" />
 </resources>
