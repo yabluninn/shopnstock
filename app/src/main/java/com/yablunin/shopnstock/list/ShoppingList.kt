@@ -2,6 +2,8 @@ package com.yablunin.shopnstock.list
 
 data class ShoppingList(val name: String){
 
+    constructor(): this("")
+
     private val list = mutableListOf<ListItem>()
 
     fun add(item: ListItem){
