@@ -7,5 +7,9 @@ class ShoppingListHandler {
         fun addList(list: ShoppingList, user: User){
             user.shoppingLists.add(list)
         }
+
+        fun loadLists(user: User){
+
+        }
     }
 }

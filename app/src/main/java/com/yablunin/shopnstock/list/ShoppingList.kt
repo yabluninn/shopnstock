@@ -1,6 +1,8 @@
 package com.yablunin.shopnstock.list
 
-data class ShoppingList(val name: String){
+import java.io.Serializable
+
+data class ShoppingList(val name: String) : Serializable {
 
     constructor(): this("")
 
@@ -24,5 +26,19 @@ data class ShoppingList(val name: String){
 
     fun getByIndex(index: Int): ListItem {
         return list[index]
+    }
+
+    fun getCompletedItemsCount(): Int{
+        var count = 0;
+        list.forEach{
+            if (it.isCompleted){
+                count++
+            }
+        }
+        return count;
+    }
+
+    fun size(): Int{
+        return list.size
     }
 }

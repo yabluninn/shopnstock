@@ -34,6 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         KotlinLearn.unloadFile()
 
-        KotlinLearn.launchCoroutines()
+        //KotlinLearn.launchCoroutines()
     }
 }

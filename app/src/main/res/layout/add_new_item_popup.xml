@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/default_popup_background"
+    android:padding="20dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add new item"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:textColor="@color/font"
+            />
+
+        <ImageView
+            android:id="@+id/shopping_list_back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_list_header_button"
+            android:padding="10dp"
+            android:src="@drawable/ic_xmark"
+            app:tint="@color/font_header"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/add_new_item_label_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item name"
+            android:textStyle="bold"
+            android:textColor="@color/input_hint"
+            android:textSize="18sp"
+            />
+
+        <EditText
+            android:id="@+id/add_new_item_input_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/custom_input"
+            android:hint="-"
+            android:textSize="22sp"
+            android:inputType="text"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/add_new_item_label_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:textStyle="bold"
+                android:textColor="@color/input_hint"
+                android:textSize="18sp"
+                />
+
+            <EditText
+                android:id="@+id/add_new_item_input_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/custom_input"
+                android:hint="-"
+                android:textSize="22sp"
+                android:inputType="number"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="10dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/add_new_item_label_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unit"
+                android:textStyle="bold"
+                android:textColor="@color/input_hint"
+                android:textSize="18sp"
+                />
+
+            <Spinner
+                android:id="@+id/add_new_item_spinner_unit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/custom_input"
+                android:textSize="22sp"
+                android:inputType="number"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/add_new_item_label_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textStyle="bold"
+            android:textColor="@color/input_hint"
+            android:textSize="18sp"
+            />
+
+        <EditText
+            android:id="@+id/add_new_item_input_price"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/custom_input"
+            android:hint="-"
+            android:textSize="22sp"
+            android:inputType="numberDecimal"
+            android:drawableStart="@drawable/custom_money_icon"
+            android:drawablePadding="15dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/add_new_item_label_exp_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Expiration date"
+            android:textStyle="bold"
+            android:textColor="@color/input_hint"
+            android:textSize="18sp"
+            />
+
+        <EditText
+            android:id="@+id/add_new_item_input_exp_date"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/custom_input"
+            android:hint="-"
+            android:textSize="22sp"
+            android:inputType="date"
+            android:drawableStart="@drawable/custom_clock_icon"
+            android:drawablePadding="15dp"
+            android:focusable="false"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/shopping_list_add_item_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:text="Add"
+        android:textSize="22sp"
+        android:textAllCaps="false"
+        android:textColor="@color/app_background"
+        android:background="@drawable/custom_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</LinearLayout>
