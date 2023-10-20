@@ -2,11 +2,11 @@ package com.yablunin.shopnstock.list
 
 import java.io.Serializable
 
-data class ShoppingList(val name: String) : Serializable {
+data class ShoppingList(val id: Int, val name: String) : Serializable {
 
-    constructor(): this("")
+    constructor(): this(-1, "")
 
-    private val list = mutableListOf<ListItem>()
+    val list = mutableListOf<ListItem>() // Non private because to save it and serialize this field must be public
 
     fun add(item: ListItem){
         list.add(item)
@@ -16,16 +16,16 @@ data class ShoppingList(val name: String) : Serializable {
         list.remove(item)
     }
 
-    fun removeAt(index: Int){
-        list.removeAt(index)
+    fun removeAt(itemIndex: Int){
+        list.removeAt(itemIndex)
     }
 
-    fun getById(id: Int): ListItem? {
-        return list.find { it.id == id }
+    fun getById(itemId: Int): ListItem? {
+        return list.find { it.id == itemId }
     }
 
-    fun getByIndex(index: Int): ListItem {
-        return list[index]
+    fun getByIndex(itemIndex: Int): ListItem {
+        return list[itemIndex]
     }
 
     fun getCompletedItemsCount(): Int{

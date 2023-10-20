@@ -13,8 +13,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.ShoppingListActivity
+import com.yablunin.shopnstock.user.User
 
-class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>):
+class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>, val user: User):
     RecyclerView.Adapter<ShoppingListAdapter.Holder>() {
 
     class Holder(view: View): RecyclerView.ViewHolder(view) {
@@ -50,7 +51,8 @@ class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<S
         holder.bind(shoppingLists[position])
         holder.holderLayout.setOnClickListener {
             val intent = Intent(context, ShoppingListActivity::class.java);
-            intent.putExtra("list_data", shoppingLists[position])
+            intent.putExtra("list_id", shoppingLists[position].id)
+            intent.putExtra("user_data", user)
 
             context.startActivity(intent);
         }

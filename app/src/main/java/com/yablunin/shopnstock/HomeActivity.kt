@@ -91,7 +91,7 @@ class HomeActivity : AppCompatActivity() {
             nothingBackground.visibility = View.GONE
             rcView.visibility = View.VISIBLE
             rcView.layoutManager = LinearLayoutManager(this)
-            val adapter = ShoppingListAdapter(this, user.shoppingLists)
+            val adapter = ShoppingListAdapter(this, user.shoppingLists, user)
             rcView.adapter = adapter
         }
         else{
@@ -119,14 +119,14 @@ class HomeActivity : AppCompatActivity() {
             if (createNewListInput != null) {
                 if (!createNewListInput.text.trim().isEmpty()){
                     val listName: String = createNewListInput.text.trim().toString()
-                    val list = ShoppingList(listName)
+                    val list = ShoppingList(ShoppingListHandler.generateListId(user), listName)
                     val nothingBackground: LinearLayout = findViewById(R.id.home_nothing_obj)
                     val rcView: RecyclerView = findViewById(R.id.home_lists_rc_view)
                     ShoppingListHandler.addList(list, user)
                     DatabaseHandler.save(dbReference, user)
                     rcView.visibility = View.VISIBLE
                     rcView.layoutManager = LinearLayoutManager(this)
-                    val adapter = ShoppingListAdapter(this, user.shoppingLists)
+                    val adapter = ShoppingListAdapter(this, user.shoppingLists, user)
                     rcView.adapter = adapter
 
                     nothingBackground.visibility = View.GONE
