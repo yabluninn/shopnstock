@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "370062542705",
+    "project_id": "shopnstock-b0479",
+    "storage_bucket": "shopnstock-b0479.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:370062542705:android:401aa56fb8fd9f40e798d0",
+        "android_client_info": {
+          "package_name": "com.yablunin.shopnstock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnXYdpCxdRQzQYhrpsVYjzcHidNvh0LRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

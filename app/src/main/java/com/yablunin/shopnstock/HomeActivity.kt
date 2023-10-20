@@ -1,35 +1,79 @@
 package com.yablunin.shopnstock
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.yablunin.shopnstock.list.ShoppingList
 import com.yablunin.shopnstock.list.ShoppingListHandler
 import com.yablunin.shopnstock.user.User
+import com.yablunin.shopnstock.util.DatabaseHandler
 
 class HomeActivity : AppCompatActivity() {
 
-    private val user: User? = null
+    private lateinit var user: User
+    private lateinit var dbReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         val newListButton: FloatingActionButton = findViewById(R.id.home_create_task_button)
+        dbReference = FirebaseDatabase.getInstance().getReference(DatabaseHandler.DB_USERS_NAME)
+        var firebaseAuth = FirebaseAuth.getInstance()
+        loadUserData(firebaseAuth)
 
         newListButton.setOnClickListener{
             showCreateListDialog()
         }
+    }
 
+    private fun loadUserData(auth: FirebaseAuth){
+        val currentUser = auth.currentUser
 
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val database = FirebaseDatabase.getInstance()
+            val userRef = database.reference.child("users").child(userId)
+
+            DatabaseHandler.load(userRef) { _user ->
+                if (_user != null) {
+                    user = _user
+
+                    val usernameText: TextView = findViewById(R.id.home_user_username)
+                    val emailText: TextView = findViewById(R.id.home_user_email)
+                    val nothingBackground: LinearLayout = findViewById(R.id.home_nothing_obj)
+
+                    usernameText.text = user.username
+                    emailText.text = user.email
+
+                    if (user.shoppingLists.size > 0){
+                        nothingBackground.visibility = View.GONE
+                    }
+                    else{
+                        nothingBackground.visibility = View.VISIBLE
+                    }
+                }
+                else {
+                    // Пользователь не найден в базе данных
+                }
+            }
+        }
     }
 
     private fun showCreateListDialog(){
@@ -52,9 +96,11 @@ class HomeActivity : AppCompatActivity() {
                 if (!createNewListInput.text.trim().isEmpty()){
                     val listName: String = createNewListInput.text.trim().toString()
                     val list = ShoppingList(listName)
-                    if (user != null) {
-                        ShoppingListHandler.addList(list, user)
-                    }
+                    val nothingBackground: LinearLayout = findViewById(R.id.home_nothing_obj)
+                    ShoppingListHandler.addList(list, user)
+                    DatabaseHandler.save(dbReference, user)
+
+                    nothingBackground.visibility = View.GONE
                 }
             }
         }
