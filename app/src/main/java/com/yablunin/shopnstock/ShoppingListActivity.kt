@@ -19,11 +19,13 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.FirebaseDatabase
 import com.yablunin.shopnstock.list.ListItem
 import com.yablunin.shopnstock.list.ShoppingList
 import com.yablunin.shopnstock.list.ShoppingListHandler
+import com.yablunin.shopnstock.list.ShoppingListItemsAdapter
 import com.yablunin.shopnstock.user.User
 import com.yablunin.shopnstock.util.DatabaseHandler
 import java.text.SimpleDateFormat
@@ -49,10 +51,8 @@ class ShoppingListActivity : AppCompatActivity() {
         val addItemButton: Button = findViewById(R.id.shopping_list_add_item_button)
 
         user = intent.getSerializableExtra("user_data", User::class.java)!!
-        val listId = 0;
-        list = ShoppingListHandler.getListById(user, intent.getIntExtra("list_id", listId))!!
 
-        updateListUI(list)
+        updateListUIWithUser(user, 0)
 
         backButton.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
@@ -65,8 +65,17 @@ class ShoppingListActivity : AppCompatActivity() {
 
     }
 
+    fun updateListUIWithUser(user: User, defaultId: Int){
+        val list = ShoppingListHandler.getListById(user, intent.getIntExtra("list_id", defaultId))!!
+        defaultUpdateListUI(list)
+    }
+
+    fun updateListUIWithList(list: ShoppingList){
+        defaultUpdateListUI(list)
+    }
+
     @SuppressLint("SetTextI18n")
-    private fun updateListUI(list: ShoppingList){
+    private fun defaultUpdateListUI(list: ShoppingList){
         val listName: TextView = findViewById(R.id.shopping_list_name_text)
         val listItemsCountText: TextView = findViewById(R.id.shopping_list_items_count)
 
@@ -80,12 +89,13 @@ class ShoppingListActivity : AppCompatActivity() {
         if (list.size() > 0){
             listItemsCountText.text = "List ${list.getCompletedItemsCount()} / ${list.size()} completed"
             itemsRcView.visibility = View.VISIBLE
+            itemsRcView.layoutManager = LinearLayoutManager(this)
+            itemsRcView.adapter = ShoppingListItemsAdapter(list.list, user, this)
         }
         else{
             listItemsCountText.text = "Nothing here"
             nothingObj.visibility = View.VISIBLE
         }
-
     }
 
     private fun showAddItemPopup(){
@@ -119,10 +129,9 @@ class ShoppingListActivity : AppCompatActivity() {
                 val item = ListItem(itemId, name, quantity, price, unit, expirationDate)
                 list.add(item)
 
-                updateListUI(list)
+                updateListUIWithList(list)
 
-                val dbReference = FirebaseDatabase.getInstance().getReference(DatabaseHandler.DB_USERS_NAME)
-                DatabaseHandler.save(dbReference, user)
+                DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
 
                 addItemPopup.dismiss()
             }
