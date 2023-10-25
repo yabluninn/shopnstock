@@ -1,10 +1,12 @@
 package com.yablunin.shopnstock.list
 
-data class ShoppingList(val name: String){
+import java.io.Serializable
 
-    constructor(): this("")
+data class ShoppingList(val id: Int, val name: String) : Serializable {
 
-    private val list = mutableListOf<ListItem>()
+    constructor(): this(-1, "")
+
+    val list = mutableListOf<ListItem>() // Non private because to save it and serialize this field must be public
 
     fun add(item: ListItem){
         list.add(item)
@@ -14,15 +16,29 @@ data class ShoppingList(val name: String){
         list.remove(item)
     }
 
-    fun removeAt(index: Int){
-        list.removeAt(index)
+    fun removeAt(itemIndex: Int){
+        list.removeAt(itemIndex)
     }
 
-    fun getById(id: Int): ListItem? {
-        return list.find { it.id == id }
+    fun getById(itemId: Int): ListItem? {
+        return list.find { it.id == itemId }
     }
 
-    fun getByIndex(index: Int): ListItem {
-        return list[index]
+    fun getByIndex(itemIndex: Int): ListItem {
+        return list[itemIndex]
+    }
+
+    fun getCompletedItemsCount(): Int{
+        var count = 0;
+        list.forEach{
+            if (it.isCompleted){
+                count++
+            }
+        }
+        return count;
+    }
+
+    fun size(): Int{
+        return list.size
     }
 }

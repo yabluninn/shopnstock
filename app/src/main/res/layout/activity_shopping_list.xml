@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@color/app_background"
+    tools:context=".ShoppingListActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/shopping_list_back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_list_header_button"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_left"
+            app:tint="@color/font_header" />
+
+        <ImageView
+            android:id="@+id/shopping_list_add_user_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="128dp"
+            android:layout_marginRight="128dp"
+            android:background="@drawable/custom_list_header_button_transparent"
+            android:padding="10dp"
+            android:src="@drawable/ic_plus"
+            app:tint="#A1A1A1" />
+
+        <ImageView
+            android:id="@+id/shopping_list_menu_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_list_header_button"
+            android:padding="10dp"
+            android:src="@drawable/ic_ellipsis_vertical"
+            app:tint="@color/font_header" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/shopping_list_name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="List name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/font"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="52dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:src="@drawable/ic_list"
+            app:tint="@color/input_hint" />
+
+        <TextView
+            android:id="@+id/shopping_list_items_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="List 0/0 completed"
+            android:textColor="@color/input_hint"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/shopping_list_empty_list_obj"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="28dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:layout_editor_absoluteX="29dp">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@mipmap/img_empty_list_foreground" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Add items to your list"
+            android:textColor="@color/item_header"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Your smart shopping list will shown here. Start by creating a new list"
+            android:textColor="@color/item_subheader"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shopping_list_items_rcview"
+        android:layout_width="match_parent"
+        android:layout_height="435dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/shopping_list_add_item_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintVertical_bias="0.138" />
+
+    <Button
+        android:id="@+id/shopping_list_add_item_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="15dp"
+        android:text="Add new item"
+        android:textSize="22sp"
+        android:textAllCaps="false"
+        android:textColor="@color/app_background"
+        android:background="@drawable/custom_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="15dp"
+        android:drawableStart="@drawable/ic_plus"
+        android:drawableTint="@color/app_background"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

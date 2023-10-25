@@ -3,13 +3,18 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="font">#FF673308</color>
     <color name="font_header">#c96e23</color>
     <color name="font_subheader">#EDA66B</color>
 
     <color name="app_base">#f0ae62</color>
     <color name="app_base_dark">#e6994e</color>
     <color name="app_background">#FFFFF9F4</color>
+    <color name="header_button_background">#FFD9AE</color>
 
     <color name="input_stoke">#D0D5DD</color>
     <color name="input_hint">#818181</color>
+
+    <color name="item_header">#554538</color>
+    <color name="item_subheader">#97785F</color>
 </resources>

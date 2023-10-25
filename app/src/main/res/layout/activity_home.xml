@@ -5,20 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".HomeActivity"
-    >
-<!--    android:background="@color/app_background"-->
+    tools:context=".HomeActivity">
+    <!--    android:background="@color/app_background"-->
 
     <LinearLayout
         android:id="@+id/home_user_info_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
             android:layout_width="60dp"
@@ -30,8 +28,7 @@
                 android:id="@+id/home_user_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher_round"
-                />
+                android:src="@mipmap/ic_launcher_round" />
 
         </androidx.cardview.widget.CardView>
 
@@ -39,34 +36,31 @@
             android:layout_width="230dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/home_user_username"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:gravity="center_vertical"
                 android:text="Username"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:gravity="center_vertical"
-                />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/home_user_email"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:gravity="center_vertical"
                 android:text="username@mail.com"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:gravity="center_vertical"
-                />
-
+                android:textSize="18sp" />
 
 
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/home_nothing_obj"
         android:layout_width="match_parent"
@@ -74,6 +68,7 @@
         android:layout_marginBottom="84dp"
         android:gravity="center"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -81,9 +76,9 @@
         <ImageView
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:translationY="60dp"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            android:translationY="60dp"
             app:srcCompat="@mipmap/img_nothing_preview_foreground" />
 
         <TextView
@@ -135,5 +130,15 @@
         android:layout_height="match_parent"
         android:background="#80000000"
         android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_lists_rc_view"
+        android:layout_width="match_parent"
+        android:layout_height="498dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_user_info_layout"
+        app:layout_constraintVertical_bias="0.328"
+        tools:layout_editor_absoluteX="-6dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
