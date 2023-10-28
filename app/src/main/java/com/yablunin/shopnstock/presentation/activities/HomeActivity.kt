@@ -1,10 +1,9 @@
-package com.yablunin.shopnstock
+package com.yablunin.shopnstock.presentation.activities
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
@@ -13,33 +12,39 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.yablunin.shopnstock.list.ShoppingList
-import com.yablunin.shopnstock.list.ShoppingListAdapter
-import com.yablunin.shopnstock.list.ShoppingListHandler
-import com.yablunin.shopnstock.user.User
-import com.yablunin.shopnstock.util.DatabaseHandler
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
+import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.domain.list.ShoppingList
+import com.yablunin.shopnstock.presentation.adapters.ShoppingListAdapter
+import com.yablunin.shopnstock.domain.list.ShoppingListHandler
+import com.yablunin.shopnstock.domain.user.User
+import com.yablunin.shopnstock.data.DatabaseHandler
+import com.yablunin.shopnstock.databinding.ActivityHomeBinding
+import com.yablunin.shopnstock.presentation.fragments.UserSettings
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class HomeActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var user: User
     private lateinit var dbReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         dbReference = FirebaseDatabase.getInstance().getReference(DatabaseHandler.DB_USERS_NAME)
         var firebaseAuth = FirebaseAuth.getInstance()
@@ -50,9 +55,15 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        val newListButton: FloatingActionButton = findViewById(R.id.home_create_task_button)
-        newListButton.setOnClickListener{
+        binding.homeCreateTaskButton.setOnClickListener{
             showCreateListDialog()
+        }
+
+        val settingsFragment = binding.homeUserSettingsFragmentHolder
+        settingsFragment.visibility = View.GONE
+
+        binding.homeMenuButton.setOnClickListener {
+            showUserMenu(settingsFragment)
         }
     }
 
@@ -78,25 +89,19 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun applyDataToUI(user: User){
-        val usernameText: TextView = findViewById(R.id.home_user_username)
-        val emailText: TextView = findViewById(R.id.home_user_email)
-        val nothingBackground: LinearLayout = findViewById(R.id.home_nothing_obj)
-
-        val rcView: RecyclerView = findViewById(R.id.home_lists_rc_view)
-
-        usernameText.text = user.username
-        emailText.text = user.email
+        binding.homeUserUsername.text = user.username
+        binding.homeUserEmail.text = user.email
 
         if (user.shoppingLists.size > 0){
-            nothingBackground.visibility = View.GONE
-            rcView.visibility = View.VISIBLE
-            rcView.layoutManager = LinearLayoutManager(this)
+            binding.homeNothingObj.visibility = View.GONE
+            binding.homeListsRcView.visibility = View.VISIBLE
+            binding.homeListsRcView.layoutManager = LinearLayoutManager(this)
             val adapter = ShoppingListAdapter(this, user.shoppingLists, user)
-            rcView.adapter = adapter
+            binding.homeListsRcView.adapter = adapter
         }
         else{
-            nothingBackground.visibility = View.VISIBLE
-            rcView.visibility = View.GONE
+            binding.homeNothingObj.visibility = View.VISIBLE
+            binding.homeListsRcView.visibility = View.GONE
         }
     }
 
@@ -132,6 +137,29 @@ class HomeActivity : AppCompatActivity() {
                     nothingBackground.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    @SuppressLint("CommitTransaction")
+    private fun showUserMenu(settingsLayout: FrameLayout){
+        val menuPopup = Dialog(this)
+        menuPopup.setContentView(R.layout.user_menu_popup)
+        menuPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val layoutParams = menuPopup.window?.attributes
+        layoutParams?.gravity = Gravity.END or Gravity.TOP
+        menuPopup.window?.attributes = layoutParams
+
+        menuPopup.show()
+
+        val settingsOptionButton: LinearLayout = menuPopup.findViewById(R.id.user_menu_settings_option)
+        settingsOptionButton.setOnClickListener {
+            menuPopup.dismiss()
+
+            settingsLayout.visibility = View.VISIBLE
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.home_user_settings_fragment_holder, UserSettings.newInstance()).commit()
         }
     }
 }

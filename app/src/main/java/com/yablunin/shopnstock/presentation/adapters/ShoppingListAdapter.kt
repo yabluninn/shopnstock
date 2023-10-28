@@ -1,4 +1,4 @@
-package com.yablunin.shopnstock.list
+package com.yablunin.shopnstock.presentation.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,8 +12,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.ShoppingListActivity
-import com.yablunin.shopnstock.user.User
+import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
+import com.yablunin.shopnstock.domain.list.ShoppingList
+import com.yablunin.shopnstock.domain.user.User
 
 class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>, val user: User):
     RecyclerView.Adapter<ShoppingListAdapter.Holder>() {
@@ -23,6 +24,7 @@ class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<S
         val listName: TextView = view.findViewById(R.id.shopping_list_item_name)
         val listItemsCountText: TextView = view.findViewById(R.id.shopping_list_item_count)
         val holderLayout: ConstraintLayout = view.findViewById(R.id.shopping_list_holder)
+
         @SuppressLint("SetTextI18n")
         fun bind(list: ShoppingList){
 

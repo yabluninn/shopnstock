@@ -13,21 +13,21 @@
         android:theme="@style/Theme.Shopnstock"
         tools:targetApi="31">
         <activity
-            android:name=".ShoppingListActivity"
+            android:name=".presentation.activities.ShoppingListActivity"
             android:exported="false"
             android:label="@string/title_activity_shopping_list"
             android:theme="@style/Theme.Shopnstock" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".presentation.activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".LogInActivity"
+            android:name=".presentation.activities.LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".presentation.activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -7,8 +7,9 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:paddingTop="15dp"
-    android:paddingLeft="25dp"
+    android:paddingStart="25dp"
     android:paddingBottom="15dp"
+    android:paddingEnd="10dp"
     android:background="@drawable/list_item_holder_background"
     android:orientation="horizontal"
     android:gravity="center_vertical"
@@ -31,10 +32,30 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginLeft="15dp"
-        android:text="List Name"
+        android:text="Bread"
         android:textColor="@color/item_header"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/list_item_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:text="x pc(s)"
+        android:textColor="#A5A5A5"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/list_item_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_xmark"
+        app:tint="#B6B6B6"
+        />
 
 </LinearLayout>
