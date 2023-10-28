@@ -1,4 +1,4 @@
-package com.yablunin.shopnstock
+package com.yablunin.shopnstock.presentation.activities
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -21,13 +22,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.FirebaseDatabase
-import com.yablunin.shopnstock.list.ListItem
-import com.yablunin.shopnstock.list.ShoppingList
-import com.yablunin.shopnstock.list.ShoppingListHandler
-import com.yablunin.shopnstock.list.ShoppingListItemsAdapter
-import com.yablunin.shopnstock.user.User
-import com.yablunin.shopnstock.util.DatabaseHandler
+import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.domain.list.ListItem
+import com.yablunin.shopnstock.domain.list.ShoppingList
+import com.yablunin.shopnstock.domain.list.ShoppingListHandler
+import com.yablunin.shopnstock.presentation.adapters.ShoppingListItemsAdapter
+import com.yablunin.shopnstock.domain.user.User
+import com.yablunin.shopnstock.data.DatabaseHandler
+import com.yablunin.shopnstock.databinding.ActivityShoppingListBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -35,6 +37,7 @@ import java.util.Locale
 
 class ShoppingListActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityShoppingListBinding
     private lateinit var user: User
     private lateinit var list: ShoppingList
 
@@ -45,56 +48,52 @@ class ShoppingListActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shopping_list)
-
-        val backButton: ImageView = findViewById(R.id.shopping_list_back_button)
-        val addItemButton: Button = findViewById(R.id.shopping_list_add_item_button)
+        binding = ActivityShoppingListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         user = intent.getSerializableExtra("user_data", User::class.java)!!
 
         updateListUIWithUser(user, 0)
 
-        backButton.setOnClickListener {
+        binding.shoppingListBackButton.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
-        addItemButton.setOnClickListener {
+        binding.shoppingListAddItemButton.setOnClickListener {
             showAddItemPopup()
+        }
+
+        binding.shoppingListMenuButton.setOnClickListener {
+            showListMenu()
         }
 
     }
 
     fun updateListUIWithUser(user: User, defaultId: Int){
-        val list = ShoppingListHandler.getListById(user, intent.getIntExtra("list_id", defaultId))!!
+        list = ShoppingListHandler.getListById(user, intent.getIntExtra("list_id", defaultId))!!
         defaultUpdateListUI(list)
     }
 
-    fun updateListUIWithList(list: ShoppingList){
+    fun updateListUIWithList(){
         defaultUpdateListUI(list)
     }
 
     @SuppressLint("SetTextI18n")
     private fun defaultUpdateListUI(list: ShoppingList){
-        val listName: TextView = findViewById(R.id.shopping_list_name_text)
-        val listItemsCountText: TextView = findViewById(R.id.shopping_list_items_count)
-
-        val nothingObj: LinearLayout = findViewById(R.id.shopping_list_empty_list_obj)
-        val itemsRcView: RecyclerView = findViewById(R.id.shopping_list_items_rcview)
-
-        listName.text = list.name
-        nothingObj.visibility = View.GONE
-        itemsRcView.visibility = View.GONE
+        binding.shoppingListNameText.text = list.name
+        binding.shoppingListEmptyListObj.visibility = View.GONE
+        binding.shoppingListItemsRcview.visibility = View.GONE
 
         if (list.size() > 0){
-            listItemsCountText.text = "List ${list.getCompletedItemsCount()} / ${list.size()} completed"
-            itemsRcView.visibility = View.VISIBLE
-            itemsRcView.layoutManager = LinearLayoutManager(this)
-            itemsRcView.adapter = ShoppingListItemsAdapter(list.list, user, this)
+            binding.shoppingListItemsCount.text = "List ${list.getCompletedItemsCount()} / ${list.size()} completed"
+            binding.shoppingListItemsRcview.visibility = View.VISIBLE
+            binding.shoppingListItemsRcview.layoutManager = LinearLayoutManager(this)
+            binding.shoppingListItemsRcview.adapter = ShoppingListItemsAdapter(list.list, user, this)
         }
         else{
-            listItemsCountText.text = "Nothing here"
-            nothingObj.visibility = View.VISIBLE
+            binding.shoppingListItemsCount.text = "Nothing here"
+            binding.shoppingListEmptyListObj.visibility = View.VISIBLE
         }
     }
 
@@ -127,9 +126,9 @@ class ShoppingListActivity : AppCompatActivity() {
 
                 val itemId = list.size()
                 val item = ListItem(itemId, name, quantity, price, unit, expirationDate)
-                list.add(item)
+                list.addItem(item)
 
-                updateListUIWithList(list)
+                updateListUIWithList()
 
                 DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
 
@@ -161,6 +160,51 @@ class ShoppingListActivity : AppCompatActivity() {
                 // Вызывается, если ничего не выбрано
             }
         })
+    }
+
+    private fun showListMenu(){
+        val menuPopup = Dialog(this)
+        menuPopup.setContentView(R.layout.list_menu_popup)
+        menuPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val layoutParams = menuPopup.window?.attributes
+        layoutParams?.gravity = Gravity.END or Gravity.TOP
+        menuPopup.window?.attributes = layoutParams
+
+        menuPopup.show()
+
+        val deleteOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_delete_option)
+        deleteOption.setOnClickListener {
+            ShoppingListHandler.removeList(list, user)
+            DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun showDeleteItemPopup(item: ListItem){
+        val deletePopup = Dialog(this)
+        deletePopup.setContentView(R.layout.delete_item_warning_popup)
+        deletePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        deletePopup.show()
+
+        val yesButton: TextView = deletePopup.findViewById(R.id.delete_item_yes)
+        val noButton: TextView = deletePopup.findViewById(R.id.delete_item_no)
+
+        val deleteHeader: TextView = deletePopup.findViewById(R.id.delete_item_header)
+
+        yesButton.setOnClickListener {
+            list.removeItem(item)
+            DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
+            updateListUIWithList()
+            deletePopup.dismiss()
+        }
+        noButton.setOnClickListener {
+            deletePopup.dismiss()
+        }
+        deleteHeader.text = "Delete ${item.name}?"
     }
 
     private fun showSetExpirationDateDialog(dateInput: EditText){

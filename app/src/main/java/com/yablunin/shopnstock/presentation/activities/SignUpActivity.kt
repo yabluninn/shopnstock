@@ -1,4 +1,4 @@
-package com.yablunin.shopnstock
+package com.yablunin.shopnstock.presentation.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,38 +9,35 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.yablunin.shopnstock.user.User
-import com.yablunin.shopnstock.util.DatabaseHandler
+import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.domain.user.User
+import com.yablunin.shopnstock.data.DatabaseHandler
+import com.yablunin.shopnstock.databinding.ActivitySignUpBinding
 
 class SignUpActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySignUpBinding
     private lateinit var dbReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         dbReference = FirebaseDatabase.getInstance().getReference(DatabaseHandler.DB_USERS_NAME)
 
-        val loginLink: TextView = findViewById(R.id.sign_login_link)
-        val usernameInput: EditText = findViewById(R.id.sign_username_input)
-        val emailInput: EditText = findViewById(R.id.sign_email_input)
-        val passwordInput: EditText = findViewById(R.id.sign_password_input)
-
-        val signUpButton: Button = findViewById(R.id.sign_button)
-
         val firebaseAuth = FirebaseAuth.getInstance()
 
-        loginLink.setOnClickListener{
+        binding.signLoginLink.setOnClickListener{
             val intent = Intent(this, LogInActivity::class.java)
             startActivity(intent)
         }
 
-        signUpButton.setOnClickListener {
-            if (!usernameInput.text.trim().isEmpty() && !emailInput.text.trim().isEmpty() && !passwordInput.text.trim().isEmpty()){
-                val username: String = usernameInput.text.toString()
-                val email: String = emailInput.text.toString()
-                val password: String = passwordInput.text.toString()
+        binding.signButton.setOnClickListener {
+            if (!binding.signUsernameInput.text.trim().isEmpty() && !binding.signEmailInput.text.trim().isEmpty() && !binding.signPasswordInput.text.trim().isEmpty()){
+                val username: String = binding.signUsernameInput.text.toString()
+                val email: String = binding.signEmailInput.text.toString()
+                val password: String = binding.signPasswordInput.text.toString()
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful){
                         val currentUser = firebaseAuth.currentUser

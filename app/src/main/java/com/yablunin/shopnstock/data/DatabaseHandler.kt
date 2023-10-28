@@ -1,4 +1,4 @@
-package com.yablunin.shopnstock.util
+package com.yablunin.shopnstock.data
 
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
@@ -6,12 +6,14 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.yablunin.shopnstock.user.User
+import com.yablunin.shopnstock.domain.user.User
 
 class DatabaseHandler {
     companion object{
         const val DB_USERS_NAME: String = "users"
-        val DB_REFERENCE: DatabaseReference = FirebaseDatabase.getInstance().getReference(DB_USERS_NAME)
+        val DB_REFERENCE: DatabaseReference = FirebaseDatabase.getInstance().getReference(
+            DB_USERS_NAME
+        )
 
         fun save(db: DatabaseReference, user: User){
             val uniqueId = user.id

@@ -7,7 +7,7 @@
     android:background="@color/app_background"
     android:paddingLeft="40dp"
     android:paddingRight="40dp"
-    tools:context=".LogInActivity">
+    tools:context=".presentation.activities.LogInActivity">
 
     <TextView
         android:id="@+id/login_header"

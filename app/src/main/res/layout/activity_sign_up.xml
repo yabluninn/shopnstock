@@ -7,7 +7,7 @@
     android:background="@color/app_background"
     android:paddingLeft="40dp"
     android:paddingRight="40dp"
-    tools:context=".SignUpActivity">
+    tools:context=".presentation.activities.SignUpActivity">
 
     <TextView
         android:id="@+id/sign_header"
@@ -27,7 +27,7 @@
         android:id="@+id/sign_username_input"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/custom_user_icon"
         android:drawablePadding="10dp"
