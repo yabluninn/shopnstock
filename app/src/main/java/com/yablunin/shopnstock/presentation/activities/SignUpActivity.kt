@@ -3,30 +3,30 @@ package com.yablunin.shopnstock.presentation.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.domain.user.User
-import com.yablunin.shopnstock.data.DatabaseHandler
+import com.yablunin.shopnstock.data.repository.FirebaseUserRepository
+import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.databinding.ActivitySignUpBinding
+import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
-    private lateinit var dbReference: DatabaseReference
+    private lateinit var firebaseAuth: FirebaseAuth
+
+    private lateinit var saveUserUseCase: SaveUserUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        dbReference = FirebaseDatabase.getInstance().getReference(DatabaseHandler.DB_USERS_NAME)
+        init()
+    }
 
-        val firebaseAuth = FirebaseAuth.getInstance()
+    private fun init(){
+        firebaseAuth = FirebaseAuth.getInstance()
+        saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
 
         binding.signLoginLink.setOnClickListener{
             val intent = Intent(this, LogInActivity::class.java)
@@ -43,7 +43,8 @@ class SignUpActivity : AppCompatActivity() {
                         val currentUser = firebaseAuth.currentUser
                         if (currentUser != null){
                             val uId = currentUser.uid
-                            DatabaseHandler.save(dbReference, User(uId, username, email, password))
+                            val user = User(uId, username, email, password)
+                            saveUserUseCase.execute(user)
                             val intent = Intent(this, LogInActivity::class.java)
                             startActivity(intent)
                         }

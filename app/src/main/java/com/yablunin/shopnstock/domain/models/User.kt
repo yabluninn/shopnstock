@@ -1,6 +1,5 @@
-package com.yablunin.shopnstock.domain.user
+package com.yablunin.shopnstock.domain.models
 
-import com.yablunin.shopnstock.domain.list.ShoppingList
 import java.io.Serializable
 
 data class User(var id: String, var username: String, var email: String, var password: String) : Serializable{

@@ -12,10 +12,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.data.repository.FirebaseUserRepository
 import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
-import com.yablunin.shopnstock.domain.list.ListItem
-import com.yablunin.shopnstock.domain.user.User
-import com.yablunin.shopnstock.data.DatabaseHandler
+import com.yablunin.shopnstock.domain.models.ListItem
+import com.yablunin.shopnstock.domain.models.User
+import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 
 class ShoppingListItemsAdapter(val items: MutableList<ListItem>, val user: User, val listActivity: ShoppingListActivity): RecyclerView.Adapter<ShoppingListItemsAdapter.Holder>() {
 
@@ -34,7 +35,8 @@ class ShoppingListItemsAdapter(val items: MutableList<ListItem>, val user: User,
                 updateItemHolderUI(item)
                 listActivity.updateListUIWithUser(user, 0)
 
-                DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
+                val saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
+                saveUserUseCase.execute(user)
             }
 
             itemName.text = item.name

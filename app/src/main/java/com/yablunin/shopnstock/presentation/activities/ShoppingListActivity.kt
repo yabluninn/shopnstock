@@ -21,15 +21,22 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.domain.list.ListItem
-import com.yablunin.shopnstock.domain.list.ShoppingList
-import com.yablunin.shopnstock.domain.list.ShoppingListHandler
+import com.yablunin.shopnstock.data.repository.FirebaseUserRepository
+import com.yablunin.shopnstock.domain.models.ListItem
+import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListItemsAdapter
-import com.yablunin.shopnstock.domain.user.User
-import com.yablunin.shopnstock.data.DatabaseHandler
+import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.databinding.ActivityShoppingListBinding
+import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
+import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
+import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
+import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
+import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -43,6 +50,16 @@ class ShoppingListActivity : AppCompatActivity() {
 
     private var unit: String = "pc(s)"
     private var expirationDate: String = ""
+
+    private val saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
+
+    private val addItemUseCase = AddItemUseCase(ShoppingListRepository())
+    private val removeItemUseCase = RemoveItemUseCase(ShoppingListRepository())
+    private val getSizeUseCase = GetSizeUseCase(ShoppingListRepository())
+    private val getCompletedItemsCountUseCase = GetCompletedItemsCountUseCase(ShoppingListRepository())
+
+    private val removeListUseCase = RemoveListUseCase(ShoppingListHandlerRepository())
+    private val getListByIdUseCase = GetListByIdUseCase(ShoppingListHandlerRepository())
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -71,7 +88,7 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     fun updateListUIWithUser(user: User, defaultId: Int){
-        list = ShoppingListHandler.getListById(user, intent.getIntExtra("list_id", defaultId))!!
+        list = getListByIdUseCase.execute(user, intent.getIntExtra("list_id", defaultId))!!
         defaultUpdateListUI(list)
     }
 
@@ -85,8 +102,11 @@ class ShoppingListActivity : AppCompatActivity() {
         binding.shoppingListEmptyListObj.visibility = View.GONE
         binding.shoppingListItemsRcview.visibility = View.GONE
 
-        if (list.size() > 0){
-            binding.shoppingListItemsCount.text = "List ${list.getCompletedItemsCount()} / ${list.size()} completed"
+        val listSize = getSizeUseCase.execute(list)
+        val completedItemsCount = getCompletedItemsCountUseCase.execute(list)
+
+        if (listSize > 0){
+            binding.shoppingListItemsCount.text = "List $completedItemsCount / $listSize completed"
             binding.shoppingListItemsRcview.visibility = View.VISIBLE
             binding.shoppingListItemsRcview.layoutManager = LinearLayoutManager(this)
             binding.shoppingListItemsRcview.adapter = ShoppingListItemsAdapter(list.list, user, this)
@@ -124,13 +144,14 @@ class ShoppingListActivity : AppCompatActivity() {
                 val quantity = quantityInput.text.toString().toInt()
                 val price = priceInput.text.toString().toDouble()
 
-                val itemId = list.size()
+                val itemId = getSizeUseCase.execute(list)
                 val item = ListItem(itemId, name, quantity, price, unit, expirationDate)
-                list.addItem(item)
+
+                addItemUseCase.execute(list, item)
 
                 updateListUIWithList()
 
-                DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
+                saveUserUseCase.execute(user)
 
                 addItemPopup.dismiss()
             }
@@ -175,8 +196,8 @@ class ShoppingListActivity : AppCompatActivity() {
 
         val deleteOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_delete_option)
         deleteOption.setOnClickListener {
-            ShoppingListHandler.removeList(list, user)
-            DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
+            removeListUseCase.execute(list, user)
+            saveUserUseCase.execute(user)
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
@@ -196,8 +217,8 @@ class ShoppingListActivity : AppCompatActivity() {
         val deleteHeader: TextView = deletePopup.findViewById(R.id.delete_item_header)
 
         yesButton.setOnClickListener {
-            list.removeItem(item)
-            DatabaseHandler.save(DatabaseHandler.DB_REFERENCE, user)
+            removeItemUseCase.execute(list, item)
+            saveUserUseCase.execute(user)
             updateListUIWithList()
             deletePopup.dismiss()
         }

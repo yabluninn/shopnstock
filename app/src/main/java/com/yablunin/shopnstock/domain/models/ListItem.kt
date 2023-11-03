@@ -1,4 +1,4 @@
-package com.yablunin.shopnstock.domain.list
+package com.yablunin.shopnstock.domain.models
 
 import java.io.Serializable
 

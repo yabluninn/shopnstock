@@ -1,6 +1,5 @@
 package com.yablunin.shopnstock.presentation.activities
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,25 +11,23 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.domain.list.ShoppingList
+import com.yablunin.shopnstock.data.repository.FirebaseUserRepository
+import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListAdapter
-import com.yablunin.shopnstock.domain.list.ShoppingListHandler
-import com.yablunin.shopnstock.domain.user.User
-import com.yablunin.shopnstock.data.DatabaseHandler
+import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.databinding.ActivityHomeBinding
-import com.yablunin.shopnstock.presentation.fragments.UserSettings
+import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
+import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
+import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
+import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -39,6 +36,12 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var user: User
     private lateinit var dbReference: DatabaseReference
+    private lateinit var firebaseAuth: FirebaseAuth
+
+    private val saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
+
+    private val addListUseCase = AddListUseCase(ShoppingListHandlerRepository())
+    private val generateListIdUseCase = GenerateListIdUseCase(ShoppingListHandlerRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,43 +49,39 @@ class HomeActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        dbReference = FirebaseDatabase.getInstance().getReference(DatabaseHandler.DB_USERS_NAME)
-        var firebaseAuth = FirebaseAuth.getInstance()
+        init()
+    }
+
+    private fun init(){
+        dbReference = FirebaseDatabase.getInstance().getReference(FirebaseUserRepository.DB_USERS_NAME)
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        binding.homeCreateTaskButton.setOnClickListener{
+            showCreateListDialog()
+        }
 
         runBlocking {
             launch {
                 loadUserData(firebaseAuth)
             }
         }
-
-        binding.homeCreateTaskButton.setOnClickListener{
-            showCreateListDialog()
-        }
-
-        val settingsFragment = binding.homeUserSettingsFragmentHolder
-        settingsFragment.visibility = View.GONE
-
-        binding.homeMenuButton.setOnClickListener {
-            showUserMenu(settingsFragment)
-        }
     }
 
     private fun loadUserData(auth: FirebaseAuth){
+        val userRepository = FirebaseUserRepository()
+        val loadUserUseCase = LoadUserUseCase(userRepository)
         val currentUser = auth.currentUser
 
         if (currentUser != null) {
             val userId = currentUser.uid
-            val database = FirebaseDatabase.getInstance()
-            val userRef = database.reference.child("users").child(userId)
 
-            DatabaseHandler.load(userRef) { _user ->
-                if (_user != null) {
-                    user = _user
+            loadUserUseCase.execute(userId){ _user ->
+                if (_user == null){
 
-                    applyDataToUI(user)
                 }
-                else {
-                    // Пользователь не найден в базе данных
+                else{
+                    user = _user
+                    applyDataToUI(user)
                 }
             }
         }
@@ -124,11 +123,15 @@ class HomeActivity : AppCompatActivity() {
             if (createNewListInput != null) {
                 if (!createNewListInput.text.trim().isEmpty()){
                     val listName: String = createNewListInput.text.trim().toString()
-                    val list = ShoppingList(ShoppingListHandler.generateListId(user), listName)
+                    val listId = generateListIdUseCase.execute(user)
+                    val list = ShoppingList(listId, listName)
+
                     val nothingBackground: LinearLayout = findViewById(R.id.home_nothing_obj)
                     val rcView: RecyclerView = findViewById(R.id.home_lists_rc_view)
-                    ShoppingListHandler.addList(list, user)
-                    DatabaseHandler.save(dbReference, user)
+
+                    addListUseCase.execute(list, user)
+
+                    saveUserUseCase.execute(user)
                     rcView.visibility = View.VISIBLE
                     rcView.layoutManager = LinearLayoutManager(this)
                     val adapter = ShoppingListAdapter(this, user.shoppingLists, user)
@@ -140,26 +143,26 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("CommitTransaction")
-    private fun showUserMenu(settingsLayout: FrameLayout){
-        val menuPopup = Dialog(this)
-        menuPopup.setContentView(R.layout.user_menu_popup)
-        menuPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val layoutParams = menuPopup.window?.attributes
-        layoutParams?.gravity = Gravity.END or Gravity.TOP
-        menuPopup.window?.attributes = layoutParams
-
-        menuPopup.show()
-
-        val settingsOptionButton: LinearLayout = menuPopup.findViewById(R.id.user_menu_settings_option)
-        settingsOptionButton.setOnClickListener {
-            menuPopup.dismiss()
-
-            settingsLayout.visibility = View.VISIBLE
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.home_user_settings_fragment_holder, UserSettings.newInstance()).commit()
-        }
-    }
+//    @SuppressLint("CommitTransaction")
+//    private fun showUserMenu(settingsLayout: FrameLayout){
+//        val menuPopup = Dialog(this)
+//        menuPopup.setContentView(R.layout.user_menu_popup)
+//        menuPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//
+//        val layoutParams = menuPopup.window?.attributes
+//        layoutParams?.gravity = Gravity.END or Gravity.TOP
+//        menuPopup.window?.attributes = layoutParams
+//
+//        menuPopup.show()
+//
+//        val settingsOptionButton: LinearLayout = menuPopup.findViewById(R.id.user_menu_settings_option)
+//        settingsOptionButton.setOnClickListener {
+//            menuPopup.dismiss()
+//
+//            settingsLayout.visibility = View.VISIBLE
+//            supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.home_user_settings_fragment_holder, UserSettings.newInstance()).commit()
+//        }
+//    }
 }
