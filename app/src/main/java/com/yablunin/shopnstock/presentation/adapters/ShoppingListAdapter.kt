@@ -13,8 +13,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
-import com.yablunin.shopnstock.domain.list.ShoppingList
-import com.yablunin.shopnstock.domain.user.User
+import com.yablunin.shopnstock.domain.models.ShoppingList
+import com.yablunin.shopnstock.domain.models.User
+import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
+import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
+import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 
 class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>, val user: User):
     RecyclerView.Adapter<ShoppingListAdapter.Holder>() {
@@ -25,12 +30,22 @@ class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<S
         val listItemsCountText: TextView = view.findViewById(R.id.shopping_list_item_count)
         val holderLayout: ConstraintLayout = view.findViewById(R.id.shopping_list_holder)
 
+        private val addItemUseCase = AddItemUseCase(ShoppingListRepository())
+        private val removeItemUseCase = RemoveItemUseCase(ShoppingListRepository())
+        private val getSizeUseCase = GetSizeUseCase(ShoppingListRepository())
+        private val getCompletedItemsCountUseCase = GetCompletedItemsCountUseCase(
+            ShoppingListRepository()
+        )
+
         @SuppressLint("SetTextI18n")
         fun bind(list: ShoppingList){
 
             listName.text = list.name
-            if (list.size() > 0){
-                listItemsCountText.text = "List ${list.getCompletedItemsCount()} / ${list.size()} completed"
+            val size = getSizeUseCase.execute(list)
+            val completedItemsCount = getCompletedItemsCountUseCase.execute(list)
+
+            if (size > 0){
+                listItemsCountText.text = "List $completedItemsCount / $size completed"
             }
             else{
                 listItemsCountText.text = "Nothing here"
