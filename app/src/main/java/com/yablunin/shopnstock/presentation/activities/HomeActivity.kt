@@ -18,11 +18,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.data.repository.FirebaseUserRepository
-import com.yablunin.shopnstock.domain.models.ShoppingList
+import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListAdapter
-import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.databinding.ActivityHomeBinding
+import com.yablunin.shopnstock.domain.models.ShoppingList
+import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
@@ -34,14 +34,14 @@ import kotlinx.coroutines.runBlocking
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var user: User
+    private lateinit var user: com.yablunin.shopnstock.domain.models.User
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
 
     private val saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
 
-    private val addListUseCase = AddListUseCase(ShoppingListHandlerRepository())
-    private val generateListIdUseCase = GenerateListIdUseCase(ShoppingListHandlerRepository())
+    private val addListUseCase = AddListUseCase(com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository())
+    private val generateListIdUseCase = GenerateListIdUseCase(com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +87,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun applyDataToUI(user: User){
+    private fun applyDataToUI(user: com.yablunin.shopnstock.domain.models.User){
         binding.homeUserUsername.text = user.username
         binding.homeUserEmail.text = user.email
 
@@ -124,7 +124,10 @@ class HomeActivity : AppCompatActivity() {
                 if (!createNewListInput.text.trim().isEmpty()){
                     val listName: String = createNewListInput.text.trim().toString()
                     val listId = generateListIdUseCase.execute(user)
-                    val list = ShoppingList(listId, listName)
+                    val list = com.yablunin.shopnstock.domain.models.ShoppingList(
+                        listId,
+                        listName
+                    )
 
                     val nothingBackground: LinearLayout = findViewById(R.id.home_nothing_obj)
                     val rcView: RecyclerView = findViewById(R.id.home_lists_rc_view)

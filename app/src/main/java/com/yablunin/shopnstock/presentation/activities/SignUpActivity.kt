@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
-import com.yablunin.shopnstock.data.repository.FirebaseUserRepository
-import com.yablunin.shopnstock.domain.models.User
+import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
 import com.yablunin.shopnstock.databinding.ActivitySignUpBinding
+import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 
 class SignUpActivity : AppCompatActivity() {
@@ -43,7 +43,12 @@ class SignUpActivity : AppCompatActivity() {
                         val currentUser = firebaseAuth.currentUser
                         if (currentUser != null){
                             val uId = currentUser.uid
-                            val user = User(uId, username, email, password)
+                            val user = com.yablunin.shopnstock.domain.models.User(
+                                uId,
+                                username,
+                                email,
+                                password
+                            )
                             saveUserUseCase.execute(user)
                             val intent = Intent(this, LogInActivity::class.java)
                             startActivity(intent)

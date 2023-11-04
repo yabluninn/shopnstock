@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
-import com.yablunin.shopnstock.data.repository.FirebaseUserRepository
+import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
 import com.yablunin.shopnstock.databinding.ActivityLogInBinding
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 
