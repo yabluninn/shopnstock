@@ -1,12 +1,8 @@
 package com.yablunin.shopnstock.presentation
 
 import android.content.Intent
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.databinding.ActivityMainBinding
 import com.yablunin.shopnstock.presentation.activities.LogInActivity
 import com.yablunin.shopnstock.presentation.activities.SignUpActivity

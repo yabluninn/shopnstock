@@ -12,16 +12,16 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
+import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
 import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 
-class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>, val user: User):
+class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<com.yablunin.shopnstock.domain.models.ShoppingList>, val user: com.yablunin.shopnstock.domain.models.User):
     RecyclerView.Adapter<ShoppingListAdapter.Holder>() {
 
     class Holder(view: View): RecyclerView.ViewHolder(view) {
@@ -38,7 +38,7 @@ class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<S
         )
 
         @SuppressLint("SetTextI18n")
-        fun bind(list: ShoppingList){
+        fun bind(list: com.yablunin.shopnstock.domain.models.ShoppingList){
 
             listName.text = list.name
             val size = getSizeUseCase.execute(list)
