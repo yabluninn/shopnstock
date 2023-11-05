@@ -3,10 +3,15 @@ package com.yablunin.shopnstock.presentation.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
 import com.yablunin.shopnstock.databinding.ActivityLogInBinding
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
+import com.yablunin.shopnstock.presentation.toasts.ErrorToast
 
 class LogInActivity : AppCompatActivity() {
 
@@ -48,12 +53,46 @@ class LogInActivity : AppCompatActivity() {
                                         val intent = Intent(this, HomeActivity::class.java)
                                         startActivity(intent)
                                     } else {
-                                        // Пользователь не найден в базе данных
+                                        val errorToast = ErrorToast(
+                                            this,
+                                            getString(R.string.error_user_not_found),
+                                            Toast.LENGTH_LONG
+                                        )
+                                        errorToast.show()
                                     }
                                 }
                             }
                         } else {
-                            // Ошибка аутентификации
+                            if(task.exception is FirebaseAuthInvalidCredentialsException){
+                                val exception = task.exception as FirebaseAuthInvalidCredentialsException
+                                if (exception.errorCode == "ERROR_INVALID_EMAIL"){
+                                    val errorToast = ErrorToast(
+                                        this,
+                                        getString(R.string.error_invalid_email),
+                                        Toast.LENGTH_LONG
+                                    )
+                                    errorToast.show()
+                                }
+                                else if (exception.errorCode == "ERROR_WRONG_PASSWORD"){
+                                    val errorToast = ErrorToast(
+                                        this,
+                                        getString(R.string.error_wrong_password),
+                                        Toast.LENGTH_LONG
+                                    )
+                                    errorToast.show()
+                                }
+                            }
+                            else if (task.exception is FirebaseAuthInvalidUserException){
+                                val exception = task.exception as FirebaseAuthInvalidUserException
+                                if (exception.errorCode == "ERROR_USER_NOT_FOUND"){
+                                    val errorToast = ErrorToast(
+                                        this,
+                                        getString(R.string.error_user_not_found),
+                                        Toast.LENGTH_LONG
+                                    )
+                                    errorToast.show()
+                                }
+                            }
                         }
                     }
             }

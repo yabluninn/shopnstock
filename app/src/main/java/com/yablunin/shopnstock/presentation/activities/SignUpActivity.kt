@@ -3,11 +3,17 @@ package com.yablunin.shopnstock.presentation.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
 import com.yablunin.shopnstock.databinding.ActivitySignUpBinding
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
+import com.yablunin.shopnstock.presentation.toasts.ErrorToast
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -43,7 +49,7 @@ class SignUpActivity : AppCompatActivity() {
                         val currentUser = firebaseAuth.currentUser
                         if (currentUser != null){
                             val uId = currentUser.uid
-                            val user = com.yablunin.shopnstock.domain.models.User(
+                            val user = User(
                                 uId,
                                 username,
                                 email,
@@ -52,6 +58,41 @@ class SignUpActivity : AppCompatActivity() {
                             saveUserUseCase.execute(user)
                             val intent = Intent(this, LogInActivity::class.java)
                             startActivity(intent)
+                        }
+                    }
+                    else{
+                        if (it.exception is FirebaseAuthUserCollisionException){
+                            val exception = it.exception as FirebaseAuthUserCollisionException
+                            if (exception.errorCode == "ERROR_EMAIL_ALREADY_IN_USE"){
+                                val errorToast = ErrorToast(
+                                    this,
+                                    getString(R.string.error_email_already_in_use),
+                                    Toast.LENGTH_LONG
+                                )
+                                errorToast.show()
+                            }
+                        }
+                        else if(it.exception is FirebaseAuthInvalidCredentialsException){
+                            val exception = it.exception as FirebaseAuthInvalidCredentialsException
+                            if (exception.errorCode == "ERROR_INVALID_EMAIL"){
+                                val errorToast = ErrorToast(
+                                    this,
+                                    getString(R.string.error_email_already_in_use),
+                                    Toast.LENGTH_LONG
+                                )
+                                errorToast.show()
+                            }
+                        }
+                        else if(it.exception is FirebaseAuthWeakPasswordException){
+                            val exception = it.exception as FirebaseAuthWeakPasswordException
+                            if (exception.errorCode == "ERROR_WEAK_PASSWORD"){
+                                val errorToast = ErrorToast(
+                                    this,
+                                    getString(R.string.error_weak_password),
+                                    Toast.LENGTH_LONG
+                                )
+                                errorToast.show()
+                            }
                         }
                     }
                 }

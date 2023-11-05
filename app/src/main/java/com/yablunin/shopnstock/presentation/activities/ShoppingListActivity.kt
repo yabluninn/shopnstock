@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,7 @@ import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
+import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -45,8 +47,8 @@ import java.util.Locale
 class ShoppingListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityShoppingListBinding
-    private lateinit var user: com.yablunin.shopnstock.domain.models.User
-    private lateinit var list: com.yablunin.shopnstock.domain.models.ShoppingList
+    private lateinit var user: User
+    private lateinit var list: ShoppingList
 
     private var unit: String = "pc(s)"
     private var expirationDate: String = ""
@@ -58,8 +60,8 @@ class ShoppingListActivity : AppCompatActivity() {
     private val getSizeUseCase = GetSizeUseCase(ShoppingListRepository())
     private val getCompletedItemsCountUseCase = GetCompletedItemsCountUseCase(ShoppingListRepository())
 
-    private val removeListUseCase = RemoveListUseCase(com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository())
-    private val getListByIdUseCase = GetListByIdUseCase(com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository())
+    private val removeListUseCase = RemoveListUseCase(ShoppingListHandlerRepository())
+    private val getListByIdUseCase = GetListByIdUseCase(ShoppingListHandlerRepository())
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -68,7 +70,7 @@ class ShoppingListActivity : AppCompatActivity() {
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        user = intent.getSerializableExtra("user_data", com.yablunin.shopnstock.domain.models.User::class.java)!!
+        user = intent.getSerializableExtra("user_data", User::class.java)!!
 
         updateListUIWithUser(user, 0)
 
@@ -87,7 +89,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
     }
 
-    fun updateListUIWithUser(user: com.yablunin.shopnstock.domain.models.User, defaultId: Int){
+    fun updateListUIWithUser(user: User, defaultId: Int){
         list = getListByIdUseCase.execute(user, intent.getIntExtra("list_id", defaultId))!!
         defaultUpdateListUI(list)
     }
@@ -97,7 +99,7 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun defaultUpdateListUI(list: com.yablunin.shopnstock.domain.models.ShoppingList){
+    private fun defaultUpdateListUI(list: ShoppingList){
         binding.shoppingListNameText.text = list.name
         binding.shoppingListEmptyListObj.visibility = View.GONE
         binding.shoppingListItemsRcview.visibility = View.GONE
@@ -146,7 +148,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
                 val itemId = getSizeUseCase.execute(list)
                 val item =
-                    com.yablunin.shopnstock.domain.models.ListItem(
+                    ListItem(
                         itemId,
                         name,
                         quantity,
@@ -162,6 +164,11 @@ class ShoppingListActivity : AppCompatActivity() {
                 saveUserUseCase.execute(user)
 
                 addItemPopup.dismiss()
+                val successfulToast = SuccessfulToast(this,
+                    getString(R.string.successful_add_item),
+                    Toast.LENGTH_LONG
+                )
+                successfulToast.show()
             }
         }
 
@@ -212,7 +219,7 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    fun showDeleteItemPopup(item: com.yablunin.shopnstock.domain.models.ListItem){
+    fun showDeleteItemPopup(item: ListItem){
         val deletePopup = Dialog(this)
         deletePopup.setContentView(R.layout.delete_item_warning_popup)
         deletePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">shopnstock</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Errors messages -->
+    <string name="error_user_not_found">User not found!</string>
+    <string name="error_invalid_email">Invalid email. Try again!</string>
+    <string name="error_wrong_password">Wrong password. Try again!</string>
+    <string name="error_email_already_in_use">Email already in use. Try again!</string>
+    <string name="error_weak_password">Weak password (Min length: 6). Try again!</string>
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -8,6 +15,8 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -45,4 +54,5 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="successful_add_item">Item successfully added to your list!</string>
 </resources>

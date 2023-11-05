@@ -36,7 +36,6 @@ class FirebaseUserRepository: UserRepository {
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                // Обработка ошибки
                 callback(null)
             }
         })

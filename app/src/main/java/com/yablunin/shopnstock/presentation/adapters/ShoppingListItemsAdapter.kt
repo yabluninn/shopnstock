@@ -18,17 +18,17 @@ import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 
-class ShoppingListItemsAdapter(val items: MutableList<com.yablunin.shopnstock.domain.models.ListItem>, val user: com.yablunin.shopnstock.domain.models.User, val listActivity: ShoppingListActivity): RecyclerView.Adapter<ShoppingListItemsAdapter.Holder>() {
+class ShoppingListItemsAdapter(val items: MutableList<ListItem>, val user: User, val listActivity: ShoppingListActivity): RecyclerView.Adapter<ShoppingListItemsAdapter.Holder>() {
 
     class Holder(view: View, val listActivity: ShoppingListActivity): RecyclerView.ViewHolder(view) {
-        lateinit var user: com.yablunin.shopnstock.domain.models.User
+        lateinit var user: User
         val layout: LinearLayout = view.findViewById(R.id.list_item_holder)
         val checkbox: CheckBox = view.findViewById(R.id.list_item_checkbox)
         val itemName: TextView = view.findViewById(R.id.list_item_name)
         val itemAmount: TextView = view.findViewById(R.id.list_item_amount)
         val deleteButton: ImageView = view.findViewById(R.id.list_item_delete)
         @SuppressLint("SetTextI18n")
-        fun bind(item: com.yablunin.shopnstock.domain.models.ListItem){
+        fun bind(item: ListItem){
             checkbox.isChecked = item.isCompleted
             checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                 item.isCompleted = isChecked
@@ -49,7 +49,7 @@ class ShoppingListItemsAdapter(val items: MutableList<com.yablunin.shopnstock.do
             }
         }
 
-        private fun updateItemHolderUI(item: com.yablunin.shopnstock.domain.models.ListItem){
+        private fun updateItemHolderUI(item: ListItem){
             if(item.isCompleted){
                 layout.setBackgroundResource(R.drawable.list_item_holder_background_checked)
                 itemName.setTextColor(Color.parseColor("#e6994e"))
