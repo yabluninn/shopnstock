@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.yablunin.shopnstock.databinding.ActivityMainBinding
 import com.yablunin.shopnstock.presentation.viewmodels.MainViewModel
+import com.yablunin.shopnstock.presentation.viewmodels.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, MainViewModelFactory()).get(MainViewModel::class.java)
 
         binding.welcomeLoginButton.setOnClickListener {
             viewModel.startLoginActivity(this)

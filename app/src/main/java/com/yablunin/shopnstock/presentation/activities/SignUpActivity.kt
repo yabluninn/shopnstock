@@ -1,26 +1,18 @@
 package com.yablunin.shopnstock.presentation.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
+import androidx.lifecycle.ViewModelProvider
 import com.yablunin.shopnstock.databinding.ActivitySignUpBinding
-import com.yablunin.shopnstock.domain.models.User
-import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
-import com.yablunin.shopnstock.presentation.toasts.ErrorToast
+import com.yablunin.shopnstock.domain.util.Initiable
+import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModel
+import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModelFactory
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity(), Initiable {
 
     private lateinit var binding: ActivitySignUpBinding
-    private lateinit var firebaseAuth: FirebaseAuth
 
-    private lateinit var saveUserUseCase: SaveUserUseCase
+    private lateinit var viewModel: SignupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +22,11 @@ class SignUpActivity : AppCompatActivity() {
         init()
     }
 
-    private fun init(){
-        firebaseAuth = FirebaseAuth.getInstance()
-        saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
+    override fun init(){
+        viewModel = ViewModelProvider(this, SignupViewModelFactory()).get(SignupViewModel::class.java)
 
         binding.signLoginLink.setOnClickListener{
-            val intent = Intent(this, LogInActivity::class.java)
-            startActivity(intent)
+            viewModel.showLoginActivity(this)
         }
 
         binding.signButton.setOnClickListener {
@@ -44,58 +34,12 @@ class SignUpActivity : AppCompatActivity() {
                 val username: String = binding.signUsernameInput.text.toString()
                 val email: String = binding.signEmailInput.text.toString()
                 val password: String = binding.signPasswordInput.text.toString()
-                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-                    if (it.isSuccessful){
-                        val currentUser = firebaseAuth.currentUser
-                        if (currentUser != null){
-                            val uId = currentUser.uid
-                            val user = User(
-                                uId,
-                                username,
-                                email,
-                                password
-                            )
-                            saveUserUseCase.execute(user)
-                            val intent = Intent(this, LogInActivity::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                    else{
-                        if (it.exception is FirebaseAuthUserCollisionException){
-                            val exception = it.exception as FirebaseAuthUserCollisionException
-                            if (exception.errorCode == "ERROR_EMAIL_ALREADY_IN_USE"){
-                                val errorToast = ErrorToast(
-                                    this,
-                                    getString(R.string.error_email_already_in_use),
-                                    Toast.LENGTH_LONG
-                                )
-                                errorToast.show()
-                            }
-                        }
-                        else if(it.exception is FirebaseAuthInvalidCredentialsException){
-                            val exception = it.exception as FirebaseAuthInvalidCredentialsException
-                            if (exception.errorCode == "ERROR_INVALID_EMAIL"){
-                                val errorToast = ErrorToast(
-                                    this,
-                                    getString(R.string.error_email_already_in_use),
-                                    Toast.LENGTH_LONG
-                                )
-                                errorToast.show()
-                            }
-                        }
-                        else if(it.exception is FirebaseAuthWeakPasswordException){
-                            val exception = it.exception as FirebaseAuthWeakPasswordException
-                            if (exception.errorCode == "ERROR_WEAK_PASSWORD"){
-                                val errorToast = ErrorToast(
-                                    this,
-                                    getString(R.string.error_weak_password),
-                                    Toast.LENGTH_LONG
-                                )
-                                errorToast.show()
-                            }
-                        }
-                    }
-                }
+                viewModel.signUp(
+                    username,
+                    email,
+                    password,
+                    this
+                )
             }
         }
     }

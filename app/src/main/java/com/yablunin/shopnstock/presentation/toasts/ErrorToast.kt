@@ -14,7 +14,7 @@ class ErrorToast(var context: Context, var message: String, var duration: Int) {
         toast.duration = duration
         toast.view = layout
 
-        val toastText: TextView = layout.findViewById(R.id.error_toast_layout)
+        val toastText: TextView = layout.findViewById(R.id.error_toast_text)
         toastText.text = message
 
         toast.show()

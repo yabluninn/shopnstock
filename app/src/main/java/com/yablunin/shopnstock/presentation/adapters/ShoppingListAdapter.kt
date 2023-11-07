@@ -16,12 +16,10 @@ import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
 import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
-import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
-import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 
-class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>, val user: com.yablunin.shopnstock.domain.models.User):
+class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>, val user: User):
     RecyclerView.Adapter<ShoppingListAdapter.Holder>() {
 
     class Holder(view: View): RecyclerView.ViewHolder(view) {

@@ -18,22 +18,26 @@ import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.presentation.activities.ShoppingListActivity
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 
-class ShoppingListItemsAdapter(val items: MutableList<ListItem>, val user: User, val listActivity: ShoppingListActivity): RecyclerView.Adapter<ShoppingListItemsAdapter.Holder>() {
+class ShoppingListItemsAdapter(
+    private val items: MutableList<ListItem>,
+    private val user: User,
+    private val listActivity: ShoppingListActivity
+): RecyclerView.Adapter<ShoppingListItemsAdapter.Holder>() {
 
-    class Holder(view: View, val listActivity: ShoppingListActivity): RecyclerView.ViewHolder(view) {
+    class Holder(view: View, private val listActivity: ShoppingListActivity): RecyclerView.ViewHolder(view) {
         lateinit var user: User
-        val layout: LinearLayout = view.findViewById(R.id.list_item_holder)
-        val checkbox: CheckBox = view.findViewById(R.id.list_item_checkbox)
-        val itemName: TextView = view.findViewById(R.id.list_item_name)
-        val itemAmount: TextView = view.findViewById(R.id.list_item_amount)
-        val deleteButton: ImageView = view.findViewById(R.id.list_item_delete)
+        private val layout: LinearLayout = view.findViewById(R.id.list_item_holder)
+        private val checkbox: CheckBox = view.findViewById(R.id.list_item_checkbox)
+        private val itemName: TextView = view.findViewById(R.id.list_item_name)
+        private val itemAmount: TextView = view.findViewById(R.id.list_item_amount)
+        private val deleteButton: ImageView = view.findViewById(R.id.list_item_delete)
         @SuppressLint("SetTextI18n")
         fun bind(item: ListItem){
             checkbox.isChecked = item.isCompleted
             checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                 item.isCompleted = isChecked
                 updateItemHolderUI(item)
-                listActivity.updateListUIWithUser(user, 0)
+                listActivity.updateListUI()
 
                 val saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
                 saveUserUseCase.execute(user)
