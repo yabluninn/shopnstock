@@ -1,19 +1,17 @@
 package com.yablunin.shopnstock.presentation.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.firebase.auth.FirebaseAuth
-import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
+import androidx.lifecycle.ViewModelProvider
 import com.yablunin.shopnstock.databinding.ActivityLogInBinding
-import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
+import com.yablunin.shopnstock.domain.util.Initiable
+import com.yablunin.shopnstock.presentation.viewmodels.LoginViewModel
+import com.yablunin.shopnstock.presentation.viewmodels.LoginViewModelFactory
 
-class LogInActivity : AppCompatActivity() {
+class LogInActivity : AppCompatActivity(), Initiable {
 
     private lateinit var binding: ActivityLogInBinding
-    private lateinit var firebaseAuth: FirebaseAuth
-
-    private val loadUserUseCase = LoadUserUseCase(FirebaseUserRepository())
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,39 +21,22 @@ class LogInActivity : AppCompatActivity() {
         init()
     }
 
-    private fun init(){
-        firebaseAuth = FirebaseAuth.getInstance()
+    override fun init(){
+        viewModel = ViewModelProvider(this, LoginViewModelFactory()).get(LoginViewModel::class.java)
 
         binding.loginSignLink.setOnClickListener{
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            viewModel.startSignUpActivity(this)
         }
 
         binding.loginButton.setOnClickListener {
             if (!binding.loginEmailInput.text.trim().isEmpty() && !binding.loginPasswordInput.text.trim().isEmpty()){
                 val email: String = binding.loginEmailInput.text.toString()
                 val password: String = binding.loginPasswordInput.text.toString()
-                firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val currentUser = firebaseAuth.currentUser
-
-                            if (currentUser != null) {
-                                val userId = currentUser.uid
-
-                                loadUserUseCase.execute(userId){ user ->
-                                    if (user != null) {
-                                        val intent = Intent(this, HomeActivity::class.java)
-                                        startActivity(intent)
-                                    } else {
-                                        // Пользователь не найден в базе данных
-                                    }
-                                }
-                            }
-                        } else {
-                            // Ошибка аутентификации
-                        }
-                    }
+                viewModel.signInWithEmailAndPassword(
+                    email = email,
+                    password = password,
+                    context = this
+                )
             }
         }
     }

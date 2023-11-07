@@ -12,36 +12,28 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.yablunin.shopnstock.R
-import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListAdapter
 import com.yablunin.shopnstock.databinding.ActivityHomeBinding
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
-import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
-import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
-import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
-import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
-import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
+import com.yablunin.shopnstock.domain.util.Initiable
+import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
+import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModel
+import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), Initiable {
 
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var user: com.yablunin.shopnstock.domain.models.User
-    private lateinit var dbReference: DatabaseReference
-    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var user: User
 
-    private val saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
-
-    private val addListUseCase = AddListUseCase(com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository())
-    private val generateListIdUseCase = GenerateListIdUseCase(com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository())
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +44,12 @@ class HomeActivity : AppCompatActivity() {
         init()
     }
 
-    private fun init(){
-        dbReference = FirebaseDatabase.getInstance().getReference(FirebaseUserRepository.DB_USERS_NAME)
-        firebaseAuth = FirebaseAuth.getInstance()
+    override fun init(){
+        viewModel = ViewModelProvider(this, HomeViewModelFactory()).get(HomeViewModel::class.java)
+        viewModel.userLiveData.observe(this) { _user ->
+            user = _user
+            updateUI()
+        }
 
         binding.homeCreateTaskButton.setOnClickListener{
             showCreateListDialog()
@@ -62,32 +57,12 @@ class HomeActivity : AppCompatActivity() {
 
         runBlocking {
             launch {
-                loadUserData(firebaseAuth)
+                viewModel.loadUser()
             }
         }
     }
 
-    private fun loadUserData(auth: FirebaseAuth){
-        val userRepository = FirebaseUserRepository()
-        val loadUserUseCase = LoadUserUseCase(userRepository)
-        val currentUser = auth.currentUser
-
-        if (currentUser != null) {
-            val userId = currentUser.uid
-
-            loadUserUseCase.execute(userId){ _user ->
-                if (_user == null){
-
-                }
-                else{
-                    user = _user
-                    applyDataToUI(user)
-                }
-            }
-        }
-    }
-
-    private fun applyDataToUI(user: com.yablunin.shopnstock.domain.models.User){
+    private fun updateUI(){
         binding.homeUserUsername.text = user.username
         binding.homeUserEmail.text = user.email
 
@@ -116,56 +91,43 @@ class HomeActivity : AppCompatActivity() {
         window?.attributes?.windowAnimations = R.style.BottomSheetAnimation
         window?.setGravity(Gravity.BOTTOM)
 
-        val createNewListButton: Button? = dialog.findViewById(R.id.create_list_button)
-        val createNewListInput: EditText? = dialog.findViewById(R.id.create_list_name_input)
-        createNewListButton?.setOnClickListener {
-            dialog.dismiss()
-            if (createNewListInput != null) {
-                if (!createNewListInput.text.trim().isEmpty()){
-                    val listName: String = createNewListInput.text.trim().toString()
-                    val listId = generateListIdUseCase.execute(user)
-                    val list = com.yablunin.shopnstock.domain.models.ShoppingList(
-                        listId,
-                        listName
-                    )
-
-                    val nothingBackground: LinearLayout = findViewById(R.id.home_nothing_obj)
-                    val rcView: RecyclerView = findViewById(R.id.home_lists_rc_view)
-
-                    addListUseCase.execute(list, user)
-
-                    saveUserUseCase.execute(user)
-                    rcView.visibility = View.VISIBLE
-                    rcView.layoutManager = LinearLayoutManager(this)
-                    val adapter = ShoppingListAdapter(this, user.shoppingLists, user)
-                    rcView.adapter = adapter
-
-                    nothingBackground.visibility = View.GONE
-                }
-            }
+        val createNewListButton: Button = dialog.findViewById(R.id.create_list_button)
+        val createNewListInput: EditText = dialog.findViewById(R.id.create_list_name_input)
+        createNewListButton.setOnClickListener {
+            createList(dialog, createNewListInput)
         }
     }
 
-//    @SuppressLint("CommitTransaction")
-//    private fun showUserMenu(settingsLayout: FrameLayout){
-//        val menuPopup = Dialog(this)
-//        menuPopup.setContentView(R.layout.user_menu_popup)
-//        menuPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
-//        val layoutParams = menuPopup.window?.attributes
-//        layoutParams?.gravity = Gravity.END or Gravity.TOP
-//        menuPopup.window?.attributes = layoutParams
-//
-//        menuPopup.show()
-//
-//        val settingsOptionButton: LinearLayout = menuPopup.findViewById(R.id.user_menu_settings_option)
-//        settingsOptionButton.setOnClickListener {
-//            menuPopup.dismiss()
-//
-//            settingsLayout.visibility = View.VISIBLE
-//            supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.home_user_settings_fragment_holder, UserSettings.newInstance()).commit()
-//        }
-//    }
+    private fun createList(dialog: Dialog, createNewListInput: EditText){
+        dialog.dismiss()
+        if (!createNewListInput.text.trim().isEmpty()){
+            val listName: String = createNewListInput.text.trim().toString()
+            viewModel.generateListId()
+            val listId = viewModel.listIdLiveData.value!!
+            val list = ShoppingList(
+                listId,
+                listName
+            )
+
+            val nothingBackground: LinearLayout = binding.homeNothingObj
+            val rcView: RecyclerView = binding.homeListsRcView
+
+            viewModel.addList(list)
+            viewModel.saveUser()
+
+            rcView.visibility = View.VISIBLE
+            rcView.layoutManager = LinearLayoutManager(this)
+            val adapter = ShoppingListAdapter(this, user.shoppingLists, user)
+            rcView.adapter = adapter
+
+            nothingBackground.visibility = View.GONE
+
+            val successfulToast = SuccessfulToast(
+                this,
+                this.getString(R.string.successful_create_list),
+                Toast.LENGTH_LONG
+            )
+            successfulToast.show()
+        }
+    }
 }
