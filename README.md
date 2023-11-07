@@ -25,7 +25,7 @@ Shop'n'Stock is a convenient tool that helps users create, edit, and track shopp
 - **Database:** Firebase Realtime Database
 - **Authentication:** Firebase Authentication (Email & password)
 - **Notifications:** Android notifications API
-- **Principles:** Clean Architecture, SOLID
+- **Principles:** Clean Architecture, SOLID, MVVM pattern
 
 ## License
 
