@@ -125,7 +125,8 @@ class HomeActivity : AppCompatActivity(), Initiable {
             val successfulToast = SuccessfulToast(
                 this,
                 this.getString(R.string.successful_create_list),
-                Toast.LENGTH_LONG
+                Toast.LENGTH_LONG,
+                Gravity.TOP
             )
             successfulToast.show()
         }

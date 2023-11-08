@@ -2,12 +2,12 @@ package com.yablunin.shopnstock.presentation.viewmodels
 
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
@@ -36,8 +36,6 @@ class SignupViewModel(
                         password
                     )
                     saveUserUseCase.execute(user)
-                    val intent = Intent(context, LogInActivity::class.java)
-                    context.startActivity(intent)
                 }
             }
             else{
@@ -47,7 +45,8 @@ class SignupViewModel(
                         val errorToast = ErrorToast(
                             context,
                             context.getString(R.string.error_email_already_in_use),
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG,
+                            Gravity.TOP
                         )
                         errorToast.show()
                     }
@@ -58,18 +57,17 @@ class SignupViewModel(
                         val errorToast = ErrorToast(
                             context,
                             context.getString(R.string.error_email_already_in_use),
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG,
+                            Gravity.TOP
                         )
                         errorToast.show()
                     }
-                }
-                else if(it.exception is FirebaseAuthWeakPasswordException){
-                    val exception = it.exception as FirebaseAuthWeakPasswordException
-                    if (exception.errorCode == "ERROR_WEAK_PASSWORD"){
+                    else if (exception.errorCode == "ERROR_WEAK_PASSWORD"){
                         val errorToast = ErrorToast(
                             context,
                             context.getString(R.string.error_weak_password),
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG,
+                            Gravity.TOP
                         )
                         errorToast.show()
                     }

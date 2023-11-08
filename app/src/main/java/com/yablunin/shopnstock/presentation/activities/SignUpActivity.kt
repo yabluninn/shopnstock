@@ -3,10 +3,12 @@ package com.yablunin.shopnstock.presentation.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.yablunin.shopnstock.databinding.ActivitySignUpBinding
 import com.yablunin.shopnstock.domain.util.Initiable
 import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModel
 import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModelFactory
+import kotlinx.coroutines.launch
 
 class SignUpActivity : AppCompatActivity(), Initiable {
 
@@ -34,12 +36,19 @@ class SignUpActivity : AppCompatActivity(), Initiable {
                 val username: String = binding.signUsernameInput.text.toString()
                 val email: String = binding.signEmailInput.text.toString()
                 val password: String = binding.signPasswordInput.text.toString()
-                viewModel.signUp(
-                    username,
-                    email,
-                    password,
-                    this
-                )
+                val context = this
+                binding.signButton.isEnabled = false
+
+                lifecycleScope.launch {
+                    try {
+                        viewModel.signUp(username, email, password, context)
+                        viewModel.showLoginActivity(context)
+                    } catch (e: Exception) {
+
+                    } finally {
+                        binding.signButton.isEnabled = true
+                    }
+                }
             }
         }
     }

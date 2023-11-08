@@ -19,4 +19,12 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="list_menu_rename_list">Rename list</string>
+    <string name="list_menu_delete_list">Delete list</string>
+    <string name="rename_list">Rename</string>
+    <string name="rename_list_enter_new_name">Enter new name</string>
+    <string name="rename_list_current_list_name">Current list name</string>
+    <string name="rename_list_new_list_name">New list name</string>
+    <string name="cancel">Cancel</string>
+    <string name="list_add_new_item">Add new item</string>
 </resources>

@@ -61,7 +61,7 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
             updateListUI()
         }
 
-        user = intent.getSerializableExtra("user_data", User::class.java)!!
+        user = intent.getSerializableExtra("user_data") as User
         viewModel.getListById(user, 0, intent)
 
         binding.shoppingListBackButton.setOnClickListener {
@@ -108,10 +108,36 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
             showSetExpirationDatePopup(expirationDateInput)
         }
     }
-    private fun setOnClickDeleteList(menuPopup: Dialog){
+    private fun setOnClickDeleteOptionList(menuPopup: Dialog){
         val deleteOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_delete_option)
         deleteOption.setOnClickListener {
             viewModel.removeList(user, this)
+        }
+    }
+    private fun setOnClickRenameOptionList(menuPopup: Dialog){
+        val renameOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_rename_option)
+        renameOption.setOnClickListener {
+            showRenameListPopup(menuPopup)
+        }
+    }
+    private fun setOnClickRenameList(renamePopup: Dialog){
+        val renameButton: TextView = renamePopup.findViewById(R.id.rename_list_button)
+        val newNameInput: EditText = renamePopup.findViewById(R.id.rename_list_new_name_input)
+
+        renameButton.setOnClickListener {
+            val newName = newNameInput.text.toString()
+            if (newName.trim().isNotEmpty()){
+                viewModel.renameList(newName, user)
+                binding.shoppingListNameText.text = newName
+                renamePopup.dismiss()
+            }
+        }
+
+    }
+    private fun setOnClickCancelRenamingList(renamePopup: Dialog){
+        val cancelButton: TextView = renamePopup.findViewById(R.id.rename_list_cancel_button)
+        cancelButton.setOnClickListener {
+            renamePopup.dismiss()
         }
     }
     private fun setOnClickDeleteItem(deletePopup: Dialog, item: ListItem){
@@ -136,6 +162,7 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
     private fun onClickShowListMenu(){
         showListMenu()
     }
+
     private fun onClickAddItemListener(addItemPopup: Dialog){
         val nameInput: EditText = addItemPopup.findViewById(R.id.add_new_item_input_name)
         val quantityInput: EditText = addItemPopup.findViewById(R.id.add_new_item_input_quantity)
@@ -228,7 +255,9 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
 
         menuPopup.show()
 
-        setOnClickDeleteList(menuPopup)
+        setOnClickDeleteOptionList(menuPopup)
+        setOnClickRenameOptionList(menuPopup)
+
     }
     @SuppressLint("SetTextI18n")
     fun showDeleteItemPopup(item: ListItem){
@@ -257,6 +286,21 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         }, year, month, day)
 
         datePickerDialog.show()
+    }
+
+    private fun showRenameListPopup(menuPopup: Dialog){
+        val renamePopup = Dialog(this)
+        renamePopup.setContentView(R.layout.rename_list_popup)
+        renamePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        renamePopup.show()
+        menuPopup.dismiss()
+
+        val currentListNameText: TextView = renamePopup.findViewById(R.id.rename_list_current_name_text)
+        currentListNameText.text = list.name
+
+        setOnClickRenameList(renamePopup)
+        setOnClickCancelRenamingList(renamePopup)
     }
 
 }

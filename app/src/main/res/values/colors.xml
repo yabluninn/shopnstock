@@ -16,6 +16,8 @@
 
     <color name="input_stoke">#D0D5DD</color>
     <color name="input_hint">#818181</color>
+    <color name="input_dark">#F3F3F3</color>
+    <color name="input_dark_stroke">#BABABA</color>
 
     <color name="item_header">#554538</color>
     <color name="item_subheader">#97785F</color>

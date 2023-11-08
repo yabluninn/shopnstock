@@ -2,6 +2,7 @@ package com.yablunin.shopnstock.presentation.viewmodels
 
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -45,7 +46,8 @@ class LoginViewModel(
                             val errorToast = ErrorToast(
                                 context,
                                 context.getString(R.string.error_invalid_email),
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_LONG,
+                                Gravity.TOP
                             )
                             errorToast.show()
                         }
@@ -53,7 +55,8 @@ class LoginViewModel(
                             val errorToast = ErrorToast(
                                 context,
                                 context.getString(R.string.error_wrong_password),
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_LONG,
+                                Gravity.TOP
                             )
                             errorToast.show()
                         }
@@ -64,7 +67,8 @@ class LoginViewModel(
                             val errorToast = ErrorToast(
                                 context,
                                 context.getString(R.string.error_user_not_found),
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_LONG,
+                                Gravity.TOP
                             )
                             errorToast.show()
                         }
@@ -82,7 +86,8 @@ class LoginViewModel(
                 val errorToast = ErrorToast(
                     context,
                     context.getString(R.string.error_user_not_found),
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_LONG,
+                    Gravity.TOP
                 )
                 errorToast.show()
             }

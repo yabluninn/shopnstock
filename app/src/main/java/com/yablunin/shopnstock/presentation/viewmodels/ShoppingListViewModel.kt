@@ -2,6 +2,7 @@ package com.yablunin.shopnstock.presentation.viewmodels
 
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import com.yablunin.shopnstock.presentation.activities.HomeActivity
 import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
@@ -27,7 +29,8 @@ class ShoppingListViewModel(
     private val getSizeUseCase: GetSizeUseCase,
     private val getCompletedItemsCountUseCase: GetCompletedItemsCountUseCase,
     private val removeListUseCase: RemoveListUseCase,
-    private val getListByIdUseCase: GetListByIdUseCase
+    private val getListByIdUseCase: GetListByIdUseCase,
+    private val renameListUseCase: RenameListUseCase
 ): ViewModel() {
 
     private val mutableListData = MutableLiveData<ShoppingList>()
@@ -73,9 +76,11 @@ class ShoppingListViewModel(
         addItemUseCase.execute(listData.value!!, item)
         saveUser(user)
 
-        val successfulToast = SuccessfulToast(context,
+        val successfulToast = SuccessfulToast(
+            context,
             context.getString(R.string.successful_add_item),
-            Toast.LENGTH_LONG
+            Toast.LENGTH_LONG,
+            Gravity.TOP
         )
         successfulToast.show()
     }
@@ -93,6 +98,11 @@ class ShoppingListViewModel(
 
     fun removeItem(item: ListItem, user: User){
         removeItemUseCase.execute(listData.value!!, item)
+        saveUser(user)
+    }
+
+    fun renameList(newName: String, user: User){
+        renameListUseCase.execute(listData.value!!, newName, user)
         saveUser(user)
     }
 }

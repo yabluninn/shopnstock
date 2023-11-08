@@ -94,7 +94,8 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@+id/sign_password_input"
-        tools:layout_editor_absoluteX="40dp" />
+        tools:layout_editor_absoluteX="40dp"
+        />
 
     <TextView
         android:id="@+id/sign_or_line"

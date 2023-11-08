@@ -27,4 +27,8 @@ class ShoppingListHandlerRepository: ListHandlerRepository {
         }
     }
 
+    override fun renameList(list: ShoppingList, newName: String, user: User) {
+        user.shoppingLists.find { it.id == list.id }!!.name = newName
+    }
+
 }

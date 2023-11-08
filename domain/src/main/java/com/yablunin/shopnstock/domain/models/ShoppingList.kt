@@ -2,9 +2,9 @@ package com.yablunin.shopnstock.domain.models
 
 import java.io.Serializable
 
-data class ShoppingList(val id: Int, val name: String) : Serializable {
+data class ShoppingList(val id: Int, var name: String) : Serializable {
 
     constructor(): this(-1, "")
 
-    val list = mutableListOf<com.yablunin.shopnstock.domain.models.ListItem>()
+    val list = mutableListOf<ListItem>()
 }

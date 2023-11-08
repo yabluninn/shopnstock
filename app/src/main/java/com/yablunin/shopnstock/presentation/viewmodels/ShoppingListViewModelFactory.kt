@@ -11,6 +11,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 
 class ShoppingListViewModelFactory: ViewModelProvider.Factory {
@@ -24,6 +25,7 @@ class ShoppingListViewModelFactory: ViewModelProvider.Factory {
 
     private val removeListUseCase = RemoveListUseCase(ShoppingListHandlerRepository())
     private val getListByIdUseCase = GetListByIdUseCase(ShoppingListHandlerRepository())
+    private val renameListUseCase = RenameListUseCase(ShoppingListHandlerRepository())
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ShoppingListViewModel(
             saveUserUseCase = saveUserUseCase,
@@ -32,7 +34,8 @@ class ShoppingListViewModelFactory: ViewModelProvider.Factory {
             getSizeUseCase = getSizeUseCase,
             getCompletedItemsCountUseCase = getCompletedItemsCountUseCase,
             removeListUseCase = removeListUseCase,
-            getListByIdUseCase = getListByIdUseCase
+            getListByIdUseCase = getListByIdUseCase,
+            renameListUseCase = renameListUseCase
         ) as T
     }
 }

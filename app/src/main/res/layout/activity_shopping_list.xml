@@ -151,7 +151,7 @@
         android:layout_height="60dp"
         android:layout_marginBottom="10dp"
         android:paddingLeft="15dp"
-        android:text="Add new item"
+        android:text="@string/list_add_new_item"
         android:textSize="22sp"
         android:textAllCaps="false"
         android:textColor="@color/app_background"
