@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">shopnstock</string>
+    <string name="app_name">ShopNStock</string>
     <!-- Errors messages -->
     <string name="error_user_not_found">User not found!</string>
     <string name="error_invalid_email">Invalid email. Try again!</string>
@@ -11,9 +11,8 @@
     <string name="successful_add_item">Item successfully added to your list!</string>
     <string name="successful_create_list">List successfully created!</string>
 
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -27,4 +26,7 @@
     <string name="rename_list_new_list_name">New list name</string>
     <string name="cancel">Cancel</string>
     <string name="list_add_new_item">Add new item</string>
+    <string name="create_new_list">Create new list</string>
+    <string name="create_new_list_create_button">Create</string>
+    <string name="create_new_list_hint">List name</string>
 </resources>

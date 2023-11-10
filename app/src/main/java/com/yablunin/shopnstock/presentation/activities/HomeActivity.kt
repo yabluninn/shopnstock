@@ -24,17 +24,16 @@ import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Initiable
 import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModel
-import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : AppCompatActivity(), Initiable {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var user: User
 
-    private lateinit var viewModel: HomeViewModel
-
+    private val viewModel by viewModel<HomeViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -45,7 +44,6 @@ class HomeActivity : AppCompatActivity(), Initiable {
     }
 
     override fun init(){
-        viewModel = ViewModelProvider(this, HomeViewModelFactory()).get(HomeViewModel::class.java)
         viewModel.userLiveData.observe(this) { _user ->
             user = _user
             updateUI()

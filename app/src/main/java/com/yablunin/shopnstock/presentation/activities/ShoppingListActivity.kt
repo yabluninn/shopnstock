@@ -30,7 +30,7 @@ import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Formatter
 import com.yablunin.shopnstock.domain.util.Initiable
 import com.yablunin.shopnstock.presentation.viewmodels.ShoppingListViewModel
-import com.yablunin.shopnstock.presentation.viewmodels.ShoppingListViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
 
@@ -39,7 +39,7 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
     private lateinit var binding: ActivityShoppingListBinding
     private lateinit var user: User
     private lateinit var list: ShoppingList
-    private lateinit var viewModel: ShoppingListViewModel
+    private val viewModel by viewModel<ShoppingListViewModel>()
 
     private var unit: String = "pc(s)"
     private var expirationDate: String = ""
@@ -55,7 +55,6 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun init() {
-        viewModel = ViewModelProvider(this, ShoppingListViewModelFactory()).get(ShoppingListViewModel::class.java)
         viewModel.listData.observe(this){ _list ->
             list = _list
             updateListUI()

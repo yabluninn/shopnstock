@@ -9,7 +9,6 @@
     tools:context=".presentation.activities.HomeActivity"
     android:background="@color/app_background"
     >
-    <!--    android:background="@color/app_background"-->
 
     <LinearLayout
         android:id="@+id/home_user_info_layout"
@@ -22,8 +21,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:cardCornerRadius="125dp"
             app:cardElevation="0dp">
 
@@ -135,21 +134,17 @@
         android:src="@drawable/ic_cart_plus"
         android:tint="#8E4E11"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_lists_rc_view"
         android:layout_width="match_parent"
-        android:layout_height="530dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="550dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_user_info_layout"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="16dp" />
-
-    <FrameLayout
-        android:id="@+id/home_user_settings_fragment_holder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

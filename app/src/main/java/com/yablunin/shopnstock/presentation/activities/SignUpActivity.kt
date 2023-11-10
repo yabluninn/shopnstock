@@ -7,14 +7,14 @@ import androidx.lifecycle.lifecycleScope
 import com.yablunin.shopnstock.databinding.ActivitySignUpBinding
 import com.yablunin.shopnstock.domain.util.Initiable
 import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModel
-import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModelFactory
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignUpActivity : AppCompatActivity(), Initiable {
 
     private lateinit var binding: ActivitySignUpBinding
 
-    private lateinit var viewModel: SignupViewModel
+    private val viewModel by viewModel<SignupViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +25,6 @@ class SignUpActivity : AppCompatActivity(), Initiable {
     }
 
     override fun init(){
-        viewModel = ViewModelProvider(this, SignupViewModelFactory()).get(SignupViewModel::class.java)
-
         binding.signLoginLink.setOnClickListener{
             viewModel.showLoginActivity(this)
         }
