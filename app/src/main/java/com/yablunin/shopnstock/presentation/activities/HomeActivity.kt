@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.app.App
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListAdapter
 import com.yablunin.shopnstock.databinding.ActivityHomeBinding
 import com.yablunin.shopnstock.domain.models.ShoppingList
@@ -24,16 +25,21 @@ import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Initiable
 import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModel
+import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), Initiable {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var user: User
 
-    private val viewModel by viewModel<HomeViewModel>()
+//    private val viewModel by viewModel<HomeViewModel>()
+    @Inject
+    lateinit var viewModelFactory: HomeViewModelFactory
+
+    private lateinit var viewModel: HomeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -44,6 +50,9 @@ class HomeActivity : AppCompatActivity(), Initiable {
     }
 
     override fun init(){
+        (applicationContext as App).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+
         viewModel.userLiveData.observe(this) { _user ->
             user = _user
             updateUI()

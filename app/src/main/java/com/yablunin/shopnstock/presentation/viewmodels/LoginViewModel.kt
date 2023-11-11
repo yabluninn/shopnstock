@@ -15,8 +15,8 @@ import com.yablunin.shopnstock.presentation.activities.SignUpActivity
 import com.yablunin.shopnstock.presentation.toasts.ErrorToast
 
 class LoginViewModel(
-    private val loadUserUseCase: LoadUserUseCase,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val loadUserUseCase: LoadUserUseCase
 ): ViewModel() {
 
     override fun onCleared() {

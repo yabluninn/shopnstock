@@ -4,6 +4,7 @@ import com.yablunin.shopnstock.domain.repositories.ListHandlerRepository
 import com.yablunin.shopnstock.domain.repositories.ListRepository
 import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
 import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
+import com.yablunin.shopnstock.domain.repositories.UserRepository
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIdUseCase
@@ -18,70 +19,76 @@ import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
 
-val domainModule = module {
-    single<ListHandlerRepository> {
-        ShoppingListHandlerRepository()
+@Module
+class DomainModule {
+    @Provides
+    fun provideListRepository(): ListRepository{
+        return ShoppingListRepository()
+    }
+    @Provides
+    fun provideListHandlerRepository(): ListHandlerRepository{
+        return ShoppingListHandlerRepository()
     }
 
-    single<ListRepository> {
-        ShoppingListRepository()
+    @Provides
+    fun provideAddListUseCase(listHandlerRepository: ListHandlerRepository): AddListUseCase{
+        return AddListUseCase(listHandlerRepository = listHandlerRepository)
+    }
+    @Provides
+    fun provideGenerateListIdUseCase(listHandlerRepository: ListHandlerRepository): GenerateListIdUseCase{
+        return GenerateListIdUseCase(listHandlerRepository = listHandlerRepository)
+    }
+    @Provides
+    fun provideGetListIdUseCase(listHandlerRepository: ListHandlerRepository): GetListByIdUseCase{
+        return GetListByIdUseCase(listHandlerRepository = listHandlerRepository)
+    }
+    @Provides
+    fun provideRemoveListUseCase(listHandlerRepository: ListHandlerRepository): RemoveListUseCase{
+        return RemoveListUseCase(listHandlerRepository = listHandlerRepository)
+    }
+    @Provides
+    fun provideRenameListUseCase(listHandlerRepository: ListHandlerRepository): RenameListUseCase{
+        return RenameListUseCase(listHandlerRepository = listHandlerRepository)
     }
 
-    factory<SaveUserUseCase> {
-        SaveUserUseCase(userRepository = get())
+    @Provides
+    fun provideAddItemUseCase(listRepository: ListRepository): AddItemUseCase{
+        return AddItemUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideGetCompletedItemsUseCase(listRepository: ListRepository): GetCompletedItemsCountUseCase{
+        return GetCompletedItemsCountUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideGetItemByIdUseCase(listRepository: ListRepository): GetItemByIdUseCase{
+        return GetItemByIdUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideGetItemByIndexUseCase(listRepository: ListRepository): GetItemByIndexUseCase{
+        return GetItemByIndexUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideGetSizeUseCase(listRepository: ListRepository): GetSizeUseCase{
+        return GetSizeUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideRemoveItemAtUseCase(listRepository: ListRepository): RemoveItemAtUseCase{
+        return RemoveItemAtUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideRemoveItemUseCase(listRepository: ListRepository): RemoveItemUseCase{
+        return RemoveItemUseCase(listRepository = listRepository)
     }
 
-    factory<LoadUserUseCase> {
-        LoadUserUseCase(userRepository = get())
+    @Provides
+    fun provideSaveUserUseCase(userRepository: UserRepository): SaveUserUseCase{
+        return SaveUserUseCase(userRepository = userRepository)
     }
-
-    factory<AddListUseCase> {
-        AddListUseCase(listHandlerRepository = get())
-    }
-
-    factory<RemoveListUseCase> {
-        RemoveListUseCase(listHandlerRepository = get())
-    }
-
-    factory<GetListByIdUseCase> {
-        GetListByIdUseCase(listHandlerRepository = get())
-    }
-
-    factory<RenameListUseCase> {
-        RenameListUseCase(listHandlerRepository = get())
-    }
-
-    factory<GenerateListIdUseCase> {
-        GenerateListIdUseCase(listHandlerRepository = get())
-    }
-
-    factory<GetSizeUseCase> {
-        GetSizeUseCase(listRepository = get())
-    }
-
-    factory<GetCompletedItemsCountUseCase> {
-        GetCompletedItemsCountUseCase(listRepository = get())
-    }
-
-    factory<AddItemUseCase> {
-        AddItemUseCase(listRepository = get())
-    }
-
-    factory<RemoveItemUseCase> {
-        RemoveItemUseCase(listRepository = get())
-    }
-
-    factory<GetItemByIdUseCase> {
-        GetItemByIdUseCase(listRepository = get())
-    }
-
-    factory<GetItemByIndexUseCase> {
-        GetItemByIndexUseCase(listRepository = get())
-    }
-
-    factory<RemoveItemAtUseCase> {
-        RemoveItemAtUseCase(listRepository = get())
+    @Provides
+    fun provideLoadUserUseCase(userRepository: UserRepository): LoadUserUseCase{
+        return LoadUserUseCase(userRepository = userRepository)
     }
 }

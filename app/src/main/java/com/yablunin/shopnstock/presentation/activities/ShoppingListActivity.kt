@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.app.App
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListItemsAdapter
 import com.yablunin.shopnstock.databinding.ActivityShoppingListBinding
 import com.yablunin.shopnstock.domain.models.ListItem
@@ -30,8 +31,9 @@ import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Formatter
 import com.yablunin.shopnstock.domain.util.Initiable
 import com.yablunin.shopnstock.presentation.viewmodels.ShoppingListViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.yablunin.shopnstock.presentation.viewmodels.ShoppingListViewModelFactory
 import java.util.Calendar
+import javax.inject.Inject
 
 
 class ShoppingListActivity : AppCompatActivity(), Initiable {
@@ -39,7 +41,10 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
     private lateinit var binding: ActivityShoppingListBinding
     private lateinit var user: User
     private lateinit var list: ShoppingList
-    private val viewModel by viewModel<ShoppingListViewModel>()
+    private lateinit var viewModel: ShoppingListViewModel
+
+    @Inject
+    lateinit var viewModelFactory: ShoppingListViewModelFactory
 
     private var unit: String = "pc(s)"
     private var expirationDate: String = ""
@@ -55,6 +60,9 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun init() {
+        (applicationContext as App).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ShoppingListViewModel::class.java)
+
         viewModel.listData.observe(this){ _list ->
             list = _list
             updateListUI()

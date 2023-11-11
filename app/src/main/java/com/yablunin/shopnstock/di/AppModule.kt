@@ -1,52 +1,81 @@
 package com.yablunin.shopnstock.di
 
-import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModel
-import com.yablunin.shopnstock.presentation.viewmodels.LoginViewModel
-import com.yablunin.shopnstock.presentation.viewmodels.MainViewModel
-import com.yablunin.shopnstock.presentation.viewmodels.ShoppingListViewModel
-import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import com.google.firebase.auth.FirebaseAuth
+import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
+import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
+import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
+import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
+import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
+import com.yablunin.shopnstock.presentation.viewmodels.LoginViewModelFactory
+import com.yablunin.shopnstock.presentation.viewmodels.ShoppingListViewModelFactory
+import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModelFactory
+import dagger.Module
+import dagger.Provides
 
-val appModule = module {
-    viewModel<MainViewModel> {
-        MainViewModel()
-    }
-
-    viewModel<HomeViewModel>{
-        HomeViewModel(
-            auth = get(),
-            saveUserUseCase = get(),
-            loadUserUseCase = get(),
-            addListUseCase = get(),
-            generateListIdUseCase = get()
+@Module
+class AppModule {
+    @Provides
+    fun provideHomeViewModelFactory(
+        auth: FirebaseAuth,
+        saveUserUseCase: SaveUserUseCase,
+        loadUserUseCase: LoadUserUseCase,
+        addListUseCase: AddListUseCase,
+        generateListIdUseCase: GenerateListIdUseCase
+    ): HomeViewModelFactory {
+        return HomeViewModelFactory(
+            auth = auth,
+            saveUserUseCase = saveUserUseCase,
+            loadUserUseCase = loadUserUseCase,
+            addListUseCase = addListUseCase,
+            generateListIdUseCase = generateListIdUseCase
         )
     }
 
-    viewModel<LoginViewModel>{
-        LoginViewModel(
-            loadUserUseCase = get(),
-            auth = get()
+    @Provides
+    fun provideLoginViewModelFactory(
+        auth: FirebaseAuth,
+        loadUserUseCase: LoadUserUseCase
+    ): LoginViewModelFactory {
+        return LoginViewModelFactory(
+            auth = auth,
+            loadUserUseCase = loadUserUseCase)
+    }
+
+    @Provides
+    fun provideShoppingListViewModelFactory(
+        saveUserUseCase: SaveUserUseCase,
+        addItemUseCase: AddItemUseCase,
+        removeItemUseCase: RemoveItemUseCase,
+        getSizeUseCase: GetSizeUseCase,
+        getCompletedItemsCountUseCase: GetCompletedItemsCountUseCase,
+        removeListUseCase: RemoveListUseCase,
+        getListByIdUseCase: GetListByIdUseCase,
+        renameListUseCase: RenameListUseCase
+    ): ShoppingListViewModelFactory{
+        return ShoppingListViewModelFactory(
+            saveUserUseCase = saveUserUseCase,
+            addItemUseCase = addItemUseCase,
+            removeItemUseCase = removeItemUseCase,
+            getSizeUseCase = getSizeUseCase,
+            getCompletedItemsCountUseCase = getCompletedItemsCountUseCase,
+            removeListUseCase = removeListUseCase,
+            getListByIdUseCase = getListByIdUseCase,
+            renameListUseCase = renameListUseCase
         )
     }
 
-    viewModel<ShoppingListViewModel> {
-        ShoppingListViewModel(
-            saveUserUseCase = get(),
-            addItemUseCase = get(),
-            removeItemUseCase = get(),
-            getSizeUseCase = get(),
-            getCompletedItemsCountUseCase = get(),
-            removeListUseCase = get(),
-            getListByIdUseCase = get(),
-            renameListUseCase = get()
-        )
-    }
-
-    viewModel<SignupViewModel> {
-        SignupViewModel(
-            saveUserUseCase = get(),
-            auth = get()
-        )
+    @Provides
+    fun provideSignupViewModelFactory(
+        saveUserUseCase: SaveUserUseCase,
+        auth: FirebaseAuth
+    ): SignupViewModelFactory{
+        return SignupViewModelFactory(saveUserUseCase, auth)
     }
 }

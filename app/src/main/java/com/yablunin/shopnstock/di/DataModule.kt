@@ -3,16 +3,17 @@ package com.yablunin.shopnstock.di
 import com.google.firebase.auth.FirebaseAuth
 import com.yablunin.shopnstock.data.repositories.FirebaseUserRepository
 import com.yablunin.shopnstock.domain.repositories.UserRepository
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
 
-val dataModule = module{
-
-    single<FirebaseAuth> {
-        FirebaseAuth.getInstance()
+@Module
+class DataModule {
+    @Provides
+    fun provideFirebaseAuth(): FirebaseAuth{
+        return FirebaseAuth.getInstance()
     }
-
-    single<UserRepository>{
-         FirebaseUserRepository()
+    @Provides
+    fun provideFirebaseUserRepository(): UserRepository{
+        return FirebaseUserRepository()
     }
-
 }

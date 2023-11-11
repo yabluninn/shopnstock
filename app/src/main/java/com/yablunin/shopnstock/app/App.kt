@@ -1,22 +1,20 @@
 package com.yablunin.shopnstock.app
 
 import android.app.Application
-import com.yablunin.shopnstock.di.appModule
-import com.yablunin.shopnstock.di.dataModule
-import com.yablunin.shopnstock.di.domainModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import com.yablunin.shopnstock.di.AppComponent
+import com.yablunin.shopnstock.di.DaggerAppComponent
+
 
 class App: Application() {
+    lateinit var appComponent: AppComponent
     override fun onCreate() {
         super.onCreate()
 
-        startKoin{
-            androidLogger(Level.DEBUG)
-            androidContext(this@App)
-            modules(listOf(appModule, domainModule, dataModule))
-        }
+        appComponent = DaggerAppComponent.create()
+//        startKoin{
+//            androidLogger(Level.DEBUG)
+//            androidContext(this@App)
+//            modules(listOf(appModule, domainModule, dataModule))
+//        }
     }
 }

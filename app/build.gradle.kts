@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -56,12 +57,17 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 
-    val koin_version = "3.5.0"
-    implementation ("io.insert-koin:koin-core:$koin_version")
-    implementation ("io.insert-koin:koin-android:$koin_version")
+//    val koin_version = "3.5.0"
+//    implementation ("io.insert-koin:koin-core:$koin_version")
+//    implementation ("io.insert-koin:koin-android:$koin_version")
+
+    implementation ("com.google.dagger:dagger:2.48.1")
+    kapt ("com.google.dagger:dagger-compiler:2.48.1")
+    implementation("javax.inject:javax.inject:1")
+
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation ("io.insert-koin:koin-test:$koin_version")
+//    testImplementation ("io.insert-koin:koin-test:$koin_version")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
