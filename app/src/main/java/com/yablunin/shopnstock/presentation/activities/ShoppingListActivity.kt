@@ -25,6 +25,7 @@ import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.app.App
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListItemsAdapter
 import com.yablunin.shopnstock.databinding.ActivityShoppingListBinding
+import com.yablunin.shopnstock.domain.constants.ListConstants
 import com.yablunin.shopnstock.domain.models.ListItem
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
@@ -115,18 +116,6 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
             showSetExpirationDatePopup(expirationDateInput)
         }
     }
-    private fun setOnClickDeleteOptionList(menuPopup: Dialog){
-        val deleteOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_delete_option)
-        deleteOption.setOnClickListener {
-            viewModel.removeList(user, this)
-        }
-    }
-    private fun setOnClickRenameOptionList(menuPopup: Dialog){
-        val renameOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_rename_option)
-        renameOption.setOnClickListener {
-            showRenameListPopup(menuPopup)
-        }
-    }
     private fun setOnClickRenameList(renamePopup: Dialog){
         val renameButton: TextView = renamePopup.findViewById(R.id.rename_list_button)
         val newNameInput: EditText = renamePopup.findViewById(R.id.rename_list_new_name_input)
@@ -204,7 +193,7 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
     @SuppressLint("SetTextI18n")
     private fun setListAdapterContent(listSize: Int, completedItemsCount: Int){
         if (listSize > 0){
-            binding.shoppingListItemsCount.text = "List $completedItemsCount / $listSize completed"
+            binding.shoppingListItemsCount.text = "List $completedItemsCount / $listSize purchased"
             binding.shoppingListItemsRcview.visibility = View.VISIBLE
             binding.shoppingListItemsRcview.layoutManager = LinearLayoutManager(this)
             binding.shoppingListItemsRcview.adapter = ShoppingListItemsAdapter(list.list, user, this)
@@ -262,8 +251,18 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
 
         menuPopup.show()
 
-        setOnClickDeleteOptionList(menuPopup)
-        setOnClickRenameOptionList(menuPopup)
+        val deleteOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_delete_option)
+        deleteOption.setOnClickListener {
+            viewModel.removeList(user, this)
+        }
+        val renameOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_rename_option)
+        renameOption.setOnClickListener {
+            showRenameListPopup(menuPopup)
+        }
+        val copyOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_copy_option)
+        copyOption.setOnClickListener {
+            showCopyListPopup(menuPopup)
+        }
 
     }
     @SuppressLint("SetTextI18n")
@@ -310,4 +309,29 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         setOnClickCancelRenamingList(renamePopup)
     }
 
+    private fun showCopyListPopup(menuPopup: Dialog){
+        val copyPopup = Dialog(this)
+        copyPopup.setContentView(R.layout.copy_list_popup)
+        copyPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        copyPopup.show()
+        menuPopup.dismiss()
+
+        val copyWholeListButton: LinearLayout = copyPopup.findViewById(R.id.copy_list_whole_button)
+        copyWholeListButton.setOnClickListener{
+            viewModel.copyList(ListConstants.COPY_WHOLE_LIST, list, user, this)
+        }
+        val copyUnpurchasedItemsListButton: LinearLayout = copyPopup.findViewById(R.id.copy_list_unpurchased_button)
+        copyUnpurchasedItemsListButton.setOnClickListener{
+            viewModel.copyList(ListConstants.COPY_UNPURCHASED_ITEMS_LIST, list, user, this)
+        }
+        val copyPurchasedItemsListButton: LinearLayout = copyPopup.findViewById(R.id.copy_list_purchased_button)
+        copyPurchasedItemsListButton.setOnClickListener{
+            viewModel.copyList(ListConstants.COPY_PURCHASED_ITEMS_LIST, list, user, this)
+        }
+        val cancelCopyListButton: TextView = copyPopup.findViewById(R.id.copy_list_cancel_button)
+        cancelCopyListButton.setOnClickListener {
+            copyPopup.dismiss()
+        }
+    }
 }

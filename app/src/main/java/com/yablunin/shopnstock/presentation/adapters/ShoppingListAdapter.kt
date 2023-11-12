@@ -41,7 +41,7 @@ class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<S
             val completedItemsCount = getCompletedItemsCountUseCase.execute(list)
 
             if (size > 0){
-                listItemsCountText.text = "List $completedItemsCount / $size completed"
+                listItemsCountText.text = "List $completedItemsCount / $size purchased"
             }
             else{
                 listItemsCountText.text = "Nothing here"

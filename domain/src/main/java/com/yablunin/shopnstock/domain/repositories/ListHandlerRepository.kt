@@ -9,4 +9,5 @@ interface ListHandlerRepository {
     fun renameList(list: ShoppingList, newName: String, user: User)
     fun getListById(user: User, id: Int): ShoppingList?
     fun generateListId(user: User): Int
+    fun copyList(copyAction: Int, list: ShoppingList, user: User): ShoppingList
 }

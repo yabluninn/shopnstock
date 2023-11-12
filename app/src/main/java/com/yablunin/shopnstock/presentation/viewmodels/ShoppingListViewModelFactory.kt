@@ -6,6 +6,8 @@ import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
@@ -19,7 +21,9 @@ class ShoppingListViewModelFactory(
     val getCompletedItemsCountUseCase: GetCompletedItemsCountUseCase,
     val removeListUseCase: RemoveListUseCase,
     val getListByIdUseCase: GetListByIdUseCase,
-    val renameListUseCase: RenameListUseCase
+    val renameListUseCase: RenameListUseCase,
+    val copyListUseCase: CopyListUseCase,
+    val addListUseCase: AddListUseCase
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ShoppingListViewModel(
@@ -30,7 +34,9 @@ class ShoppingListViewModelFactory(
             getCompletedItemsCountUseCase = getCompletedItemsCountUseCase,
             removeListUseCase = removeListUseCase,
             getListByIdUseCase = getListByIdUseCase,
-            renameListUseCase = renameListUseCase
+            renameListUseCase = renameListUseCase,
+            copyListUseCase = copyListUseCase,
+            addListUseCase = addListUseCase
         ) as T
     }
 }

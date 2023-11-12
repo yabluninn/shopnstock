@@ -19,6 +19,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="list_menu_rename_list">Rename list</string>
+    <string name="list_menu_copy_list">Copy list</string>
     <string name="list_menu_delete_list">Delete list</string>
     <string name="rename_list">Rename</string>
     <string name="rename_list_enter_new_name">Enter new name</string>
@@ -29,4 +30,7 @@
     <string name="create_new_list">Create new list</string>
     <string name="create_new_list_create_button">Create</string>
     <string name="create_new_list_hint">List name</string>
+    <string name="list_copy_whole_list">Whole list</string>
+    <string name="list_copy_unpurchased_items_list">Unpurchased items</string>
+    <string name="list_copy_purchased_items_list">Purchased items</string>
 </resources>

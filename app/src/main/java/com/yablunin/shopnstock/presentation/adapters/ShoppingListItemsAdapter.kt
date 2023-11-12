@@ -33,9 +33,9 @@ class ShoppingListItemsAdapter(
         private val deleteButton: ImageView = view.findViewById(R.id.list_item_delete)
         @SuppressLint("SetTextI18n")
         fun bind(item: ListItem){
-            checkbox.isChecked = item.isCompleted
+            checkbox.isChecked = item.purchased
             checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                item.isCompleted = isChecked
+                item.purchased = isChecked
                 updateItemHolderUI(item)
                 listActivity.updateListUI()
 
@@ -54,7 +54,7 @@ class ShoppingListItemsAdapter(
         }
 
         private fun updateItemHolderUI(item: ListItem){
-            if(item.isCompleted){
+            if(item.purchased){
                 layout.setBackgroundResource(R.drawable.list_item_holder_background_checked)
                 itemName.setTextColor(Color.parseColor("#e6994e"))
                 itemName.paintFlags = itemName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

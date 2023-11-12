@@ -27,7 +27,7 @@ class ShoppingListRepository: ListRepository {
     override fun getCompletedItemsCount(list: ShoppingList): Int {
         var count = 0;
         list.list.forEach{
-            if (it.isCompleted){
+            if (it.purchased){
                 count++
             }
         }

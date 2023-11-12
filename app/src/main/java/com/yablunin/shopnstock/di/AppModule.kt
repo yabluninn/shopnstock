@@ -6,6 +6,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCas
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
@@ -57,7 +58,9 @@ class AppModule {
         getCompletedItemsCountUseCase: GetCompletedItemsCountUseCase,
         removeListUseCase: RemoveListUseCase,
         getListByIdUseCase: GetListByIdUseCase,
-        renameListUseCase: RenameListUseCase
+        renameListUseCase: RenameListUseCase,
+        copyListUseCase: CopyListUseCase,
+        addListUseCase: AddListUseCase
     ): ShoppingListViewModelFactory{
         return ShoppingListViewModelFactory(
             saveUserUseCase = saveUserUseCase,
@@ -67,7 +70,9 @@ class AppModule {
             getCompletedItemsCountUseCase = getCompletedItemsCountUseCase,
             removeListUseCase = removeListUseCase,
             getListByIdUseCase = getListByIdUseCase,
-            renameListUseCase = renameListUseCase
+            renameListUseCase = renameListUseCase,
+            copyListUseCase = copyListUseCase,
+            addListUseCase = addListUseCase
         )
     }
 

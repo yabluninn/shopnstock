@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.domain.constants.ListConstants
 import com.yablunin.shopnstock.domain.models.ListItem
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
@@ -15,6 +16,8 @@ import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
@@ -30,7 +33,9 @@ class ShoppingListViewModel(
     private val getCompletedItemsCountUseCase: GetCompletedItemsCountUseCase,
     private val removeListUseCase: RemoveListUseCase,
     private val getListByIdUseCase: GetListByIdUseCase,
-    private val renameListUseCase: RenameListUseCase
+    private val renameListUseCase: RenameListUseCase,
+    private val copyListUseCase: CopyListUseCase,
+    private val addListUseCase: AddListUseCase
 ): ViewModel() {
 
     private val mutableListData = MutableLiveData<ShoppingList>()
@@ -104,5 +109,13 @@ class ShoppingListViewModel(
     fun renameList(newName: String, user: User){
         renameListUseCase.execute(listData.value!!, newName, user)
         saveUser(user)
+    }
+
+    fun copyList(copyAction: Int, list: ShoppingList, user: User, context: Context){
+        val newList = copyListUseCase.execute(copyAction, list, user)
+        addListUseCase.execute(newList, user)
+        saveUser(user)
+        val intent = Intent(context, HomeActivity::class.java)
+        context.startActivity(intent)
     }
 }

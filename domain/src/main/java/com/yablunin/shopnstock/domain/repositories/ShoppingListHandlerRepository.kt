@@ -1,5 +1,6 @@
 package com.yablunin.shopnstock.domain.repositories
 
+import com.yablunin.shopnstock.domain.constants.ListConstants
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import kotlin.random.Random
@@ -27,8 +28,43 @@ class ShoppingListHandlerRepository: ListHandlerRepository {
         }
     }
 
+    override fun copyList(copyAction: Int, list: ShoppingList, user: User): ShoppingList {
+        var copiedListName = ""
+        if (list.name.endsWith("(copy)")){
+            copiedListName = list.name
+        }
+        else{
+            copiedListName = list.name + " (copy)"
+        }
+        val copiedList = ShoppingList(generateListId(user), copiedListName)
+        when(copyAction){
+            ListConstants.COPY_WHOLE_LIST -> {
+                for (item in list.list){
+                    copiedList.list.add(item)
+                }
+            }
+            ListConstants.COPY_PURCHASED_ITEMS_LIST -> {
+                for (item in list.list){
+                    if (item.purchased){
+                        copiedList.list.add(item)
+                    }
+                }
+            }
+            ListConstants.COPY_UNPURCHASED_ITEMS_LIST -> {
+                for (item in list.list){
+                    if (!item.purchased){
+                        copiedList.list.add(item)
+                    }
+                }
+            }
+        }
+        return copiedList
+    }
+
     override fun renameList(list: ShoppingList, newName: String, user: User) {
         user.shoppingLists.find { it.id == list.id }!!.name = newName
     }
+
+
 
 }

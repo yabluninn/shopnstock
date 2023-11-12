@@ -13,6 +13,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemAtUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
@@ -52,6 +53,10 @@ class DomainModule {
     @Provides
     fun provideRenameListUseCase(listHandlerRepository: ListHandlerRepository): RenameListUseCase{
         return RenameListUseCase(listHandlerRepository = listHandlerRepository)
+    }
+    @Provides
+    fun provideCopyListUseCase(listHandlerRepository: ListHandlerRepository): CopyListUseCase{
+        return CopyListUseCase(listHandlerRepository = listHandlerRepository)
     }
 
     @Provides

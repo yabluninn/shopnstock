@@ -1,7 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Shopnstock" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Shopnstock" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/app_base_dark</item>
     </style>
+    <!-- Стиль для анимации Bottom Sheet Dialog -->
+    <style name="BottomSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/bottom_sheet_slide_in
+        </item> <!-- Анимация появления -->
+        <item name="android:windowExitAnimation">@anim/bottom_sheet_slide_out
+        </item> <!-- Анимация исчезновения -->
+    </style>
+
 </resources>

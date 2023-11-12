@@ -30,8 +30,33 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/list_menu_rename_list"
-            android:textStyle="bold"
-            android:textColor="@color/input_hint"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list_menu_copy_option"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_copy"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/list_menu_copy_list"
+            android:textColor="@color/black"
             android:textSize="20sp"
             />
 
@@ -58,7 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/list_menu_delete_list"
-            android:textStyle="bold"
             android:textColor="#FF5252"
             android:textSize="20sp"
             />
