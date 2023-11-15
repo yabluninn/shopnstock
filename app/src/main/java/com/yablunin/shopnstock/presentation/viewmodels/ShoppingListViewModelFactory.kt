@@ -7,6 +7,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCas
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
@@ -23,7 +24,8 @@ class ShoppingListViewModelFactory(
     val getListByIdUseCase: GetListByIdUseCase,
     val renameListUseCase: RenameListUseCase,
     val copyListUseCase: CopyListUseCase,
-    val addListUseCase: AddListUseCase
+    val addListUseCase: AddListUseCase,
+    val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ShoppingListViewModel(
@@ -36,7 +38,8 @@ class ShoppingListViewModelFactory(
             getListByIdUseCase = getListByIdUseCase,
             renameListUseCase = renameListUseCase,
             copyListUseCase = copyListUseCase,
-            addListUseCase = addListUseCase
+            addListUseCase = addListUseCase,
+            convertToClipboardStringUseCase = convertToClipboardStringUseCase
         ) as T
     }
 }

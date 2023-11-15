@@ -13,6 +13,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemAtUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
@@ -86,6 +87,10 @@ class DomainModule {
     @Provides
     fun provideRemoveItemUseCase(listRepository: ListRepository): RemoveItemUseCase{
         return RemoveItemUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideConvertToClipboardStringUseCase(listRepository: ListRepository): ConvertToClipboardStringUseCase{
+        return ConvertToClipboardStringUseCase(listRepository = listRepository)
     }
 
     @Provides

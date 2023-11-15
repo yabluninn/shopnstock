@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="dark_red">#B80000</color>
+    <color name="blue">#03A9F4</color>
 
     <color name="font">#FF673308</color>
     <color name="font_header">#c96e23</color>

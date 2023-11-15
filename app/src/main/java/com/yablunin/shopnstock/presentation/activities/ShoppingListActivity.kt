@@ -263,6 +263,10 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         copyOption.setOnClickListener {
             showCopyListPopup(menuPopup)
         }
+        val shareOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_share_option)
+        shareOption.setOnClickListener {
+            showShareListPopup(menuPopup)
+        }
 
     }
     @SuppressLint("SetTextI18n")
@@ -299,8 +303,8 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         renamePopup.setContentView(R.layout.rename_list_popup)
         renamePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        renamePopup.show()
         menuPopup.dismiss()
+        renamePopup.show()
 
         val currentListNameText: TextView = renamePopup.findViewById(R.id.rename_list_current_name_text)
         currentListNameText.text = list.name
@@ -314,8 +318,8 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         copyPopup.setContentView(R.layout.copy_list_popup)
         copyPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        copyPopup.show()
         menuPopup.dismiss()
+        copyPopup.show()
 
         val copyWholeListButton: LinearLayout = copyPopup.findViewById(R.id.copy_list_whole_button)
         copyWholeListButton.setOnClickListener{
@@ -329,9 +333,30 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         copyPurchasedItemsListButton.setOnClickListener{
             viewModel.copyList(ListConstants.COPY_PURCHASED_ITEMS_LIST, list, user, this)
         }
-        val cancelCopyListButton: TextView = copyPopup.findViewById(R.id.copy_list_cancel_button)
-        cancelCopyListButton.setOnClickListener {
+        val cancelButton: TextView = copyPopup.findViewById(R.id.copy_list_cancel_button)
+        cancelButton.setOnClickListener {
             copyPopup.dismiss()
+        }
+    }
+
+    private fun showShareListPopup(menuPopup: Dialog){
+        val sharePopup = Dialog(this)
+        sharePopup.setContentView(R.layout.share_list_popup)
+        sharePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        menuPopup.dismiss()
+        sharePopup.show()
+
+        val shareListToClipboardButton: ImageView = sharePopup.findViewById(R.id.share_list_clipboard_button)
+        shareListToClipboardButton.setOnClickListener {
+            viewModel.shareList(ListConstants.SHARE_CLIPBOARD_OPTION, list, user, this)
+            sharePopup.dismiss()
+        }
+
+
+        val cancelButton: TextView = sharePopup.findViewById(R.id.share_list_cancel_button)
+        cancelButton.setOnClickListener {
+            sharePopup.dismiss()
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.yablunin.shopnstock.presentation.viewmodels
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.view.Gravity
@@ -17,6 +19,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCas
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
@@ -35,7 +38,8 @@ class ShoppingListViewModel(
     private val getListByIdUseCase: GetListByIdUseCase,
     private val renameListUseCase: RenameListUseCase,
     private val copyListUseCase: CopyListUseCase,
-    private val addListUseCase: AddListUseCase
+    private val addListUseCase: AddListUseCase,
+    private val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase
 ): ViewModel() {
 
     private val mutableListData = MutableLiveData<ShoppingList>()
@@ -117,5 +121,25 @@ class ShoppingListViewModel(
         saveUser(user)
         val intent = Intent(context, HomeActivity::class.java)
         context.startActivity(intent)
+    }
+
+    fun shareList(shareAction: Int, list: ShoppingList, user: User, context: Context){
+        when (shareAction){
+            ListConstants.SHARE_CLIPBOARD_OPTION -> {
+                val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val convertedString = convertToClipboardStringUseCase.execute(list, user)
+                val clipData = ClipData.newPlainText("List: ${list.name}", convertedString)
+
+                clipboardManager.setPrimaryClip(clipData)
+
+                val successfulToast = SuccessfulToast(
+                    context,
+                    context.getString(R.string.successful_copy_to_clipboard_list),
+                    Toast.LENGTH_LONG,
+                    Gravity.BOTTOM
+                )
+                successfulToast.show()
+            }
+        }
     }
 }

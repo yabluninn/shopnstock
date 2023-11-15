@@ -10,6 +10,7 @@
     <!-- Successful messages -->
     <string name="successful_add_item">Item successfully added to your list!</string>
     <string name="successful_create_list">List successfully created!</string>
+    <string name="successful_copy_to_clipboard_list">List successfully copied to clipboard!</string>
 
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
 
@@ -20,6 +21,7 @@
     <string name="previous">Previous</string>
     <string name="list_menu_rename_list">Rename list</string>
     <string name="list_menu_copy_list">Copy list</string>
+    <string name="list_menu_share_list">Share list</string>
     <string name="list_menu_delete_list">Delete list</string>
     <string name="rename_list">Rename</string>
     <string name="rename_list_enter_new_name">Enter new name</string>

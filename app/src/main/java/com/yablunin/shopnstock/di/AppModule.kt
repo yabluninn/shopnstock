@@ -6,6 +6,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCas
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
@@ -60,7 +61,8 @@ class AppModule {
         getListByIdUseCase: GetListByIdUseCase,
         renameListUseCase: RenameListUseCase,
         copyListUseCase: CopyListUseCase,
-        addListUseCase: AddListUseCase
+        addListUseCase: AddListUseCase,
+        convertToClipboardStringUseCase: ConvertToClipboardStringUseCase
     ): ShoppingListViewModelFactory{
         return ShoppingListViewModelFactory(
             saveUserUseCase = saveUserUseCase,
@@ -72,7 +74,8 @@ class AppModule {
             getListByIdUseCase = getListByIdUseCase,
             renameListUseCase = renameListUseCase,
             copyListUseCase = copyListUseCase,
-            addListUseCase = addListUseCase
+            addListUseCase = addListUseCase,
+            convertToClipboardStringUseCase = convertToClipboardStringUseCase
         )
     }
 
