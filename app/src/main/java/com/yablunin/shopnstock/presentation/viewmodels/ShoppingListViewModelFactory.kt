@@ -3,6 +3,7 @@ package com.yablunin.shopnstock.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
@@ -25,7 +26,8 @@ class ShoppingListViewModelFactory(
     val renameListUseCase: RenameListUseCase,
     val copyListUseCase: CopyListUseCase,
     val addListUseCase: AddListUseCase,
-    val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase
+    val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
+    val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ShoppingListViewModel(
@@ -39,7 +41,8 @@ class ShoppingListViewModelFactory(
             renameListUseCase = renameListUseCase,
             copyListUseCase = copyListUseCase,
             addListUseCase = addListUseCase,
-            convertToClipboardStringUseCase = convertToClipboardStringUseCase
+            convertToClipboardStringUseCase = convertToClipboardStringUseCase,
+            generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase
         ) as T
     }
 }

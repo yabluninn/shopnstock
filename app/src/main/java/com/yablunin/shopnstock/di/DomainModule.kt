@@ -6,6 +6,7 @@ import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
 import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
 import com.yablunin.shopnstock.domain.repositories.UserRepository
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIndexUseCase
@@ -91,6 +92,10 @@ class DomainModule {
     @Provides
     fun provideConvertToClipboardStringUseCase(listRepository: ListRepository): ConvertToClipboardStringUseCase{
         return ConvertToClipboardStringUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideGenerateQRCodeBitmapUseCase(listRepository: ListRepository): GenerateQRCodeBitmapUseCase{
+        return GenerateQRCodeBitmapUseCase(listRepository = listRepository)
     }
 
     @Provides

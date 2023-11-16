@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.view.Gravity
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -15,6 +16,7 @@ import com.yablunin.shopnstock.domain.models.ListItem
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
@@ -39,7 +41,8 @@ class ShoppingListViewModel(
     private val renameListUseCase: RenameListUseCase,
     private val copyListUseCase: CopyListUseCase,
     private val addListUseCase: AddListUseCase,
-    private val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase
+    private val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
+    private val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase
 ): ViewModel() {
 
     private val mutableListData = MutableLiveData<ShoppingList>()
@@ -48,6 +51,9 @@ class ShoppingListViewModel(
     val listData: LiveData<ShoppingList> = mutableListData
     val listSizeData: LiveData<Int> = mutableListSizeData
     val completedItemsCountData: LiveData<Int> = mutableCompletedItemsCountData
+
+    var qrCodeBitmap: Bitmap? = null
+
 
     override fun onCleared() {
         super.onCleared()
@@ -139,6 +145,9 @@ class ShoppingListViewModel(
                     Gravity.BOTTOM
                 )
                 successfulToast.show()
+            }
+            ListConstants.SHARE_QRCODE_OPTION -> {
+                qrCodeBitmap = generateQRCodeBitmapUseCase.execute(list)
             }
         }
     }

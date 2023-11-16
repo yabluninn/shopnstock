@@ -7,7 +7,12 @@ import android.widget.TextView
 import android.widget.Toast
 import com.yablunin.shopnstock.R
 
-class ErrorToast(var context: Context, var message: String, var duration: Int, val gravity: Int) {
+class ErrorToast(
+    var context: Context,
+    var message: String,
+    var duration: Int,
+    val gravity: Int
+) {
 
     fun show(){
         val layout = LayoutInflater.from(context).inflate(R.layout.error_toast_layout, null)

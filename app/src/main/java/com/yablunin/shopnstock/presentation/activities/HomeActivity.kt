@@ -1,6 +1,7 @@
 package com.yablunin.shopnstock.presentation.activities
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.zxing.integration.android.IntentIntegrator
 import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.app.App
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListAdapter
@@ -23,6 +26,7 @@ import com.yablunin.shopnstock.databinding.ActivityHomeBinding
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Initiable
+import com.yablunin.shopnstock.presentation.toasts.ErrorToast
 import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModel
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
@@ -40,6 +44,8 @@ class HomeActivity : AppCompatActivity(), Initiable {
     lateinit var viewModelFactory: HomeViewModelFactory
 
     private lateinit var viewModel: HomeViewModel
+
+    private lateinit var createListDialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -47,6 +53,42 @@ class HomeActivity : AppCompatActivity(), Initiable {
         setContentView(view)
 
         init()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents != null) {
+                val gson = Gson()
+                val receivedShoppingList = gson.fromJson(result.contents, ShoppingList::class.java)
+                viewModel.addList(receivedShoppingList)
+                viewModel.saveUser()
+
+                updateUI()
+
+                createListDialog.dismiss()
+
+                val successfulToast = SuccessfulToast(
+                    this,
+                    this.getString(R.string.successful_create_list),
+                    Toast.LENGTH_LONG,
+                    Gravity.TOP
+                )
+                successfulToast.show()
+            } else {
+                createListDialog.dismiss()
+
+                val errorToast = ErrorToast(
+                    this,
+                    this.getString(R.string.error_scanning_list),
+                    Toast.LENGTH_LONG,
+                    Gravity.TOP
+                )
+                errorToast.show()
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     override fun init(){
@@ -90,7 +132,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.bottom_dialog_create_list)
-        dialog.show()
+
         val window = dialog.window
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         val drawable = ColorDrawable(Color.TRANSPARENT)
@@ -98,10 +140,19 @@ class HomeActivity : AppCompatActivity(), Initiable {
         window?.attributes?.windowAnimations = R.style.BottomSheetAnimation
         window?.setGravity(Gravity.BOTTOM)
 
+        dialog.show()
+
+        createListDialog = dialog
+
         val createNewListButton: Button = dialog.findViewById(R.id.create_list_button)
         val createNewListInput: EditText = dialog.findViewById(R.id.create_list_name_input)
         createNewListButton.setOnClickListener {
             createList(dialog, createNewListInput)
+        }
+
+        val scanQrCodeButton: LinearLayout = dialog.findViewById(R.id.scan_list_button)
+        scanQrCodeButton.setOnClickListener {
+            initQRScanner()
         }
     }
 
@@ -137,5 +188,15 @@ class HomeActivity : AppCompatActivity(), Initiable {
             )
             successfulToast.show()
         }
+    }
+
+    private fun initQRScanner(){
+        val integrator = IntentIntegrator(this)
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        integrator.setPrompt(getString(R.string.scan_qrcode_to_add_new_list))
+        integrator.setCameraId(0)
+        integrator.setBeepEnabled(false)
+        integrator.setBarcodeImageEnabled(true)
+        integrator.initiateScan()
     }
 }

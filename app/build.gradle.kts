@@ -61,6 +61,10 @@ dependencies {
 //    implementation ("io.insert-koin:koin-core:$koin_version")
 //    implementation ("io.insert-koin:koin-android:$koin_version")
 
+    implementation ("com.google.zxing:core:3.4.0")
+    implementation ("com.journeyapps:zxing-android-embedded:4.2.0")
+    implementation ("com.google.code.gson:gson:2.8.9")
+
     implementation ("com.google.dagger:dagger:2.48.1")
     kapt ("com.google.dagger:dagger-compiler:2.48.1")
     implementation("javax.inject:javax.inject:1")

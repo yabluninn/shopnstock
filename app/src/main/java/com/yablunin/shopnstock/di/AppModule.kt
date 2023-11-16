@@ -2,6 +2,7 @@ package com.yablunin.shopnstock.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
@@ -62,7 +63,8 @@ class AppModule {
         renameListUseCase: RenameListUseCase,
         copyListUseCase: CopyListUseCase,
         addListUseCase: AddListUseCase,
-        convertToClipboardStringUseCase: ConvertToClipboardStringUseCase
+        convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
+        generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase
     ): ShoppingListViewModelFactory{
         return ShoppingListViewModelFactory(
             saveUserUseCase = saveUserUseCase,
@@ -75,7 +77,8 @@ class AppModule {
             renameListUseCase = renameListUseCase,
             copyListUseCase = copyListUseCase,
             addListUseCase = addListUseCase,
-            convertToClipboardStringUseCase = convertToClipboardStringUseCase
+            convertToClipboardStringUseCase = convertToClipboardStringUseCase,
+            generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase
         )
     }
 

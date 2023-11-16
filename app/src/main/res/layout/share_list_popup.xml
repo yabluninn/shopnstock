@@ -60,6 +60,16 @@
                 />
 
             <ImageView
+                android:id="@+id/share_list_qrcode_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="10dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_qrcode"
+                android:background="@drawable/custom_button_transparent"
+                />
+
+            <ImageView
                 android:id="@+id/share_list_telegram_button"
                 android:layout_width="70dp"
                 android:layout_height="70dp"

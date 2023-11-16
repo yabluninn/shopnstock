@@ -3,6 +3,7 @@ package com.yablunin.shopnstock.presentation.activities
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -352,11 +353,33 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
             viewModel.shareList(ListConstants.SHARE_CLIPBOARD_OPTION, list, user, this)
             sharePopup.dismiss()
         }
+        val shareListWithQRCodeButton: ImageView = sharePopup.findViewById(R.id.share_list_qrcode_button)
+        shareListWithQRCodeButton.setOnClickListener {
+            viewModel.shareList(ListConstants.SHARE_QRCODE_OPTION, list, user, this)
+            sharePopup.dismiss()
+            showQrCodePopup()
+        }
 
 
         val cancelButton: TextView = sharePopup.findViewById(R.id.share_list_cancel_button)
         cancelButton.setOnClickListener {
             sharePopup.dismiss()
+        }
+    }
+
+    private fun showQrCodePopup(){
+        val qrCodePopup = Dialog(this)
+        qrCodePopup.setContentView(R.layout.share_qr_code_popup)
+        qrCodePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        qrCodePopup.show()
+
+        val qrCodeImage: ImageView = qrCodePopup.findViewById(R.id.share_qr_code_image)
+        qrCodeImage.setImageBitmap(viewModel.qrCodeBitmap)
+
+        val cancelButton: TextView = qrCodePopup.findViewById(R.id.share_qr_code_cancel_button)
+        cancelButton.setOnClickListener {
+            qrCodePopup.dismiss()
         }
     }
 }

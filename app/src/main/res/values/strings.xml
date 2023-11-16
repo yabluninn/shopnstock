@@ -6,6 +6,7 @@
     <string name="error_wrong_password">Wrong password. Try again!</string>
     <string name="error_email_already_in_use">Email already in use. Try again!</string>
     <string name="error_weak_password">Weak password (Min length: 6). Try again!</string>
+    <string name="error_scanning_list">Error scanning QR-code. Try again!</string>
 
     <!-- Successful messages -->
     <string name="successful_add_item">Item successfully added to your list!</string>
@@ -23,16 +24,21 @@
     <string name="list_menu_copy_list">Copy list</string>
     <string name="list_menu_share_list">Share list</string>
     <string name="list_menu_delete_list">Delete list</string>
+    <string name="share_qr_code_popup_header">Share QR code</string>
     <string name="rename_list">Rename</string>
     <string name="rename_list_enter_new_name">Enter new name</string>
     <string name="rename_list_current_list_name">Current list name</string>
     <string name="rename_list_new_list_name">New list name</string>
     <string name="cancel">Cancel</string>
     <string name="list_add_new_item">Add new item</string>
-    <string name="create_new_list">Create new list</string>
+    <string name="create_new_list">Add new list</string>
     <string name="create_new_list_create_button">Create</string>
     <string name="create_new_list_hint">List name</string>
     <string name="list_copy_whole_list">Whole list</string>
     <string name="list_copy_unpurchased_items_list">Unpurchased items</string>
     <string name="list_copy_purchased_items_list">Purchased items</string>
+    <string name="scan_qr_code_on_another_device">Scan QR-code on another device</string>
+    <string name="create_list_scan_qr_code">Scan QR-code</string>
+    <string name="or_line">───────── or ─────────</string>
+    <string name="scan_qrcode_to_add_new_list">Scan QR-code to add new list</string>
 </resources>
