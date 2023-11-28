@@ -13,6 +13,7 @@ import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCas
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
+import com.yablunin.shopnstock.domain.usecases.user.ChangeUsernameUseCase
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
@@ -30,14 +31,16 @@ class AppModule {
         saveUserUseCase: SaveUserUseCase,
         loadUserUseCase: LoadUserUseCase,
         addListUseCase: AddListUseCase,
-        generateListIdUseCase: GenerateListIdUseCase
+        generateListIdUseCase: GenerateListIdUseCase,
+        changeUsernameUseCase: ChangeUsernameUseCase
     ): HomeViewModelFactory {
         return HomeViewModelFactory(
             auth = auth,
             saveUserUseCase = saveUserUseCase,
             loadUserUseCase = loadUserUseCase,
             addListUseCase = addListUseCase,
-            generateListIdUseCase = generateListIdUseCase
+            generateListIdUseCase = generateListIdUseCase,
+            changeUsernameUseCase = changeUsernameUseCase
         )
     }
 

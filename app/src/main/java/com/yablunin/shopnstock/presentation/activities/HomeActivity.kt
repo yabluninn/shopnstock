@@ -6,13 +6,16 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +29,8 @@ import com.yablunin.shopnstock.databinding.ActivityHomeBinding
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Initiable
+import com.yablunin.shopnstock.presentation.custom_views.SettingsItemWithButtonView
+import com.yablunin.shopnstock.presentation.custom_views.SettingsItemWithSwitchView
 import com.yablunin.shopnstock.presentation.toasts.ErrorToast
 import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModel
@@ -100,14 +105,17 @@ class HomeActivity : AppCompatActivity(), Initiable {
             updateUI()
         }
 
-        binding.homeCreateTaskButton.setOnClickListener{
-            showCreateListDialog()
-        }
-
         runBlocking {
             launch {
                 viewModel.loadUser()
             }
+        }
+
+        binding.homeCreateTaskButton.setOnClickListener{
+            showCreateListDialog()
+        }
+        binding.homeMenuButton.setOnClickListener {
+            showUserMenuPopup()
         }
     }
 
@@ -198,5 +206,95 @@ class HomeActivity : AppCompatActivity(), Initiable {
         integrator.setBeepEnabled(false)
         integrator.setBarcodeImageEnabled(true)
         integrator.initiateScan()
+    }
+
+    private fun showUserMenuPopup(){
+        val menuPopup = Dialog(this)
+        menuPopup.setContentView(R.layout.user_menu_popup)
+        menuPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val layoutParams = menuPopup.window?.attributes
+        layoutParams?.gravity = Gravity.END or Gravity.TOP
+        menuPopup.window?.attributes = layoutParams
+
+        menuPopup.show()
+
+        val settingsOption: LinearLayout = menuPopup.findViewById(R.id.user_menu_settings_option)
+        settingsOption.setOnClickListener {
+            menuPopup.dismiss()
+            showSettingsBottomDialog()
+        }
+    }
+
+    private fun showSettingsBottomDialog(){
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.bottom_dialog_settings)
+
+        val window = dialog.window
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        val drawable = ColorDrawable(Color.TRANSPARENT)
+        window?.setBackgroundDrawable(drawable)
+        window?.attributes?.windowAnimations = R.style.BottomSheetAnimation
+        window?.setGravity(Gravity.BOTTOM)
+
+        dialog.show()
+
+        val changeUsernameSettingsItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_username_view)
+        changeUsernameSettingsItem.title("Change username")
+        changeUsernameSettingsItem.setOnButtonClickListener {
+            dialog.dismiss()
+            showChangeUsernamePopup()
+        }
+
+        val changePasswordSettingItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_password_view)
+        changePasswordSettingItem.title("Change password")
+        changePasswordSettingItem.setOnButtonClickListener {
+            // TODO Show change password popup
+        }
+
+        val enableNotificationsSettingsItem: SettingsItemWithSwitchView = dialog.findViewById(R.id.settings_enable_notifications_switch)
+        enableNotificationsSettingsItem.title("Enable push notifications")
+        enableNotificationsSettingsItem.setOnSwitchCheckedListener { isChecked ->
+            if (isChecked){
+                // TODO Enable push notifications
+            }
+            else{
+                // TODO Disable push notifications
+            }
+        }
+
+        val cancelButton: ImageView = dialog.findViewById(R.id.settings_cancel_button)
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun showChangeUsernamePopup(){
+        val changeUsernamePopup = Dialog(this)
+        changeUsernamePopup.setContentView(R.layout.change_username_popup)
+        changeUsernamePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        changeUsernamePopup.show()
+
+        val currentUsernameTextView: TextView = changeUsernamePopup.findViewById(R.id.change_username_textview)
+        currentUsernameTextView.text = user.username
+
+        val newUsernameInput: EditText = changeUsernamePopup.findViewById(R.id.change_username_input)
+        val changeButton: TextView = changeUsernamePopup.findViewById(R.id.change_username_button)
+        changeButton.setOnClickListener {
+            val newName = newUsernameInput.text.toString()
+            if (newName.trim().isNotEmpty()){
+                viewModel.changeUsername(newName, user)
+                viewModel.saveUser()
+                changeUsernamePopup.dismiss()
+                binding.homeUserUsername.text = user.username
+            }
+        }
+
+        val cancelButton: TextView = changeUsernamePopup.findViewById(R.id.change_username_cancel_button)
+        cancelButton.setOnClickListener {
+            changeUsernamePopup.dismiss()
+        }
     }
 }

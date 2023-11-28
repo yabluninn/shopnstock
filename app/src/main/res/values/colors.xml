@@ -22,4 +22,9 @@
 
     <color name="item_header">#554538</color>
     <color name="item_subheader">#97785F</color>
+
+    <color name="unchecked_thumb">#8c8c8c</color>
+    <color name="checked_thumb">#FFFFFF</color>
+    <color name="unchecked_track">#cdcdcd</color>
+    <color name="checked_track">#7BDD08</color>
 </resources>

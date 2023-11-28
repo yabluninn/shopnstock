@@ -41,4 +41,10 @@ class FirebaseUserRepository: UserRepository {
         })
     }
 
+    override fun changeUsername(newName: String, user: User) {
+        if (!newName.equals(user.username)){
+            user.username = newName
+        }
+    }
+
 }

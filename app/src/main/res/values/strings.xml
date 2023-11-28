@@ -41,4 +41,21 @@
     <string name="create_list_scan_qr_code">Scan QR-code</string>
     <string name="or_line">───────── or ─────────</string>
     <string name="scan_qrcode_to_add_new_list">Scan QR-code to add new list</string>
+    <string name="user_menu_list_option">Lists</string>
+    <string name="user_menu_settings_option">Settings</string>
+    <string name="user_menu_notifications_option">Notifications</string>
+    <string name="user_menu_log_out_option">Log out</string>
+
+    <string name="settings_header">Settings</string>
+    <string name="settings_user_section">User settings</string>
+    <string name="settings_notifications_section">Notifications settings</string>
+    <string name="settings_app_section">App settings</string>
+    <string name="settings_lists_section">Lists settings</string>
+
+    <string name="change_username_header">Change username</string>
+    <string name="change_username_current">Current username</string>
+    <string name="change_username_new">New username</string>
+    <string name="change_username_enter_new">Enter new username</string>
+    <string name="change">Change</string>
+
 </resources>

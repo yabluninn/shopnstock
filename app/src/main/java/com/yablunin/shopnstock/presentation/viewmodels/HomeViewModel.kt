@@ -8,6 +8,7 @@ import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
+import com.yablunin.shopnstock.domain.usecases.user.ChangeUsernameUseCase
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 
@@ -16,7 +17,8 @@ class HomeViewModel(
     private val saveUserUseCase: SaveUserUseCase,
     private val addListUseCase: AddListUseCase,
     private val generateListIdUseCase: GenerateListIdUseCase,
-    private val loadUserUseCase: LoadUserUseCase
+    private val loadUserUseCase: LoadUserUseCase,
+    private val changeUsernameUseCase: ChangeUsernameUseCase
 ): ViewModel() {
 
     private val mutableUserLiveData = MutableLiveData<User>()
@@ -55,5 +57,9 @@ class HomeViewModel(
 
     fun saveUser(){
         saveUserUseCase.execute(userLiveData.value!!)
+    }
+
+    fun changeUsername(newName: String, user: User){
+        changeUsernameUseCase.execute(newName, user)
     }
 }

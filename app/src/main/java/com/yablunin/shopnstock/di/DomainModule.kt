@@ -20,6 +20,7 @@ import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCas
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
+import com.yablunin.shopnstock.domain.usecases.user.ChangeUsernameUseCase
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import dagger.Module
@@ -105,5 +106,9 @@ class DomainModule {
     @Provides
     fun provideLoadUserUseCase(userRepository: UserRepository): LoadUserUseCase{
         return LoadUserUseCase(userRepository = userRepository)
+    }
+    @Provides
+    fun provideChangeUsernameUseCase(userRepository: UserRepository): ChangeUsernameUseCase{
+        return ChangeUsernameUseCase(userRepository = userRepository)
     }
 }
