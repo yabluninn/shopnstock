@@ -1,9 +1,13 @@
 package com.yablunin.shopnstock.presentation.viewmodels
 
+import android.content.Context
+import android.view.Gravity
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
@@ -11,6 +15,8 @@ import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCas
 import com.yablunin.shopnstock.domain.usecases.user.ChangeUsernameUseCase
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
+import com.yablunin.shopnstock.presentation.toasts.ErrorToast
+import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 
 class HomeViewModel(
     private val auth: FirebaseAuth,
@@ -61,5 +67,30 @@ class HomeViewModel(
 
     fun changeUsername(newName: String, user: User){
         changeUsernameUseCase.execute(newName, user)
+    }
+
+    fun updatePassword(newPassword: String, user: User, context: Context){
+        auth.currentUser?.updatePassword(newPassword)?.addOnCompleteListener {
+            if (it.isSuccessful){
+                user.password = newPassword
+                val successfulToast = SuccessfulToast(
+                    context,
+                    context.getString(R.string.successful_update_password),
+                    Toast.LENGTH_LONG,
+                    Gravity.BOTTOM
+                )
+                successfulToast.show()
+                saveUser()
+            }
+            else{
+                val errorToast = ErrorToast(
+                    context,
+                    it.exception?.message.toString(),
+                    Toast.LENGTH_LONG,
+                    Gravity.BOTTOM
+                )
+                errorToast.show()
+            }
+        }
     }
 }

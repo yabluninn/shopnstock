@@ -12,12 +12,10 @@
     <string name="successful_add_item">Item successfully added to your list!</string>
     <string name="successful_create_list">List successfully created!</string>
     <string name="successful_copy_to_clipboard_list">List successfully copied to clipboard!</string>
+    <string name="successful_update_password">Password successfully updated!</string>
 
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
 
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="list_menu_rename_list">Rename list</string>
@@ -57,5 +55,11 @@
     <string name="change_username_new">New username</string>
     <string name="change_username_enter_new">Enter new username</string>
     <string name="change">Change</string>
+
+    <string name="change_password_header">Change password</string>
+    <string name="change_password_current">Current password</string>
+    <string name="change_password_enter_current">Enter current password</string>
+    <string name="change_password_new">New password</string>
+    <string name="change_password_enter_new">Enter new password</string>
 
 </resources>

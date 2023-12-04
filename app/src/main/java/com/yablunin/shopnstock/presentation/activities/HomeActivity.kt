@@ -250,7 +250,8 @@ class HomeActivity : AppCompatActivity(), Initiable {
         val changePasswordSettingItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_password_view)
         changePasswordSettingItem.title("Change password")
         changePasswordSettingItem.setOnButtonClickListener {
-            // TODO Show change password popup
+           dialog.dismiss()
+            showChangePasswordPopup()
         }
 
         val enableNotificationsSettingsItem: SettingsItemWithSwitchView = dialog.findViewById(R.id.settings_enable_notifications_switch)
@@ -295,6 +296,48 @@ class HomeActivity : AppCompatActivity(), Initiable {
         val cancelButton: TextView = changeUsernamePopup.findViewById(R.id.change_username_cancel_button)
         cancelButton.setOnClickListener {
             changeUsernamePopup.dismiss()
+        }
+    }
+
+    private fun showChangePasswordPopup(){
+        val popup = Dialog(this)
+        popup.setContentView(R.layout.change_password_popup)
+        popup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        popup.show()
+
+        val firstStepBlock: LinearLayout = popup.findViewById(R.id.change_password_first_step)
+        val secondStepBlock: LinearLayout = popup.findViewById(R.id.change_password_second_step)
+
+        firstStepBlock.visibility = View.VISIBLE
+        secondStepBlock.visibility = View.GONE
+
+        val currentPasswordInput: EditText = popup.findViewById(R.id.change_password_current_input)
+        val newPasswordInput: EditText = popup.findViewById(R.id.change_password_new_input)
+
+        val nextStepButton: TextView = popup.findViewById(R.id.change_password_next_step_button)
+        val cancelButton: TextView = popup.findViewById(R.id.change_password_cancel_button)
+
+        nextStepButton.setOnClickListener {
+            val password: String = currentPasswordInput.text.toString()
+            if (password.trim().isNotEmpty()){
+                if (user.password == password){
+                    firstStepBlock.visibility = View.GONE
+                    secondStepBlock.visibility = View.VISIBLE
+
+                    val changeButton: TextView = popup.findViewById(R.id.change_password_change_button)
+                    changeButton.setOnClickListener {
+                        val newPassword: String = newPasswordInput.text.toString()
+                        if (newPassword.trim().isNotEmpty() && newPassword != user.password){
+                            viewModel.updatePassword(newPassword, user, this)
+                            popup.dismiss()
+                        }
+                    }
+                }
+            }
+        }
+        cancelButton.setOnClickListener {
+            popup.dismiss()
         }
     }
 }
