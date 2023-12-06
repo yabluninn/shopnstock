@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="30dp"
     android:backgroundDimEnabled="true"
-    android:background="@drawable/custom_bottom_sheet"
-    >
+    android:background="@drawable/custom_bottom_sheet">
 
     <LinearLayout
         android:id="@+id/rename_list_header_layout"
@@ -66,5 +66,45 @@
         android:textAllCaps="false"
         android:background="@drawable/custom_button"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/or_line"
+        android:textColor="@color/font_subheader"
+        android:textSize="20sp"
+        />
+
+    <LinearLayout
+        android:id="@+id/scan_list_button"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/custom_button_transparent"
+        >
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="5dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_scan"
+            app:tint="@color/app_base_dark"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/create_list_scan_qr_code"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="@color/app_base_dark"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

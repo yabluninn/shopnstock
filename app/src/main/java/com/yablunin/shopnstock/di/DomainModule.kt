@@ -6,6 +6,7 @@ import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
 import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
 import com.yablunin.shopnstock.domain.repositories.UserRepository
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIndexUseCase
@@ -13,11 +14,13 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemAtUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
+import com.yablunin.shopnstock.domain.usecases.user.ChangeUsernameUseCase
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import dagger.Module
@@ -87,6 +90,14 @@ class DomainModule {
     fun provideRemoveItemUseCase(listRepository: ListRepository): RemoveItemUseCase{
         return RemoveItemUseCase(listRepository = listRepository)
     }
+    @Provides
+    fun provideConvertToClipboardStringUseCase(listRepository: ListRepository): ConvertToClipboardStringUseCase{
+        return ConvertToClipboardStringUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideGenerateQRCodeBitmapUseCase(listRepository: ListRepository): GenerateQRCodeBitmapUseCase{
+        return GenerateQRCodeBitmapUseCase(listRepository = listRepository)
+    }
 
     @Provides
     fun provideSaveUserUseCase(userRepository: UserRepository): SaveUserUseCase{
@@ -95,5 +106,9 @@ class DomainModule {
     @Provides
     fun provideLoadUserUseCase(userRepository: UserRepository): LoadUserUseCase{
         return LoadUserUseCase(userRepository = userRepository)
+    }
+    @Provides
+    fun provideChangeUsernameUseCase(userRepository: UserRepository): ChangeUsernameUseCase{
+        return ChangeUsernameUseCase(userRepository = userRepository)
     }
 }

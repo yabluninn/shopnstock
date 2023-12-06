@@ -3,6 +3,7 @@ package com.yablunin.shopnstock.presentation.activities
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -263,6 +264,10 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         copyOption.setOnClickListener {
             showCopyListPopup(menuPopup)
         }
+        val shareOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_share_option)
+        shareOption.setOnClickListener {
+            showShareListPopup(menuPopup)
+        }
 
     }
     @SuppressLint("SetTextI18n")
@@ -299,8 +304,8 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         renamePopup.setContentView(R.layout.rename_list_popup)
         renamePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        renamePopup.show()
         menuPopup.dismiss()
+        renamePopup.show()
 
         val currentListNameText: TextView = renamePopup.findViewById(R.id.rename_list_current_name_text)
         currentListNameText.text = list.name
@@ -314,8 +319,8 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         copyPopup.setContentView(R.layout.copy_list_popup)
         copyPopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        copyPopup.show()
         menuPopup.dismiss()
+        copyPopup.show()
 
         val copyWholeListButton: LinearLayout = copyPopup.findViewById(R.id.copy_list_whole_button)
         copyWholeListButton.setOnClickListener{
@@ -329,9 +334,52 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         copyPurchasedItemsListButton.setOnClickListener{
             viewModel.copyList(ListConstants.COPY_PURCHASED_ITEMS_LIST, list, user, this)
         }
-        val cancelCopyListButton: TextView = copyPopup.findViewById(R.id.copy_list_cancel_button)
-        cancelCopyListButton.setOnClickListener {
+        val cancelButton: TextView = copyPopup.findViewById(R.id.copy_list_cancel_button)
+        cancelButton.setOnClickListener {
             copyPopup.dismiss()
+        }
+    }
+
+    private fun showShareListPopup(menuPopup: Dialog){
+        val sharePopup = Dialog(this)
+        sharePopup.setContentView(R.layout.share_list_popup)
+        sharePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        menuPopup.dismiss()
+        sharePopup.show()
+
+        val shareListToClipboardButton: ImageView = sharePopup.findViewById(R.id.share_list_clipboard_button)
+        shareListToClipboardButton.setOnClickListener {
+            viewModel.shareList(ListConstants.SHARE_CLIPBOARD_OPTION, list, user, this)
+            sharePopup.dismiss()
+        }
+        val shareListWithQRCodeButton: ImageView = sharePopup.findViewById(R.id.share_list_qrcode_button)
+        shareListWithQRCodeButton.setOnClickListener {
+            viewModel.shareList(ListConstants.SHARE_QRCODE_OPTION, list, user, this)
+            sharePopup.dismiss()
+            showQrCodePopup()
+        }
+
+
+        val cancelButton: TextView = sharePopup.findViewById(R.id.share_list_cancel_button)
+        cancelButton.setOnClickListener {
+            sharePopup.dismiss()
+        }
+    }
+
+    private fun showQrCodePopup(){
+        val qrCodePopup = Dialog(this)
+        qrCodePopup.setContentView(R.layout.share_qr_code_popup)
+        qrCodePopup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        qrCodePopup.show()
+
+        val qrCodeImage: ImageView = qrCodePopup.findViewById(R.id.share_qr_code_image)
+        qrCodeImage.setImageBitmap(viewModel.qrCodeBitmap)
+
+        val cancelButton: TextView = qrCodePopup.findViewById(R.id.share_qr_code_cancel_button)
+        cancelButton.setOnClickListener {
+            qrCodePopup.dismiss()
         }
     }
 }

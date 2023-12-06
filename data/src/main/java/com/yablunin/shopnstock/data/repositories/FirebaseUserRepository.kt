@@ -1,6 +1,7 @@
 package com.yablunin.shopnstock.data.repositories
 
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -39,6 +40,12 @@ class FirebaseUserRepository: UserRepository {
                 callback(null)
             }
         })
+    }
+
+    override fun changeUsername(newName: String, user: User) {
+        if (!newName.equals(user.username)){
+            user.username = newName
+        }
     }
 
 }

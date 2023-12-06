@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="dark_red">#B80000</color>
+    <color name="blue">#03A9F4</color>
 
     <color name="font">#FF673308</color>
     <color name="font_header">#c96e23</color>
@@ -21,4 +22,9 @@
 
     <color name="item_header">#554538</color>
     <color name="item_subheader">#97785F</color>
+
+    <color name="unchecked_thumb">#8c8c8c</color>
+    <color name="checked_thumb">#FFFFFF</color>
+    <color name="unchecked_track">#cdcdcd</color>
+    <color name="checked_track">#7BDD08</color>
 </resources>

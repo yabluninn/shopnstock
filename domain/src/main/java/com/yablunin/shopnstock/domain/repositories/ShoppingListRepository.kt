@@ -1,7 +1,13 @@
 package com.yablunin.shopnstock.domain.repositories
 
+import android.graphics.Bitmap
+import com.google.gson.Gson
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.yablunin.shopnstock.domain.models.ListItem
 import com.yablunin.shopnstock.domain.models.ShoppingList
+import com.yablunin.shopnstock.domain.models.User
+import java.lang.StringBuilder
 
 class ShoppingListRepository: ListRepository {
     override fun addItem(list: ShoppingList, item: ListItem) {
@@ -37,4 +43,22 @@ class ShoppingListRepository: ListRepository {
     override fun size(list: ShoppingList): Int {
         return list.list.size
     }
+
+    override fun toClipboardString(list: ShoppingList, user: User): String {
+        val formattedList = StringBuilder()
+        formattedList.append("${list.name} by ${user.username}\n")
+        for (item in list.list){
+            formattedList.append(item.toString() + "\n")
+        }
+        return formattedList.toString()
+    }
+
+    override fun generateQRCodeBitmap(list: ShoppingList): Bitmap {
+        val gson = Gson()
+        val jsonList = gson.toJson(list)
+        val barcodeEncoder = BarcodeEncoder()
+        val bitmap: Bitmap = barcodeEncoder.encodeBitmap(jsonList, BarcodeFormat.QR_CODE, 400, 400)
+        return bitmap
+    }
+
 }

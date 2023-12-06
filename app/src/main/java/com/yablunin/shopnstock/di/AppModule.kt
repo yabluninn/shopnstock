@@ -2,15 +2,18 @@ package com.yablunin.shopnstock.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
+import com.yablunin.shopnstock.domain.usecases.user.ChangeUsernameUseCase
 import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
@@ -28,14 +31,16 @@ class AppModule {
         saveUserUseCase: SaveUserUseCase,
         loadUserUseCase: LoadUserUseCase,
         addListUseCase: AddListUseCase,
-        generateListIdUseCase: GenerateListIdUseCase
+        generateListIdUseCase: GenerateListIdUseCase,
+        changeUsernameUseCase: ChangeUsernameUseCase
     ): HomeViewModelFactory {
         return HomeViewModelFactory(
             auth = auth,
             saveUserUseCase = saveUserUseCase,
             loadUserUseCase = loadUserUseCase,
             addListUseCase = addListUseCase,
-            generateListIdUseCase = generateListIdUseCase
+            generateListIdUseCase = generateListIdUseCase,
+            changeUsernameUseCase = changeUsernameUseCase
         )
     }
 
@@ -60,7 +65,9 @@ class AppModule {
         getListByIdUseCase: GetListByIdUseCase,
         renameListUseCase: RenameListUseCase,
         copyListUseCase: CopyListUseCase,
-        addListUseCase: AddListUseCase
+        addListUseCase: AddListUseCase,
+        convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
+        generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase
     ): ShoppingListViewModelFactory{
         return ShoppingListViewModelFactory(
             saveUserUseCase = saveUserUseCase,
@@ -72,7 +79,9 @@ class AppModule {
             getListByIdUseCase = getListByIdUseCase,
             renameListUseCase = renameListUseCase,
             copyListUseCase = copyListUseCase,
-            addListUseCase = addListUseCase
+            addListUseCase = addListUseCase,
+            convertToClipboardStringUseCase = convertToClipboardStringUseCase,
+            generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase
         )
     }
 

@@ -6,7 +6,12 @@ import android.widget.TextView
 import android.widget.Toast
 import com.yablunin.shopnstock.R
 
-class SuccessfulToast(var context: Context, var message: String, var duration: Int, val gravity: Int) {
+class SuccessfulToast(
+    var context: Context,
+    var message: String,
+    var duration: Int,
+    val gravity: Int
+) {
 
     fun show(){
         val layout = LayoutInflater.from(context).inflate(R.layout.success_toast_layout, null)

@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Shopnstock"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.activities.ConfigurationActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.activities.ShoppingListActivity"
             android:exported="false"
             android:label="@string/title_activity_shopping_list"

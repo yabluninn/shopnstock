@@ -3,10 +3,12 @@ package com.yablunin.shopnstock.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
@@ -23,7 +25,9 @@ class ShoppingListViewModelFactory(
     val getListByIdUseCase: GetListByIdUseCase,
     val renameListUseCase: RenameListUseCase,
     val copyListUseCase: CopyListUseCase,
-    val addListUseCase: AddListUseCase
+    val addListUseCase: AddListUseCase,
+    val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
+    val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ShoppingListViewModel(
@@ -36,7 +40,9 @@ class ShoppingListViewModelFactory(
             getListByIdUseCase = getListByIdUseCase,
             renameListUseCase = renameListUseCase,
             copyListUseCase = copyListUseCase,
-            addListUseCase = addListUseCase
+            addListUseCase = addListUseCase,
+            convertToClipboardStringUseCase = convertToClipboardStringUseCase,
+            generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase
         ) as T
     }
 }
