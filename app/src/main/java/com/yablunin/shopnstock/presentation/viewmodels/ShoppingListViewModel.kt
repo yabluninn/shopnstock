@@ -19,6 +19,7 @@ import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
@@ -28,6 +29,7 @@ import com.yablunin.shopnstock.domain.usecases.list.handler.RemoveListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.RenameListUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import com.yablunin.shopnstock.presentation.activities.HomeActivity
+import com.yablunin.shopnstock.presentation.toasts.ErrorToast
 import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 
 class ShoppingListViewModel(
@@ -42,15 +44,18 @@ class ShoppingListViewModel(
     private val copyListUseCase: CopyListUseCase,
     private val addListUseCase: AddListUseCase,
     private val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
-    private val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase
+    private val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
+    private val getTotalPriceUseCase: GetTotalPriceUseCase
 ): ViewModel() {
 
     private val mutableListData = MutableLiveData<ShoppingList>()
     private val mutableListSizeData = MutableLiveData<Int>()
     private val mutableCompletedItemsCountData = MutableLiveData<Int>()
+    private val mutableTotalPriceData = MutableLiveData<Double>()
     val listData: LiveData<ShoppingList> = mutableListData
     val listSizeData: LiveData<Int> = mutableListSizeData
     val completedItemsCountData: LiveData<Int> = mutableCompletedItemsCountData
+    val totalPriceLiveData: LiveData<Double> = mutableTotalPriceData
 
     var qrCodeBitmap: Bitmap? = null
 
@@ -77,27 +82,42 @@ class ShoppingListViewModel(
     }
 
     fun addItem(name: String, quantity: Int, price: Double, unit: String, expirationDate: String, user: User, context: Context){
-        val itemId = listSizeData.value!!
-        val item =
-            ListItem(
-                itemId,
-                name,
-                quantity,
-                price,
-                unit,
-                expirationDate
+        val list = listData.value!!
+        val itemTotalPrice = quantity * price
+        val totalPrice = totalPriceLiveData.value!!
+        if (list.budget >= (itemTotalPrice + totalPrice)){
+            val itemId = listSizeData.value!!
+            val item =
+                ListItem(
+                    itemId,
+                    name,
+                    quantity,
+                    price,
+                    unit,
+                    expirationDate
+                )
+
+            addItemUseCase.execute(list, item)
+            saveUser(user)
+            getTotalPrice(list)
+
+            val successfulToast = SuccessfulToast(
+                context,
+                context.getString(R.string.successful_add_item),
+                Toast.LENGTH_LONG,
+                Gravity.TOP
             )
-
-        addItemUseCase.execute(listData.value!!, item)
-        saveUser(user)
-
-        val successfulToast = SuccessfulToast(
-            context,
-            context.getString(R.string.successful_add_item),
-            Toast.LENGTH_LONG,
-            Gravity.TOP
-        )
-        successfulToast.show()
+            successfulToast.show()
+        }
+        else{
+            val errorToast = ErrorToast(
+                context,
+                context.getString(R.string.error_budget_limit_reached),
+                Toast.LENGTH_LONG,
+                Gravity.TOP
+            )
+            errorToast.show()
+        }
     }
 
     fun saveUser(user: User){
@@ -112,8 +132,10 @@ class ShoppingListViewModel(
     }
 
     fun removeItem(item: ListItem, user: User){
-        removeItemUseCase.execute(listData.value!!, item)
+        val list = listData.value!!
+        removeItemUseCase.execute(list, item)
         saveUser(user)
+        getTotalPrice(list)
     }
 
     fun renameList(newName: String, user: User){
@@ -150,5 +172,9 @@ class ShoppingListViewModel(
                 qrCodeBitmap = generateQRCodeBitmapUseCase.execute(list)
             }
         }
+    }
+
+    fun getTotalPrice(list: ShoppingList){
+        mutableTotalPriceData.value = getTotalPriceUseCase.execute(list)
     }
 }

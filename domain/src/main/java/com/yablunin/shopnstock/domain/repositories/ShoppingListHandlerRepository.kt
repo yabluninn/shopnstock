@@ -36,7 +36,7 @@ class ShoppingListHandlerRepository: ListHandlerRepository {
         else{
             copiedListName = list.name + " (copy)"
         }
-        val copiedList = ShoppingList(generateListId(user), copiedListName)
+        val copiedList = ShoppingList(generateListId(user), copiedListName, list.budget)
         when(copyAction){
             ListConstants.COPY_WHOLE_LIST -> {
                 for (item in list.list){

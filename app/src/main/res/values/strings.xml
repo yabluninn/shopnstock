@@ -7,6 +7,7 @@
     <string name="error_email_already_in_use">Email already in use. Try again!</string>
     <string name="error_weak_password">Weak password (Min length: 6). Try again!</string>
     <string name="error_scanning_list">Error scanning QR-code. Try again!</string>
+    <string name="error_budget_limit_reached">You reached budget limit!</string>
 
     <!-- Successful messages -->
     <string name="successful_add_item">Item successfully added to your list!</string>
@@ -61,5 +62,13 @@
     <string name="change_password_enter_current">Enter current password</string>
     <string name="change_password_new">New password</string>
     <string name="change_password_enter_new">Enter new password</string>
+    <string name="add_new_item_price_header">Price (per unit)</string>
+    <string name="add_new_item_name_header">Item name</string>
+    <string name="add_new_item_quantity_header">Quantity</string>
+    <string name="add_new_item_unit_header">Unit</string>
+    <string name="add_new_item_exp_date_header">Expiration date</string>
+    <string name="add">Add</string>
+    <string name="add_new_item_header">Add new item</string>
+    <string name="create_new_list_budget_hint">Budget (max)</string>
 
 </resources>

@@ -11,6 +11,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCas
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIdUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIndexUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemAtUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
@@ -97,6 +98,10 @@ class DomainModule {
     @Provides
     fun provideGenerateQRCodeBitmapUseCase(listRepository: ListRepository): GenerateQRCodeBitmapUseCase{
         return GenerateQRCodeBitmapUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideGetTotalPriceUseCase(listRepository: ListRepository): GetTotalPriceUseCase{
+        return GetTotalPriceUseCase(listRepository = listRepository)
     }
 
     @Provides

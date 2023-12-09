@@ -66,8 +66,10 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         viewModel = ViewModelProvider(this, viewModelFactory).get(ShoppingListViewModel::class.java)
 
         viewModel.listData.observe(this){ _list ->
-            list = _list
-            updateListUI()
+            if (_list != null) {
+                list = _list
+                updateListUI()
+            }
         }
 
         user = intent.getSerializableExtra("user_data") as User
@@ -85,6 +87,7 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
     }
 
 
+    @SuppressLint("SetTextI18n")
     fun updateListUI(){
         binding.shoppingListNameText.text = list.name
         binding.shoppingListEmptyListObj.visibility = View.GONE
@@ -95,6 +98,10 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
 
         viewModel.getCompletedItemsCount()
         val completedItemsCount = viewModel.completedItemsCountData.value!!
+        viewModel.getTotalPrice(list)
+        val totalPrice = viewModel.totalPriceLiveData.value ?: 0.0
+
+        binding.shoppingListPriceBudgetText.text = "Worth: $totalPrice USD (max: ${list.budget})"
 
         setListAdapterContent(listSize, completedItemsCount)
     }

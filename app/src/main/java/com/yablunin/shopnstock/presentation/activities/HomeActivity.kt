@@ -154,8 +154,9 @@ class HomeActivity : AppCompatActivity(), Initiable {
 
         val createNewListButton: Button = dialog.findViewById(R.id.create_list_button)
         val createNewListInput: EditText = dialog.findViewById(R.id.create_list_name_input)
+        val createNewListBudgetInput: EditText = dialog.findViewById(R.id.create_list_budget_input)
         createNewListButton.setOnClickListener {
-            createList(dialog, createNewListInput)
+            createList(dialog, createNewListInput, createNewListBudgetInput)
         }
 
         val scanQrCodeButton: LinearLayout = dialog.findViewById(R.id.scan_list_button)
@@ -164,15 +165,17 @@ class HomeActivity : AppCompatActivity(), Initiable {
         }
     }
 
-    private fun createList(dialog: Dialog, createNewListInput: EditText){
+    private fun createList(dialog: Dialog, createNewListInput: EditText, budgetInput: EditText){
         dialog.dismiss()
-        if (!createNewListInput.text.trim().isEmpty()){
+        if (createNewListInput.text.trim().isNotEmpty() && budgetInput.text.trim().isNotEmpty()){
             val listName: String = createNewListInput.text.trim().toString()
+            val listBudget: Double = budgetInput.text.toString().toDouble()
             viewModel.generateListId()
             val listId = viewModel.listIdLiveData.value!!
             val list = ShoppingList(
                 listId,
-                listName
+                listName,
+                listBudget
             )
 
             val nothingBackground: LinearLayout = binding.homeNothingObj

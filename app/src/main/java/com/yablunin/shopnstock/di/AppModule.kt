@@ -5,6 +5,7 @@ import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
+import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
@@ -67,7 +68,8 @@ class AppModule {
         copyListUseCase: CopyListUseCase,
         addListUseCase: AddListUseCase,
         convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
-        generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase
+        generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
+        getTotalPriceUseCase: GetTotalPriceUseCase
     ): ShoppingListViewModelFactory{
         return ShoppingListViewModelFactory(
             saveUserUseCase = saveUserUseCase,
@@ -81,7 +83,8 @@ class AppModule {
             copyListUseCase = copyListUseCase,
             addListUseCase = addListUseCase,
             convertToClipboardStringUseCase = convertToClipboardStringUseCase,
-            generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase
+            generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase,
+            getTotalPriceUseCase = getTotalPriceUseCase
         )
     }
 

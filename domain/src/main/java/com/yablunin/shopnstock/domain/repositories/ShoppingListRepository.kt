@@ -61,4 +61,13 @@ class ShoppingListRepository: ListRepository {
         return bitmap
     }
 
+    override fun getTotalPrice(list: ShoppingList): Double {
+        var totalPrice = 0.0
+        for (item in list.list){
+            val itemPrice = item.price * item.quantity
+            totalPrice += itemPrice
+        }
+        return totalPrice
+    }
+
 }
