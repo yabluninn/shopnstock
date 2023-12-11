@@ -35,8 +35,10 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("com.google.firebase:firebase-auth-ktx:22.2.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
     implementation("com.google.firebase:firebase-database-ktx:20.3.0")
+
+    implementation ("com.google.code.gson:gson:2.8.9")
 
     implementation(project(":domain"))
 

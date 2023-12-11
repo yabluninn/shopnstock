@@ -8,6 +8,7 @@
     <string name="error_weak_password">Weak password (Min length: 6). Try again!</string>
     <string name="error_scanning_list">Error scanning QR-code. Try again!</string>
     <string name="error_budget_limit_reached">You reached budget limit!</string>
+    <string name="error_changing_budget">Error changing budget. Try again!</string>
 
     <!-- Successful messages -->
     <string name="successful_add_item">Item successfully added to your list!</string>
@@ -70,5 +71,8 @@
     <string name="add">Add</string>
     <string name="add_new_item_header">Add new item</string>
     <string name="create_new_list_budget_hint">Budget (max)</string>
+    <string name="list_menu_edit_budget">Edit budget</string>
+    <string name="change_budget_header">Change list budget</string>
+    <string name="change_budget_new">New budget</string>
 
 </resources>

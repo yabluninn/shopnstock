@@ -22,6 +22,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ChangeBudgetUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
@@ -45,7 +46,8 @@ class ShoppingListViewModel(
     private val addListUseCase: AddListUseCase,
     private val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
     private val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
-    private val getTotalPriceUseCase: GetTotalPriceUseCase
+    private val getTotalPriceUseCase: GetTotalPriceUseCase,
+    private val changeBudgetUseCase: ChangeBudgetUseCase
 ): ViewModel() {
 
     private val mutableListData = MutableLiveData<ShoppingList>()
@@ -176,5 +178,22 @@ class ShoppingListViewModel(
 
     fun getTotalPrice(list: ShoppingList){
         mutableTotalPriceData.value = getTotalPriceUseCase.execute(list)
+    }
+
+    fun changeBudget(newBudget: Double, user: User, context: Context){
+        val totalPrice = totalPriceLiveData.value!!
+        if (listData.value!!.budget != newBudget && newBudget > 0 && newBudget >= totalPrice){
+            changeBudgetUseCase.execute(listData.value!!, newBudget)
+            saveUser(user)
+        }
+        else{
+            val errorToast = ErrorToast(
+                context,
+                context.getString(R.string.error_changing_budget),
+                Toast.LENGTH_LONG,
+                Gravity.TOP
+            )
+            errorToast.show()
+        }
     }
 }

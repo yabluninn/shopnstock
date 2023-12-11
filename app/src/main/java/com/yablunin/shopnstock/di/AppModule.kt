@@ -1,6 +1,11 @@
 package com.yablunin.shopnstock.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
+import com.yablunin.shopnstock.domain.models.Configuration
+import com.yablunin.shopnstock.domain.usecases.config.LoadConfigUseCase
+import com.yablunin.shopnstock.domain.usecases.config.SaveConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
@@ -8,6 +13,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ChangeBudgetUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
@@ -19,13 +25,24 @@ import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModelFactory
 import com.yablunin.shopnstock.presentation.viewmodels.LoginViewModelFactory
+import com.yablunin.shopnstock.presentation.viewmodels.MainViewModelFactory
 import com.yablunin.shopnstock.presentation.viewmodels.ShoppingListViewModelFactory
 import com.yablunin.shopnstock.presentation.viewmodels.SignupViewModelFactory
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class AppModule {
+
+    @Provides
+    fun provideMainViewModelFactory(
+        loadConfigUseCase: LoadConfigUseCase
+    ): MainViewModelFactory{
+        return MainViewModelFactory(
+            loadConfigUseCase = loadConfigUseCase
+        )
+    }
     @Provides
     fun provideHomeViewModelFactory(
         auth: FirebaseAuth,
@@ -33,7 +50,9 @@ class AppModule {
         loadUserUseCase: LoadUserUseCase,
         addListUseCase: AddListUseCase,
         generateListIdUseCase: GenerateListIdUseCase,
-        changeUsernameUseCase: ChangeUsernameUseCase
+        changeUsernameUseCase: ChangeUsernameUseCase,
+        loadConfigUseCase: LoadConfigUseCase,
+        saveConfigUseCase: SaveConfigUseCase
     ): HomeViewModelFactory {
         return HomeViewModelFactory(
             auth = auth,
@@ -41,7 +60,9 @@ class AppModule {
             loadUserUseCase = loadUserUseCase,
             addListUseCase = addListUseCase,
             generateListIdUseCase = generateListIdUseCase,
-            changeUsernameUseCase = changeUsernameUseCase
+            changeUsernameUseCase = changeUsernameUseCase,
+            loadConfigUseCase = loadConfigUseCase,
+            saveConfigUseCase = saveConfigUseCase
         )
     }
 
@@ -69,7 +90,8 @@ class AppModule {
         addListUseCase: AddListUseCase,
         convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
         generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
-        getTotalPriceUseCase: GetTotalPriceUseCase
+        getTotalPriceUseCase: GetTotalPriceUseCase,
+        changeBudgetUseCase: ChangeBudgetUseCase
     ): ShoppingListViewModelFactory{
         return ShoppingListViewModelFactory(
             saveUserUseCase = saveUserUseCase,
@@ -84,7 +106,8 @@ class AppModule {
             addListUseCase = addListUseCase,
             convertToClipboardStringUseCase = convertToClipboardStringUseCase,
             generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase,
-            getTotalPriceUseCase = getTotalPriceUseCase
+            getTotalPriceUseCase = getTotalPriceUseCase,
+            changeBudgetUseCase = changeBudgetUseCase
         )
     }
 

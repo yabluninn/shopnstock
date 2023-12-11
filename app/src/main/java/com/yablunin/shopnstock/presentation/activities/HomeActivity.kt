@@ -26,6 +26,8 @@ import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.app.App
 import com.yablunin.shopnstock.presentation.adapters.ShoppingListAdapter
 import com.yablunin.shopnstock.databinding.ActivityHomeBinding
+import com.yablunin.shopnstock.domain.enums.AppTheme
+import com.yablunin.shopnstock.domain.models.Configuration
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Initiable
@@ -51,6 +53,8 @@ class HomeActivity : AppCompatActivity(), Initiable {
     private lateinit var viewModel: HomeViewModel
 
     private lateinit var createListDialog: Dialog
+
+    private lateinit var configuration: Configuration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -110,6 +114,9 @@ class HomeActivity : AppCompatActivity(), Initiable {
                 viewModel.loadUser()
             }
         }
+
+        viewModel.loadConfiguration()
+        configuration = viewModel.configuration!!
 
         binding.homeCreateTaskButton.setOnClickListener{
             showCreateListDialog()
@@ -265,6 +272,20 @@ class HomeActivity : AppCompatActivity(), Initiable {
             }
             else{
                 // TODO Disable push notifications
+            }
+        }
+
+        val changeAppThemeSettingsItem: SettingsItemWithSwitchView = dialog.findViewById(R.id.settings_app_theme_switch)
+        changeAppThemeSettingsItem.title("Dark theme")
+        changeAppThemeSettingsItem.setOnSwitchCheckedListener { isChecked ->
+            viewModel.enableDarkTheme(isChecked)
+        }
+        when(configuration.theme){
+            AppTheme.THEME_LIGHT ->{
+                changeAppThemeSettingsItem.setCheckedState(false)
+            }
+            AppTheme.THEME_DARK ->{
+                changeAppThemeSettingsItem.setCheckedState(true)
             }
         }
 

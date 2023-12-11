@@ -10,4 +10,5 @@ interface ListHandlerRepository {
     fun getListById(user: User, id: Int): ShoppingList?
     fun generateListId(user: User): Int
     fun copyList(copyAction: Int, list: ShoppingList, user: User): ShoppingList
+    fun changeBudget(list: ShoppingList, newBudget: Double)
 }

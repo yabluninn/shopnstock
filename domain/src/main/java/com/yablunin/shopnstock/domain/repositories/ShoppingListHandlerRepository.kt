@@ -61,6 +61,10 @@ class ShoppingListHandlerRepository: ListHandlerRepository {
         return copiedList
     }
 
+    override fun changeBudget(list: ShoppingList, newBudget: Double) {
+        list.budget = newBudget
+    }
+
     override fun renameList(list: ShoppingList, newName: String, user: User) {
         user.shoppingLists.find { it.id == list.id }!!.name = newName
     }

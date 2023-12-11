@@ -8,8 +8,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.yablunin.shopnstock.R
+import com.yablunin.shopnstock.domain.enums.AppTheme
+import com.yablunin.shopnstock.domain.models.Configuration
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
+import com.yablunin.shopnstock.domain.usecases.config.LoadConfigUseCase
+import com.yablunin.shopnstock.domain.usecases.config.SaveConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GenerateListIdUseCase
 import com.yablunin.shopnstock.domain.usecases.user.ChangeUsernameUseCase
@@ -24,13 +28,17 @@ class HomeViewModel(
     private val addListUseCase: AddListUseCase,
     private val generateListIdUseCase: GenerateListIdUseCase,
     private val loadUserUseCase: LoadUserUseCase,
-    private val changeUsernameUseCase: ChangeUsernameUseCase
+    private val changeUsernameUseCase: ChangeUsernameUseCase,
+    private val loadConfigUseCase: LoadConfigUseCase,
+    private val saveConfigUseCase: SaveConfigUseCase
 ): ViewModel() {
 
     private val mutableUserLiveData = MutableLiveData<User>()
     private val mutableListIdLiveData = MutableLiveData<Int>()
     val userLiveData: LiveData<User> = mutableUserLiveData
     val listIdLiveData: LiveData<Int> = mutableListIdLiveData
+
+    var configuration: Configuration? = null
 
     override fun onCleared() {
         super.onCleared()
@@ -92,5 +100,23 @@ class HomeViewModel(
                 errorToast.show()
             }
         }
+    }
+
+    private fun saveConfiguration(configuration: Configuration){
+        saveConfigUseCase.execute(configuration)
+    }
+
+    fun loadConfiguration(){
+        configuration = loadConfigUseCase.execute()
+    }
+
+    fun enableDarkTheme(enable: Boolean){
+        if (enable){
+            configuration!!.theme = AppTheme.THEME_DARK
+        }
+        else{
+            configuration!!.theme = AppTheme.THEME_LIGHT
+        }
+        saveConfiguration(configuration!!)
     }
 }
