@@ -81,5 +81,19 @@
     <string name="push_notifications_title">Enable push notifications</string>
     <string name="dark_theme_title">Dark theme</string>
     <string name="change_language_title">Change language</string>
+    <string name="log_in">Log in</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="log_in_button">Log in</string>
+    <string name="log_in_with_google">Log in with Google</string>
+    <string name="log_in_with_facebook">Log in with Facebook</string>
+    <string name="new_here_create_account">New here? Create account</string>
+    <string name="shop_smart_stay_fresh">Shop Smart, Stay Fresh!</string>
+    <string name="sign_up_button">Sign up</string>
+    <string name="create_account">Create account</string>
+    <string name="username">Username</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="sign_up_with_facebook">Sign up with Facebook</string>
+    <string name="already_have_account_log_in">Already have account? Log in</string>
 
 </resources>

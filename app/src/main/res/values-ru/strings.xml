@@ -72,4 +72,18 @@
     <string name="push_notifications_title">Уведомления</string>
     <string name="dark_theme_title">Темная тема</string>
     <string name="change_language_title">Изменить язык</string>
+    <string name="log_in">Авторизация</string>
+    <string name="e_mail">Эл. почта</string>
+    <string name="password">Пароль</string>
+    <string name="log_in_button">Войти</string>
+    <string name="log_in_with_google">Войти с Google</string>
+    <string name="log_in_with_facebook">Войти с Facebook</string>
+    <string name="new_here_create_account">Нет аккаунта? Зарегистрируйтесь</string>
+    <string name="shop_smart_stay_fresh">Покупай с пользой и комфортом!</string>
+    <string name="sign_up_button">Зарегистрироваться</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="username">Никнейм</string>
+    <string name="sign_up_with_google">Используя Google</string>
+    <string name="sign_up_with_facebook">Используя Facebook</string>
+    <string name="already_have_account_log_in">Есть аккаунт? Войдите</string>
 </resources>
