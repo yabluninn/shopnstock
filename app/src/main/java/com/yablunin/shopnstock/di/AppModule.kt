@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.yablunin.shopnstock.domain.models.Configuration
+import com.yablunin.shopnstock.domain.usecases.api.GetFlagImageUseCase
 import com.yablunin.shopnstock.domain.usecases.config.LoadConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.config.SaveConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
@@ -52,7 +53,8 @@ class AppModule {
         generateListIdUseCase: GenerateListIdUseCase,
         changeUsernameUseCase: ChangeUsernameUseCase,
         loadConfigUseCase: LoadConfigUseCase,
-        saveConfigUseCase: SaveConfigUseCase
+        saveConfigUseCase: SaveConfigUseCase,
+        getFlagImageUseCase: GetFlagImageUseCase
     ): HomeViewModelFactory {
         return HomeViewModelFactory(
             auth = auth,
@@ -62,7 +64,8 @@ class AppModule {
             generateListIdUseCase = generateListIdUseCase,
             changeUsernameUseCase = changeUsernameUseCase,
             loadConfigUseCase = loadConfigUseCase,
-            saveConfigUseCase = saveConfigUseCase
+            saveConfigUseCase = saveConfigUseCase,
+            getFlagImageUseCase = getFlagImageUseCase
         )
     }
 

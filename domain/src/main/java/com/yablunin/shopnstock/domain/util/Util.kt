@@ -1,10 +1,6 @@
 package com.yablunin.shopnstock.domain.util
 
-import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
+import android.graphics.Bitmap
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -22,4 +18,21 @@ abstract class Formatter{
             return sdf.format(calendar.time)
         }
     }
+}
+
+class Language(
+    val languageCode: String,
+    val language: String,
+    val countryCode: String
+)
+
+class Flag(
+    val language: Language,
+    val bitmap: Bitmap?
+)
+
+object LanguageConstants{
+    const val ENGLISH = "en"
+    const val RUSSIAN = "ru"
+    const val UKRAINIAN = "ua"
 }

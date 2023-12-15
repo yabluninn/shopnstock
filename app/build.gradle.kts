@@ -69,6 +69,10 @@ dependencies {
     kapt ("com.google.dagger:dagger-compiler:2.48.1")
     implementation("javax.inject:javax.inject:1")
 
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+
 
     testImplementation("junit:junit:4.13.2")
 //    testImplementation ("io.insert-koin:koin-test:$koin_version")

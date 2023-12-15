@@ -31,6 +31,7 @@ import com.yablunin.shopnstock.domain.models.Configuration
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.util.Initiable
+import com.yablunin.shopnstock.presentation.adapters.LanguageAdapter
 import com.yablunin.shopnstock.presentation.custom_views.SettingsItemWithButtonView
 import com.yablunin.shopnstock.presentation.custom_views.SettingsItemWithSwitchView
 import com.yablunin.shopnstock.presentation.toasts.ErrorToast
@@ -50,7 +51,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
     @Inject
     lateinit var viewModelFactory: HomeViewModelFactory
 
-    private lateinit var viewModel: HomeViewModel
+    lateinit var viewModel: HomeViewModel
 
     private lateinit var createListDialog: Dialog
 
@@ -104,6 +105,11 @@ class HomeActivity : AppCompatActivity(), Initiable {
         (applicationContext as App).appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
+        viewModel.loadConfiguration()
+        configuration = viewModel.configuration!!
+        viewModel.setAppLocale(this, configuration.language)
+//        recreate()
+
         viewModel.userLiveData.observe(this) { _user ->
             user = _user
             updateUI()
@@ -115,8 +121,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
             }
         }
 
-        viewModel.loadConfiguration()
-        configuration = viewModel.configuration!!
+        viewModel.initFlags()
 
         binding.homeCreateTaskButton.setOnClickListener{
             showCreateListDialog()
@@ -251,21 +256,21 @@ class HomeActivity : AppCompatActivity(), Initiable {
         dialog.show()
 
         val changeUsernameSettingsItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_username_view)
-        changeUsernameSettingsItem.title("Change username")
+        changeUsernameSettingsItem.title(getString(R.string.change_username_title))
         changeUsernameSettingsItem.setOnButtonClickListener {
             dialog.dismiss()
             showChangeUsernamePopup()
         }
 
         val changePasswordSettingItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_password_view)
-        changePasswordSettingItem.title("Change password")
+        changePasswordSettingItem.title(getString(R.string.change_password_title))
         changePasswordSettingItem.setOnButtonClickListener {
            dialog.dismiss()
             showChangePasswordPopup()
         }
 
         val enableNotificationsSettingsItem: SettingsItemWithSwitchView = dialog.findViewById(R.id.settings_enable_notifications_switch)
-        enableNotificationsSettingsItem.title("Enable push notifications")
+        enableNotificationsSettingsItem.title(getString(R.string.push_notifications_title))
         enableNotificationsSettingsItem.setOnSwitchCheckedListener { isChecked ->
             if (isChecked){
                 // TODO Enable push notifications
@@ -276,7 +281,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
         }
 
         val changeAppThemeSettingsItem: SettingsItemWithSwitchView = dialog.findViewById(R.id.settings_app_theme_switch)
-        changeAppThemeSettingsItem.title("Dark theme")
+        changeAppThemeSettingsItem.title(getString(R.string.dark_theme_title))
         changeAppThemeSettingsItem.setOnSwitchCheckedListener { isChecked ->
             viewModel.enableDarkTheme(isChecked)
         }
@@ -287,6 +292,13 @@ class HomeActivity : AppCompatActivity(), Initiable {
             AppTheme.THEME_DARK ->{
                 changeAppThemeSettingsItem.setCheckedState(true)
             }
+        }
+
+        val changeLanguageSettingsItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_language_view)
+        changeLanguageSettingsItem.title(getString(R.string.change_language_title))
+        changeLanguageSettingsItem.setOnButtonClickListener {
+            dialog.dismiss()
+            showChangeLanguagePopup()
         }
 
         val cancelButton: ImageView = dialog.findViewById(R.id.settings_cancel_button)
@@ -360,6 +372,30 @@ class HomeActivity : AppCompatActivity(), Initiable {
                 }
             }
         }
+        cancelButton.setOnClickListener {
+            popup.dismiss()
+        }
+    }
+
+    private fun showChangeLanguagePopup(){
+        val popup = Dialog(this)
+        popup.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        popup.setContentView(R.layout.bottom_dialog_change_language)
+
+        val window = popup.window
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        val drawable = ColorDrawable(Color.TRANSPARENT)
+        window?.setBackgroundDrawable(drawable)
+        window?.attributes?.windowAnimations = R.style.BottomSheetAnimation
+        window?.setGravity(Gravity.BOTTOM)
+
+        popup.show()
+
+        val rcView: RecyclerView = popup.findViewById(R.id.change_language_rc_view)
+        rcView.layoutManager = LinearLayoutManager(this)
+        rcView.adapter = LanguageAdapter(viewModel.languages, this, this)
+
+        val cancelButton: ImageView = popup.findViewById(R.id.change_language_cancel_button)
         cancelButton.setOnClickListener {
             popup.dismiss()
         }

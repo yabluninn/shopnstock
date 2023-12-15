@@ -3,6 +3,7 @@ package com.yablunin.shopnstock.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.yablunin.shopnstock.domain.usecases.api.GetFlagImageUseCase
 import com.yablunin.shopnstock.domain.usecases.config.LoadConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.config.SaveConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
@@ -19,7 +20,8 @@ class HomeViewModelFactory(
     val generateListIdUseCase: GenerateListIdUseCase,
     val changeUsernameUseCase: ChangeUsernameUseCase,
     val loadConfigUseCase: LoadConfigUseCase,
-    val saveConfigUseCase: SaveConfigUseCase
+    val saveConfigUseCase: SaveConfigUseCase,
+    val getFlagImageUseCase: GetFlagImageUseCase
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -31,7 +33,8 @@ class HomeViewModelFactory(
             generateListIdUseCase = generateListIdUseCase,
             changeUsernameUseCase = changeUsernameUseCase,
             loadConfigUseCase = loadConfigUseCase,
-            saveConfigUseCase = saveConfigUseCase
+            saveConfigUseCase = saveConfigUseCase,
+            getFlagImageUseCase = getFlagImageUseCase
         ) as T
     }
 }

@@ -6,7 +6,7 @@ import com.yablunin.shopnstock.domain.enums.SortingOrder
 class Configuration(
     // App config
     var theme: AppTheme,
-    val language: String,
+    var language: String,
 
     // User config
     val passwordRecoveryEnabled: Boolean,

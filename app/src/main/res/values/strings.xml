@@ -16,7 +16,7 @@
     <string name="successful_copy_to_clipboard_list">List successfully copied to clipboard!</string>
     <string name="successful_update_password">Password successfully updated!</string>
 
-    <string name="title_activity_shopping_list">ShoppingListActivity</string>
+    <string name="title_activity_shopping_list" translatable="false">ShoppingListActivity</string>
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -74,5 +74,12 @@
     <string name="list_menu_edit_budget">Edit budget</string>
     <string name="change_budget_header">Change list budget</string>
     <string name="change_budget_new">New budget</string>
+    <string name="change_language_header">Change language</string>
+
+    <string name="change_username_title">Change username</string>
+    <string name="change_password_title">Change password</string>
+    <string name="push_notifications_title">Enable push notifications</string>
+    <string name="dark_theme_title">Dark theme</string>
+    <string name="change_language_title">Change language</string>
 
 </resources>

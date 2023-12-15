@@ -1,11 +1,13 @@
 package com.yablunin.shopnstock.di
 
 import com.yablunin.shopnstock.domain.repositories.ConfigRepository
+import com.yablunin.shopnstock.domain.repositories.FlagsRepository
 import com.yablunin.shopnstock.domain.repositories.ListHandlerRepository
 import com.yablunin.shopnstock.domain.repositories.ListRepository
 import com.yablunin.shopnstock.domain.repositories.ShoppingListHandlerRepository
 import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
 import com.yablunin.shopnstock.domain.repositories.UserRepository
+import com.yablunin.shopnstock.domain.usecases.api.GetFlagImageUseCase
 import com.yablunin.shopnstock.domain.usecases.config.LoadConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.config.SaveConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
@@ -132,5 +134,10 @@ class DomainModule {
     @Provides
     fun provideLoadConfigUseCase(configRepository: ConfigRepository): LoadConfigUseCase{
         return LoadConfigUseCase(configRepository = configRepository)
+    }
+
+    @Provides
+    fun provideGetFlagImageUseCase(flagsRepository: FlagsRepository): GetFlagImageUseCase{
+        return GetFlagImageUseCase(flagsRepository = flagsRepository)
     }
 }
