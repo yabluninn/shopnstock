@@ -70,4 +70,15 @@ class ShoppingListRepository: ListRepository {
         return totalPrice
     }
 
+    override fun deletePurchasedItems(list: ShoppingList) {
+        list.list.removeIf { it.purchased }
+    }
+
+    override fun uncheckAllItems(list: ShoppingList) {
+        for (item in list.list){
+            item.purchased = false
+        }
+    }
+
+
 }

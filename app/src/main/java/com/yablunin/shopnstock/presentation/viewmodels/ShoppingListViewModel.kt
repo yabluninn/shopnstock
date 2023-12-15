@@ -16,11 +16,13 @@ import com.yablunin.shopnstock.domain.models.ListItem
 import com.yablunin.shopnstock.domain.models.ShoppingList
 import com.yablunin.shopnstock.domain.models.User
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.DeletePurchasedItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.UncheckAllItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ChangeBudgetUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
@@ -47,7 +49,9 @@ class ShoppingListViewModel(
     private val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
     private val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
     private val getTotalPriceUseCase: GetTotalPriceUseCase,
-    private val changeBudgetUseCase: ChangeBudgetUseCase
+    private val changeBudgetUseCase: ChangeBudgetUseCase,
+    private val deletePurchasedItemsUseCase: DeletePurchasedItemsUseCase,
+    private val uncheckAllItemsUseCase: UncheckAllItemsUseCase
 ): ViewModel() {
 
     private val mutableListData = MutableLiveData<ShoppingList>()
@@ -195,5 +199,29 @@ class ShoppingListViewModel(
             )
             errorToast.show()
         }
+    }
+
+    fun deletePurchasedItems(user: User, context: Context){
+        deletePurchasedItemsUseCase.execute(listData.value!!)
+        saveUser(user)
+        val successfulToast = SuccessfulToast(
+            context,
+            "",
+            Toast.LENGTH_LONG,
+            Gravity.BOTTOM
+        )
+        successfulToast.show()
+    }
+
+    fun uncheckAllItems(user: User, context: Context){
+        uncheckAllItemsUseCase.execute(listData.value!!)
+        saveUser(user)
+        val successfulToast = SuccessfulToast(
+            context,
+            "",
+            Toast.LENGTH_LONG,
+            Gravity.BOTTOM
+        )
+        successfulToast.show()
     }
 }

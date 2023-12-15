@@ -270,6 +270,18 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         shareOption.setOnClickListener {
             showShareListPopup(menuPopup)
         }
+        val deletePurchasedOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_delete_purchased_option)
+        deletePurchasedOption.setOnClickListener {
+            viewModel.deletePurchasedItems(user, this)
+            menuPopup.dismiss()
+            updateListUI()
+        }
+        val uncheckAllOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_uncheck_all_option)
+        uncheckAllOption.setOnClickListener {
+            viewModel.uncheckAllItems(user, this)
+            menuPopup.dismiss()
+            updateListUI()
+        }
     }
     @SuppressLint("SetTextI18n")
     fun showDeleteItemPopup(item: ListItem){

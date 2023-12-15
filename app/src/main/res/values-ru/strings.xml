@@ -13,6 +13,8 @@
     <string name="successful_create_list">Список успешно создан!</string>
     <string name="successful_copy_to_clipboard_list">Список скопирован в буфер обмена</string>
     <string name="successful_update_password">Пароль успешно изменен</string>
+    <string name="successful_delete_purchased_items">Купленные товары успешно удалены!</string>
+    <string name="successful_uncheck_all_items">Все товары - некупленные!</string>
     <string name="next">Дальше</string>
     <string name="previous">Назад</string>
     <string name="list_menu_rename_list">Переименовать</string>
@@ -86,4 +88,6 @@
     <string name="sign_up_with_google">Используя Google</string>
     <string name="sign_up_with_facebook">Используя Facebook</string>
     <string name="already_have_account_log_in">Есть аккаунт? Войдите</string>
+    <string name="list_menu_delete_purchased">Удалить купленные</string>
+    <string name="list_menu_uncheck_all">Сделать все некупленным</string>
 </resources>

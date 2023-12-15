@@ -3,11 +3,13 @@ package com.yablunin.shopnstock.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.DeletePurchasedItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.UncheckAllItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ChangeBudgetUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
@@ -31,7 +33,9 @@ class ShoppingListViewModelFactory(
     val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
     val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
     val getTotalPriceUseCase: GetTotalPriceUseCase,
-    val changeBudgetUseCase: ChangeBudgetUseCase
+    val changeBudgetUseCase: ChangeBudgetUseCase,
+    val deletePurchasedItemsUseCase: DeletePurchasedItemsUseCase,
+    val uncheckAllItemsUseCase: UncheckAllItemsUseCase
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ShoppingListViewModel(
@@ -48,7 +52,9 @@ class ShoppingListViewModelFactory(
             convertToClipboardStringUseCase = convertToClipboardStringUseCase,
             generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase,
             getTotalPriceUseCase = getTotalPriceUseCase,
-            changeBudgetUseCase = changeBudgetUseCase
+            changeBudgetUseCase = changeBudgetUseCase,
+            deletePurchasedItemsUseCase = deletePurchasedItemsUseCase,
+            uncheckAllItemsUseCase = uncheckAllItemsUseCase
         ) as T
     }
 }

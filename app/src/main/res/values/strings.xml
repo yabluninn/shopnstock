@@ -15,6 +15,8 @@
     <string name="successful_create_list">List successfully created!</string>
     <string name="successful_copy_to_clipboard_list">List successfully copied to clipboard!</string>
     <string name="successful_update_password">Password successfully updated!</string>
+    <string name="successful_delete_purchased_items">Purchased items successfully deleted!</string>
+    <string name="successful_uncheck_all_items">All items successfully unchecked!</string>
 
     <string name="title_activity_shopping_list" translatable="false">ShoppingListActivity</string>
 
@@ -95,5 +97,7 @@
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="sign_up_with_facebook">Sign up with Facebook</string>
     <string name="already_have_account_log_in">Already have account? Log in</string>
+    <string name="list_menu_delete_purchased">Delete purchased</string>
+    <string name="list_menu_uncheck_all">Uncheck all items</string>
 
 </resources>
