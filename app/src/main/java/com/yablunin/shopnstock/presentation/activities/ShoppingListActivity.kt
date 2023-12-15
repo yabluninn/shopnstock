@@ -106,24 +106,6 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         setListAdapterContent(listSize, completedItemsCount)
     }
 
-    private fun setOnClickCloseListener(addItemPopup: Dialog){
-        val closeButton: ImageView = addItemPopup.findViewById(R.id.shopping_list_back_button)
-        closeButton.setOnClickListener {
-            addItemPopup.dismiss()
-        }
-    }
-    private fun setOnClickAddItemListener(addItemPopup: Dialog){
-        val addItemButton: Button = addItemPopup.findViewById(R.id.shopping_list_add_item_button)
-        addItemButton.setOnClickListener {
-            onClickAddItemListener(addItemPopup)
-        }
-    }
-    private fun setOnClickExpirationDate(addItemPopup: Dialog){
-        val expirationDateInput: EditText = addItemPopup.findViewById(R.id.add_new_item_input_exp_date)
-        expirationDateInput.setOnClickListener {
-            showSetExpirationDatePopup(expirationDateInput)
-        }
-    }
     private fun setOnClickRenameList(renamePopup: Dialog){
         val renameButton: TextView = renamePopup.findViewById(R.id.rename_list_button)
         val newNameInput: EditText = renamePopup.findViewById(R.id.rename_list_new_name_input)
@@ -242,9 +224,18 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
 
         addItemPopup.show()
 
-        setOnClickCloseListener(addItemPopup)
-        setOnClickAddItemListener(addItemPopup)
-        setOnClickExpirationDate(addItemPopup)
+        val closeButton: ImageView = addItemPopup.findViewById(R.id.shopping_list_back_button)
+        closeButton.setOnClickListener {
+            addItemPopup.dismiss()
+        }
+        val addItemButton: Button = addItemPopup.findViewById(R.id.shopping_list_add_item_button)
+        addItemButton.setOnClickListener {
+            onClickAddItemListener(addItemPopup)
+        }
+        val expirationDateInput: EditText = addItemPopup.findViewById(R.id.add_new_item_input_exp_date)
+        expirationDateInput.setOnClickListener {
+            showSetExpirationDatePopup(expirationDateInput)
+        }
 
         setUnitSpinnerContent(addItemPopup)
     }
@@ -267,6 +258,10 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         renameOption.setOnClickListener {
             showRenameListPopup(menuPopup)
         }
+        val changeBudget: LinearLayout = menuPopup.findViewById(R.id.list_menu_change_budget_option)
+        changeBudget.setOnClickListener {
+            showChangeBudgetPopup(menuPopup)
+        }
         val copyOption: LinearLayout = menuPopup.findViewById(R.id.list_menu_copy_option)
         copyOption.setOnClickListener {
             showCopyListPopup(menuPopup)
@@ -275,7 +270,6 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         shareOption.setOnClickListener {
             showShareListPopup(menuPopup)
         }
-
     }
     @SuppressLint("SetTextI18n")
     fun showDeleteItemPopup(item: ListItem){
@@ -387,6 +381,33 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         val cancelButton: TextView = qrCodePopup.findViewById(R.id.share_qr_code_cancel_button)
         cancelButton.setOnClickListener {
             qrCodePopup.dismiss()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showChangeBudgetPopup(menuPopup: Dialog){
+        val popup = Dialog(this)
+        popup.setContentView(R.layout.change_budget_popup)
+        popup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        menuPopup.dismiss()
+        popup.show()
+
+        val newBudgetInput: EditText = popup.findViewById(R.id.change_budget_input)
+        val changeButton: TextView = popup.findViewById(R.id.change_budget_button)
+        changeButton.setOnClickListener {
+            if (newBudgetInput.text.trim().isNotEmpty()){
+                val newBudget = newBudgetInput.text.toString().toDouble()
+                viewModel.changeBudget(newBudget, user, this)
+                val totalPrice = viewModel.totalPriceLiveData.value ?: 0.0
+                binding.shoppingListPriceBudgetText.text = "Worth: $totalPrice USD (max: ${list.budget})"
+                popup.dismiss()
+            }
+        }
+
+        val cancelButton: TextView = popup.findViewById(R.id.change_budget_cancel_button)
+        cancelButton.setOnClickListener {
+            popup.dismiss()
         }
     }
 }

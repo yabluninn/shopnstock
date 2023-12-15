@@ -1,14 +1,14 @@
 package com.yablunin.shopnstock.domain.builders
 
-import com.yablunin.shopnstock.domain.constants.Languages
 import com.yablunin.shopnstock.domain.enums.AppTheme
 import com.yablunin.shopnstock.domain.enums.SortingOrder
 import com.yablunin.shopnstock.domain.models.Configuration
+import com.yablunin.shopnstock.domain.util.LanguageConstants
 
 class ConfigurationBuilder {
     // App config
     private var theme: AppTheme = AppTheme.THEME_LIGHT
-    private var language: String = Languages.ENGLISH
+    private var language: String = LanguageConstants.ENGLISH
 
     // User config
     private var passwordRecoveryEnabled: Boolean = true

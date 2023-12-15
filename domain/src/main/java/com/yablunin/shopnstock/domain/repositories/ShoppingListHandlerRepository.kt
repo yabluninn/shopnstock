@@ -29,12 +29,10 @@ class ShoppingListHandlerRepository: ListHandlerRepository {
     }
 
     override fun copyList(copyAction: Int, list: ShoppingList, user: User): ShoppingList {
-        var copiedListName = ""
-        if (list.name.endsWith("(copy)")){
-            copiedListName = list.name
-        }
-        else{
-            copiedListName = list.name + " (copy)"
+        val copiedListName = if (list.name.endsWith("(copy)")) {
+            list.name
+        } else {
+            list.name + " (copy)"
         }
         val copiedList = ShoppingList(generateListId(user), copiedListName, list.budget)
         when(copyAction){
@@ -59,6 +57,10 @@ class ShoppingListHandlerRepository: ListHandlerRepository {
             }
         }
         return copiedList
+    }
+
+    override fun changeBudget(list: ShoppingList, newBudget: Double) {
+        list.budget = newBudget
     }
 
     override fun renameList(list: ShoppingList, newName: String, user: User) {

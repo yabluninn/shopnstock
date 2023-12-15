@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
-6
+
         <ImageView
             android:id="@+id/settings_cancel_button"
             android:layout_width="40dp"
@@ -117,56 +117,19 @@
             android:paddingTop="8dp"
             />
 
-        <LinearLayout
+        <com.yablunin.shopnstock.presentation.custom_views.SettingsItemWithSwitchView
+            android:id="@+id/settings_app_theme_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="8dp">
+            android:layout_gravity="center"
+            />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Dark theme"
-                android:textSize="18sp"
-                android:textColor="@color/item_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/configuration_theme_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:thumb="@drawable/thumb"
-                app:track="@drawable/track"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <com.yablunin.shopnstock.presentation.custom_views.SettingsItemWithButtonView
+            android:id="@+id/settings_change_language_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Change language"
-                android:textSize="18sp"
-                android:textColor="@color/item_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp" />
-
-            <ImageView
-                android:id="@+id/configuration_set_language_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_chevron_right"
-                app:tint="@color/black" />
-
-        </LinearLayout>
+            android:layout_gravity="center"
+            />
 
     </LinearLayout>
 

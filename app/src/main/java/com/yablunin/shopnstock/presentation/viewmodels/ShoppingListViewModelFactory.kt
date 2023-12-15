@@ -9,6 +9,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
+import com.yablunin.shopnstock.domain.usecases.list.handler.ChangeBudgetUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.CopyListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.GetListByIdUseCase
@@ -29,7 +30,8 @@ class ShoppingListViewModelFactory(
     val addListUseCase: AddListUseCase,
     val convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
     val generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
-    val getTotalPriceUseCase: GetTotalPriceUseCase
+    val getTotalPriceUseCase: GetTotalPriceUseCase,
+    val changeBudgetUseCase: ChangeBudgetUseCase
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ShoppingListViewModel(
@@ -45,7 +47,8 @@ class ShoppingListViewModelFactory(
             addListUseCase = addListUseCase,
             convertToClipboardStringUseCase = convertToClipboardStringUseCase,
             generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase,
-            getTotalPriceUseCase = getTotalPriceUseCase
+            getTotalPriceUseCase = getTotalPriceUseCase,
+            changeBudgetUseCase = changeBudgetUseCase
         ) as T
     }
 }

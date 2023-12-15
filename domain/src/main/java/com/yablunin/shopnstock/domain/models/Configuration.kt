@@ -5,8 +5,8 @@ import com.yablunin.shopnstock.domain.enums.SortingOrder
 
 class Configuration(
     // App config
-    val theme: AppTheme,
-    val language: String,
+    var theme: AppTheme,
+    var language: String,
 
     // User config
     val passwordRecoveryEnabled: Boolean,
@@ -17,4 +17,9 @@ class Configuration(
 
     // Lists config
     var listsSortingOrder: SortingOrder
-)
+){
+    companion object{
+        const val CONFIG_SHARED_PREFS_NAME = "app_config"
+        const val CONFIG_SHARED_PREFS_KEY = "config"
+    }
+}

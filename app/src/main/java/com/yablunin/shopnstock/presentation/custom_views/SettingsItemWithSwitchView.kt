@@ -34,4 +34,12 @@ class SettingsItemWithSwitchView @JvmOverloads constructor(
     fun setOnSwitchCheckedListener(listener: (isChecked: Boolean) -> Unit){
         onCheckedListener = listener
     }
+
+    fun isChecked(): Boolean{
+        return switchButton.isChecked
+    }
+
+    fun setCheckedState(isChecked: Boolean){
+        switchButton.isChecked = isChecked
+    }
 }
