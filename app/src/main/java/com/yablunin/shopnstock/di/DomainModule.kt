@@ -11,6 +11,7 @@ import com.yablunin.shopnstock.domain.usecases.api.GetFlagImageUseCase
 import com.yablunin.shopnstock.domain.usecases.config.LoadConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.config.SaveConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.DeletePurchasedItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetItemByIdUseCase
@@ -19,6 +20,7 @@ import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemAtUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.UncheckAllItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ChangeBudgetUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
@@ -112,6 +114,14 @@ class DomainModule {
     @Provides
     fun provideGetTotalPriceUseCase(listRepository: ListRepository): GetTotalPriceUseCase{
         return GetTotalPriceUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideDeletePurchasedItemsUseCase(listRepository: ListRepository): DeletePurchasedItemsUseCase{
+        return DeletePurchasedItemsUseCase(listRepository = listRepository)
+    }
+    @Provides
+    fun provideUncheckAllItemsUseCase(listRepository: ListRepository): UncheckAllItemsUseCase{
+        return UncheckAllItemsUseCase(listRepository = listRepository)
     }
 
     @Provides

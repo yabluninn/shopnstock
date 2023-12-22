@@ -11,10 +11,10 @@ class ErrorToast(
     var context: Context,
     var message: String,
     var duration: Int,
-    val gravity: Int
+    val position: Int
 ) {
 
-    fun show(){
+    fun show(): ErrorToast{
         val layout = LayoutInflater.from(context).inflate(R.layout.error_toast_layout, null)
         val toast = Toast(context)
         toast.duration = duration
@@ -23,8 +23,10 @@ class ErrorToast(
         val toastText: TextView = layout.findViewById(R.id.error_toast_text)
         toastText.text = message
 
-        toast.setGravity(gravity, 0,0)
+        toast.setGravity(position, 0,0)
 
         toast.show()
+
+        return this
     }
 }

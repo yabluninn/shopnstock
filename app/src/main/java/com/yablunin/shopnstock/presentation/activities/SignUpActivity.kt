@@ -14,12 +14,11 @@ import javax.inject.Inject
 
 class SignUpActivity : AppCompatActivity(), Initiable {
 
-    private lateinit var binding: ActivitySignUpBinding
-
-    private lateinit var viewModel: SignupViewModel
-
     @Inject
     lateinit var viewModelFactory: SignupViewModelFactory
+
+    private lateinit var binding: ActivitySignUpBinding
+    private lateinit var viewModel: SignupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +47,7 @@ class SignUpActivity : AppCompatActivity(), Initiable {
                     try {
                         viewModel.signUp(username, email, password, context)
                         viewModel.showLoginActivity(context)
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
 
                     } finally {
                         binding.signButton.isEnabled = true

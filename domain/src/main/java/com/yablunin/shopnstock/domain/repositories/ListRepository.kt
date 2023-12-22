@@ -17,4 +17,6 @@ interface ListRepository {
     fun toClipboardString(list: ShoppingList, user: User): String
     fun generateQRCodeBitmap(list: ShoppingList): Bitmap
     fun getTotalPrice(list: ShoppingList): Double
+    fun deletePurchasedItems(list: ShoppingList)
+    fun uncheckAllItems(list: ShoppingList)
 }

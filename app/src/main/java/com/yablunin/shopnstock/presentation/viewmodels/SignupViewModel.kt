@@ -37,39 +37,35 @@ class SignupViewModel(
                     )
                     saveUserUseCase.execute(user)
                 }
-            }
-            else{
+            } else{
                 if (it.exception is FirebaseAuthUserCollisionException){
                     val exception = it.exception as FirebaseAuthUserCollisionException
                     if (exception.errorCode == "ERROR_EMAIL_ALREADY_IN_USE"){
-                        val errorToast = ErrorToast(
+                        ErrorToast(
                             context,
-                            context.getString(R.string.error_email_already_in_use),
-                            Toast.LENGTH_LONG,
-                            Gravity.TOP
-                        )
-                        errorToast.show()
+                            message = context.getString(R.string.error_email_already_in_use),
+                            duration = Toast.LENGTH_LONG,
+                            position = Gravity.TOP
+                        ).show()
                     }
                 }
                 else if(it.exception is FirebaseAuthInvalidCredentialsException){
                     val exception = it.exception as FirebaseAuthInvalidCredentialsException
                     if (exception.errorCode == "ERROR_INVALID_EMAIL"){
-                        val errorToast = ErrorToast(
+                        ErrorToast(
                             context,
-                            context.getString(R.string.error_email_already_in_use),
-                            Toast.LENGTH_LONG,
-                            Gravity.TOP
-                        )
-                        errorToast.show()
+                            message = context.getString(R.string.error_email_already_in_use),
+                            duration = Toast.LENGTH_LONG,
+                            position = Gravity.TOP
+                        ).show()
                     }
                     else if (exception.errorCode == "ERROR_WEAK_PASSWORD"){
-                        val errorToast = ErrorToast(
+                        ErrorToast(
                             context,
-                            context.getString(R.string.error_weak_password),
-                            Toast.LENGTH_LONG,
-                            Gravity.TOP
-                        )
-                        errorToast.show()
+                            message = context.getString(R.string.error_weak_password),
+                            duration = Toast.LENGTH_LONG,
+                            position = Gravity.TOP
+                        ).show()
                     }
                 }
             }

@@ -19,8 +19,7 @@ class SharedPrefsConfigRepository(val sharedPreferences: SharedPreferences): Con
         val json = sharedPreferences.getString(Configuration.CONFIG_SHARED_PREFS_KEY, null)
         return if (json != null){
             gson.fromJson(json, Configuration::class.java)
-        }
-        else{
+        } else{
             ConfigurationBuilder().build()
         }
     }

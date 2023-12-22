@@ -14,21 +14,20 @@ import com.yablunin.shopnstock.presentation.activities.HomeActivity
 import com.yablunin.shopnstock.presentation.viewmodels.HomeViewModel
 
 class LanguageAdapter(
-    val languages: MutableList<Language>,
-    val homeActivity: HomeActivity,
-    val context: Context
+    private val languages: MutableList<Language>,
+    private val homeActivity: HomeActivity,
+    private val context: Context
 ): RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder>() {
 
-    val homeViewModel = homeActivity.viewModel
+    private val homeViewModel = homeActivity.viewModel
     class LanguageViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val holderLayout: LinearLayout = view.findViewById(R.id.language_item_layout)
-        val languageIcon: ImageView = view.findViewById(R.id.language_flag_icon)
-        val languageName: TextView = view.findViewById(R.id.language_name_text)
+        private val holderLayout: LinearLayout = view.findViewById(R.id.language_item_layout)
+        private val languageIcon: ImageView = view.findViewById(R.id.language_flag_icon)
+        private val languageName: TextView = view.findViewById(R.id.language_name_text)
         fun bind(language: Language, viewModel: HomeViewModel, context: Context, homeActivity: HomeActivity){
             if (viewModel.isCurrentLanguage(language)){
                 holderLayout.setBackgroundResource(R.drawable.language_item_current)
-            }
-            else{
+            } else{
                 holderLayout.setOnClickListener {
                     viewModel.setAppLocale(context, language.languageCode)
                     homeActivity.recreate()

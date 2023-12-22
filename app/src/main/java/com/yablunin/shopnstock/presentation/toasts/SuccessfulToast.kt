@@ -10,10 +10,10 @@ class SuccessfulToast(
     var context: Context,
     var message: String,
     var duration: Int,
-    val gravity: Int
+    var position: Int
 ) {
 
-    fun show(){
+    fun show(): SuccessfulToast{
         val layout = LayoutInflater.from(context).inflate(R.layout.success_toast_layout, null)
         val toast = Toast(context)
         toast.duration = duration
@@ -22,8 +22,10 @@ class SuccessfulToast(
         val toastText: TextView = layout.findViewById(R.id.success_toast_text)
         toastText.text = message
 
-        toast.setGravity(gravity, 0, 0)
+        toast.setGravity(position, 0, 0)
 
         toast.show()
+
+        return this
     }
 }

@@ -8,11 +8,13 @@ import com.yablunin.shopnstock.domain.usecases.api.GetFlagImageUseCase
 import com.yablunin.shopnstock.domain.usecases.config.LoadConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.config.SaveConfigUseCase
 import com.yablunin.shopnstock.domain.usecases.list.AddItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.DeletePurchasedItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GenerateQRCodeBitmapUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetTotalPriceUseCase
 import com.yablunin.shopnstock.domain.usecases.list.RemoveItemUseCase
+import com.yablunin.shopnstock.domain.usecases.list.UncheckAllItemsUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.AddListUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ChangeBudgetUseCase
 import com.yablunin.shopnstock.domain.usecases.list.handler.ConvertToClipboardStringUseCase
@@ -94,7 +96,9 @@ class AppModule {
         convertToClipboardStringUseCase: ConvertToClipboardStringUseCase,
         generateQRCodeBitmapUseCase: GenerateQRCodeBitmapUseCase,
         getTotalPriceUseCase: GetTotalPriceUseCase,
-        changeBudgetUseCase: ChangeBudgetUseCase
+        changeBudgetUseCase: ChangeBudgetUseCase,
+        deletePurchasedItemsUseCase: DeletePurchasedItemsUseCase,
+        uncheckAllItemsUseCase: UncheckAllItemsUseCase
     ): ShoppingListViewModelFactory{
         return ShoppingListViewModelFactory(
             saveUserUseCase = saveUserUseCase,
@@ -110,7 +114,9 @@ class AppModule {
             convertToClipboardStringUseCase = convertToClipboardStringUseCase,
             generateQRCodeBitmapUseCase = generateQRCodeBitmapUseCase,
             getTotalPriceUseCase = getTotalPriceUseCase,
-            changeBudgetUseCase = changeBudgetUseCase
+            changeBudgetUseCase = changeBudgetUseCase,
+            deletePurchasedItemsUseCase = deletePurchasedItemsUseCase,
+            uncheckAllItemsUseCase = uncheckAllItemsUseCase
         )
     }
 
