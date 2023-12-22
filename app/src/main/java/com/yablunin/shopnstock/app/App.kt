@@ -11,14 +11,8 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
 
-//        appComponent = DaggerAppComponent.create()
         appComponent = DaggerAppComponent.builder()
             .dataModule(DataModule(this))
             .build()
-//        startKoin{
-//            androidLogger(Level.DEBUG)
-//            androidContext(this@App)
-//            modules(listOf(appModule, domainModule, dataModule))
-//        }
     }
 }

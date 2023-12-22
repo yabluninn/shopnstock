@@ -12,11 +12,10 @@ import javax.inject.Inject
 
 class LogInActivity : AppCompatActivity(), Initiable {
 
-    private lateinit var binding: ActivityLogInBinding
-
     @Inject
     lateinit var viewModelFactory: LoginViewModelFactory
 
+    private lateinit var binding: ActivityLogInBinding
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,9 +39,9 @@ class LogInActivity : AppCompatActivity(), Initiable {
                 val email: String = binding.loginEmailInput.text.toString()
                 val password: String = binding.loginPasswordInput.text.toString()
                 viewModel.signInWithEmailAndPassword(
-                    email = email,
-                    password = password,
-                    context = this
+                    email,
+                    password,
+                    this
                 )
             }
         }

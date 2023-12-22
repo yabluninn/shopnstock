@@ -2,14 +2,15 @@ package com.yablunin.shopnstock.presentation.viewmodels
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.os.Build
 import android.view.Gravity
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+
 import com.google.firebase.auth.FirebaseAuth
+
 import com.yablunin.shopnstock.R
 import com.yablunin.shopnstock.domain.enums.AppTheme
 import com.yablunin.shopnstock.domain.models.Configuration
@@ -25,7 +26,6 @@ import com.yablunin.shopnstock.domain.usecases.user.LoadUserUseCase
 import com.yablunin.shopnstock.domain.usecases.user.SaveUserUseCase
 import com.yablunin.shopnstock.domain.util.Flag
 import com.yablunin.shopnstock.domain.util.Language
-import com.yablunin.shopnstock.domain.util.LanguageConstants
 import com.yablunin.shopnstock.presentation.toasts.ErrorToast
 import com.yablunin.shopnstock.presentation.toasts.SuccessfulToast
 import kotlinx.coroutines.launch
@@ -53,9 +53,9 @@ class HomeViewModel(
     val flags = mutableListOf<Flag>()
 
     var languages = arrayListOf(
-        Language(LanguageConstants.ENGLISH, "English", "GB"),
-        Language(LanguageConstants.RUSSIAN, "Russian", "RU"),
-        Language(LanguageConstants.UKRAINIAN, "Ukrainian", "UA")
+        Language(Language.ENGLISH, "English", "GB"),
+        Language(Language.RUSSIAN, "Russian", "RU"),
+        Language(Language.UKRAINIAN, "Ukrainian", "UA")
     )
 
     override fun onCleared() {
@@ -68,12 +68,11 @@ class HomeViewModel(
         if (currentUser != null) {
             val userId = currentUser.uid
 
-            loadUserUseCase.execute(userId){ _user ->
-                if (_user == null){
+            loadUserUseCase.execute(userId){ user ->
+                if (user == null){
 
-                }
-                else{
-                    mutableUserLiveData.value = _user
+                } else{
+                    mutableUserLiveData.value = user
                 }
             }
         }
@@ -99,23 +98,20 @@ class HomeViewModel(
         auth.currentUser?.updatePassword(newPassword)?.addOnCompleteListener {
             if (it.isSuccessful){
                 user.password = newPassword
-                val successfulToast = SuccessfulToast(
+                SuccessfulToast(
                     context,
-                    context.getString(R.string.successful_update_password),
-                    Toast.LENGTH_LONG,
-                    Gravity.BOTTOM
-                )
-                successfulToast.show()
+                    message = context.getString(R.string.successful_update_password),
+                    duration = Toast.LENGTH_LONG,
+                    position = Gravity.BOTTOM
+                ).show()
                 saveUser()
-            }
-            else{
-                val errorToast = ErrorToast(
+            } else{
+                 ErrorToast(
                     context,
-                    it.exception?.message.toString(),
-                    Toast.LENGTH_LONG,
-                    Gravity.BOTTOM
-                )
-                errorToast.show()
+                    message = it.exception?.message.toString(),
+                    duration = Toast.LENGTH_LONG,
+                    position = Gravity.BOTTOM
+                ).show()
             }
         }
     }
@@ -131,8 +127,7 @@ class HomeViewModel(
     fun enableDarkTheme(enable: Boolean){
         if (enable){
             configuration!!.theme = AppTheme.THEME_DARK
-        }
-        else{
+        } else{
             configuration!!.theme = AppTheme.THEME_LIGHT
         }
         saveConfiguration(configuration!!)
@@ -170,13 +165,7 @@ class HomeViewModel(
         return language.languageCode == configuration!!.language
     }
 
-    fun getFlagBitmap(language: Language): Bitmap?{
-        val foundFlag = flags.find { it.language == language }
-        if (foundFlag != null){
-            return foundFlag.bitmap
-        }
-        else{
-            return null
-        }
+    fun getFlagBitmap(language: Language): Bitmap? {
+        return flags.find { it.language == language }?.bitmap
     }
 }

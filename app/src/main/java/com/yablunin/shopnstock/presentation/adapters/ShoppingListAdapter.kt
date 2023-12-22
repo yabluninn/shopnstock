@@ -19,15 +19,17 @@ import com.yablunin.shopnstock.domain.repositories.ShoppingListRepository
 import com.yablunin.shopnstock.domain.usecases.list.GetCompletedItemsCountUseCase
 import com.yablunin.shopnstock.domain.usecases.list.GetSizeUseCase
 
-class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<ShoppingList>, val user: User):
-    RecyclerView.Adapter<ShoppingListAdapter.Holder>() {
+class ShoppingListAdapter(
+    private val context: Context,
+    private val shoppingLists: MutableList<ShoppingList>,
+    private val user: User
+): RecyclerView.Adapter<ShoppingListAdapter.Holder>() {
 
     class Holder(view: View): RecyclerView.ViewHolder(view) {
-
-        val listName: TextView = view.findViewById(R.id.shopping_list_item_name)
-        val listItemsCountText: TextView = view.findViewById(R.id.shopping_list_item_count)
         val holderLayout: ConstraintLayout = view.findViewById(R.id.shopping_list_holder)
 
+        private val listName: TextView = view.findViewById(R.id.shopping_list_item_name)
+        private val listItemsCountText: TextView = view.findViewById(R.id.shopping_list_item_count)
         private val getSizeUseCase = GetSizeUseCase(ShoppingListRepository())
         private val getCompletedItemsCountUseCase = GetCompletedItemsCountUseCase(
             ShoppingListRepository()
@@ -35,15 +37,13 @@ class ShoppingListAdapter(val context: Context, val shoppingLists: MutableList<S
 
         @SuppressLint("SetTextI18n")
         fun bind(list: ShoppingList){
-
             listName.text = list.name
             val size = getSizeUseCase.execute(list)
             val completedItemsCount = getCompletedItemsCountUseCase.execute(list)
 
             if (size > 0){
                 listItemsCountText.text = "List $completedItemsCount / $size purchased"
-            }
-            else{
+            } else{
                 listItemsCountText.text = "Nothing here"
             }
         }

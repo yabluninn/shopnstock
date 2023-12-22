@@ -33,44 +33,37 @@ class LoginViewModel(
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val currentUser = auth.currentUser
-
                     if (currentUser != null) {
                         val userId = currentUser.uid
                         loadUser(userId, context)
-
                     }
                 } else {
                     if(task.exception is FirebaseAuthInvalidCredentialsException){
                         val exception = task.exception as FirebaseAuthInvalidCredentialsException
                         if (exception.errorCode == "ERROR_INVALID_EMAIL"){
-                            val errorToast = ErrorToast(
+                             ErrorToast(
                                 context,
-                                context.getString(R.string.error_invalid_email),
-                                Toast.LENGTH_LONG,
-                                Gravity.TOP
-                            )
-                            errorToast.show()
-                        }
-                        else if (exception.errorCode == "ERROR_WRONG_PASSWORD"){
-                            val errorToast = ErrorToast(
+                                message = context.getString(R.string.error_invalid_email),
+                                duration = Toast.LENGTH_LONG,
+                                position = Gravity.TOP
+                            ).show()
+                        } else if (exception.errorCode == "ERROR_WRONG_PASSWORD"){
+                            ErrorToast(
                                 context,
-                                context.getString(R.string.error_wrong_password),
-                                Toast.LENGTH_LONG,
-                                Gravity.TOP
-                            )
-                            errorToast.show()
+                                message = context.getString(R.string.error_wrong_password),
+                                duration = Toast.LENGTH_LONG,
+                                position = Gravity.TOP
+                            ).show()
                         }
-                    }
-                    else if (task.exception is FirebaseAuthInvalidUserException){
+                    } else if (task.exception is FirebaseAuthInvalidUserException){
                         val exception = task.exception as FirebaseAuthInvalidUserException
                         if (exception.errorCode == "ERROR_USER_NOT_FOUND"){
-                            val errorToast = ErrorToast(
+                            ErrorToast(
                                 context,
-                                context.getString(R.string.error_user_not_found),
-                                Toast.LENGTH_LONG,
-                                Gravity.TOP
-                            )
-                            errorToast.show()
+                                message = context.getString(R.string.error_user_not_found),
+                                duration = Toast.LENGTH_LONG,
+                                position = Gravity.TOP
+                            ).show()
                         }
                     }
                 }
@@ -83,13 +76,12 @@ class LoginViewModel(
                 val intent = Intent(context, HomeActivity::class.java)
                 context.startActivity(intent)
             } else {
-                val errorToast = ErrorToast(
+                ErrorToast(
                     context,
-                    context.getString(R.string.error_user_not_found),
-                    Toast.LENGTH_LONG,
-                    Gravity.TOP
-                )
-                errorToast.show()
+                    message = context.getString(R.string.error_user_not_found),
+                    duration = Toast.LENGTH_LONG,
+                    position = Gravity.TOP
+                ).show()
             }
         }
     }

@@ -40,13 +40,13 @@ import javax.inject.Inject
 
 class ShoppingListActivity : AppCompatActivity(), Initiable {
 
+    @Inject
+    lateinit var viewModelFactory: ShoppingListViewModelFactory
+
     private lateinit var binding: ActivityShoppingListBinding
     private lateinit var user: User
     private lateinit var list: ShoppingList
     private lateinit var viewModel: ShoppingListViewModel
-
-    @Inject
-    lateinit var viewModelFactory: ShoppingListViewModelFactory
 
     private var unit: String = "pc(s)"
     private var expirationDate: String = ""
@@ -76,13 +76,13 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         viewModel.getListById(user, 0, intent)
 
         binding.shoppingListBackButton.setOnClickListener {
-            onClickReturnBackListener()
+            viewModel.showHomeActivity(this)
         }
         binding.shoppingListAddItemButton.setOnClickListener {
-            onClickShowAddItemPopup()
+            showAddItemPopup()
         }
         binding.shoppingListMenuButton.setOnClickListener {
-            onClickShowListMenu()
+            showListMenu()
         }
     }
 
@@ -137,16 +137,6 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
         noButton.setOnClickListener {
             deletePopup.dismiss()
         }
-    }
-
-    private fun onClickReturnBackListener(){
-        viewModel.showHomeActivity(this)
-    }
-    private fun onClickShowAddItemPopup(){
-        showAddItemPopup()
-    }
-    private fun onClickShowListMenu(){
-        showListMenu()
     }
 
     private fun onClickAddItemListener(addItemPopup: Dialog){
@@ -372,8 +362,6 @@ class ShoppingListActivity : AppCompatActivity(), Initiable {
             sharePopup.dismiss()
             showQrCodePopup()
         }
-
-
         val cancelButton: TextView = sharePopup.findViewById(R.id.share_list_cancel_button)
         cancelButton.setOnClickListener {
             sharePopup.dismiss()

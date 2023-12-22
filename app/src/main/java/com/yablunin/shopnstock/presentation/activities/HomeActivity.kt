@@ -44,18 +44,15 @@ import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), Initiable {
 
-    private lateinit var binding: ActivityHomeBinding
-    private lateinit var user: User
-
-//    private val viewModel by viewModel<HomeViewModel>()
     @Inject
     lateinit var viewModelFactory: HomeViewModelFactory
-
     lateinit var viewModel: HomeViewModel
 
+    private lateinit var binding: ActivityHomeBinding
+    private lateinit var user: User
     private lateinit var createListDialog: Dialog
-
     private lateinit var configuration: Configuration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -67,6 +64,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+
         if (result != null) {
             if (result.contents != null) {
                 val gson = Gson()
@@ -78,23 +76,21 @@ class HomeActivity : AppCompatActivity(), Initiable {
 
                 createListDialog.dismiss()
 
-                val successfulToast = SuccessfulToast(
+                SuccessfulToast(
                     this,
-                    this.getString(R.string.successful_create_list),
-                    Toast.LENGTH_LONG,
-                    Gravity.TOP
-                )
-                successfulToast.show()
+                    message = this.getString(R.string.successful_create_list),
+                    duration = Toast.LENGTH_LONG,
+                    position = Gravity.TOP
+                ).show()
             } else {
                 createListDialog.dismiss()
 
-                val errorToast = ErrorToast(
+                ErrorToast(
                     this,
-                    this.getString(R.string.error_scanning_list),
-                    Toast.LENGTH_LONG,
-                    Gravity.TOP
-                )
-                errorToast.show()
+                    message = this.getString(R.string.error_scanning_list),
+                    duration = Toast.LENGTH_LONG,
+                    position = Gravity.TOP
+                ).show()
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -108,7 +104,6 @@ class HomeActivity : AppCompatActivity(), Initiable {
         viewModel.loadConfiguration()
         configuration = viewModel.configuration!!
         viewModel.setAppLocale(this, configuration.language)
-//        recreate()
 
         viewModel.userLiveData.observe(this) { _user ->
             user = _user
@@ -141,8 +136,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
             binding.homeListsRcView.layoutManager = LinearLayoutManager(this)
             val adapter = ShoppingListAdapter(this, user.shoppingLists, user)
             binding.homeListsRcView.adapter = adapter
-        }
-        else{
+        } else{
             binding.homeNothingObj.visibility = View.VISIBLE
             binding.homeListsRcView.visibility = View.GONE
         }
@@ -182,8 +176,10 @@ class HomeActivity : AppCompatActivity(), Initiable {
         if (createNewListInput.text.trim().isNotEmpty() && budgetInput.text.trim().isNotEmpty()){
             val listName: String = createNewListInput.text.trim().toString()
             val listBudget: Double = budgetInput.text.toString().toDouble()
-            viewModel.generateListId()
             val listId = viewModel.listIdLiveData.value!!
+
+            viewModel.generateListId()
+
             val list = ShoppingList(
                 listId,
                 listName,
@@ -203,13 +199,12 @@ class HomeActivity : AppCompatActivity(), Initiable {
 
             nothingBackground.visibility = View.GONE
 
-            val successfulToast = SuccessfulToast(
+            SuccessfulToast(
                 this,
-                this.getString(R.string.successful_create_list),
-                Toast.LENGTH_LONG,
-                Gravity.TOP
-            )
-            successfulToast.show()
+                message = this.getString(R.string.successful_create_list),
+                duration = Toast.LENGTH_LONG,
+                position = Gravity.TOP
+            ).show()
         }
     }
 
@@ -265,7 +260,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
         val changePasswordSettingItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_password_view)
         changePasswordSettingItem.title(getString(R.string.change_password_title))
         changePasswordSettingItem.setOnButtonClickListener {
-           dialog.dismiss()
+            dialog.dismiss()
             showChangePasswordPopup()
         }
 
@@ -274,8 +269,7 @@ class HomeActivity : AppCompatActivity(), Initiable {
         enableNotificationsSettingsItem.setOnSwitchCheckedListener { isChecked ->
             if (isChecked){
                 // TODO Enable push notifications
-            }
-            else{
+            } else{
                 // TODO Disable push notifications
             }
         }
@@ -286,12 +280,8 @@ class HomeActivity : AppCompatActivity(), Initiable {
             viewModel.enableDarkTheme(isChecked)
         }
         when(configuration.theme){
-            AppTheme.THEME_LIGHT ->{
-                changeAppThemeSettingsItem.setCheckedState(false)
-            }
-            AppTheme.THEME_DARK ->{
-                changeAppThemeSettingsItem.setCheckedState(true)
-            }
+            AppTheme.THEME_LIGHT -> changeAppThemeSettingsItem.setCheckedState(false)
+            AppTheme.THEME_DARK -> changeAppThemeSettingsItem.setCheckedState(true)
         }
 
         val changeLanguageSettingsItem: SettingsItemWithButtonView = dialog.findViewById(R.id.settings_change_language_view)

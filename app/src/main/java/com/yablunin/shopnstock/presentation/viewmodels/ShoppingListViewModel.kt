@@ -58,6 +58,7 @@ class ShoppingListViewModel(
     private val mutableListSizeData = MutableLiveData<Int>()
     private val mutableCompletedItemsCountData = MutableLiveData<Int>()
     private val mutableTotalPriceData = MutableLiveData<Double>()
+
     val listData: LiveData<ShoppingList> = mutableListData
     val listSizeData: LiveData<Int> = mutableListSizeData
     val completedItemsCountData: LiveData<Int> = mutableCompletedItemsCountData
@@ -107,22 +108,19 @@ class ShoppingListViewModel(
             saveUser(user)
             getTotalPrice(list)
 
-            val successfulToast = SuccessfulToast(
+            SuccessfulToast(
                 context,
-                context.getString(R.string.successful_add_item),
-                Toast.LENGTH_LONG,
-                Gravity.TOP
-            )
-            successfulToast.show()
-        }
-        else{
-            val errorToast = ErrorToast(
+                message = context.getString(R.string.successful_add_item),
+                duration = Toast.LENGTH_LONG,
+                position = Gravity.TOP
+            ).show()
+        } else{
+            ErrorToast(
                 context,
-                context.getString(R.string.error_budget_limit_reached),
-                Toast.LENGTH_LONG,
-                Gravity.TOP
-            )
-            errorToast.show()
+                message = context.getString(R.string.error_budget_limit_reached),
+                duration = Toast.LENGTH_LONG,
+                position = Gravity.TOP
+            ).show()
         }
     }
 
@@ -166,13 +164,12 @@ class ShoppingListViewModel(
 
                 clipboardManager.setPrimaryClip(clipData)
 
-                val successfulToast = SuccessfulToast(
+                SuccessfulToast(
                     context,
-                    context.getString(R.string.successful_copy_to_clipboard_list),
-                    Toast.LENGTH_LONG,
-                    Gravity.BOTTOM
-                )
-                successfulToast.show()
+                    message = context.getString(R.string.successful_copy_to_clipboard_list),
+                    duration = Toast.LENGTH_LONG,
+                    position = Gravity.BOTTOM
+                ).show()
             }
             ListConstants.SHARE_QRCODE_OPTION -> {
                 qrCodeBitmap = generateQRCodeBitmapUseCase.execute(list)
@@ -189,39 +186,35 @@ class ShoppingListViewModel(
         if (listData.value!!.budget != newBudget && newBudget > 0 && newBudget >= totalPrice){
             changeBudgetUseCase.execute(listData.value!!, newBudget)
             saveUser(user)
-        }
-        else{
-            val errorToast = ErrorToast(
+        } else{
+             ErrorToast(
                 context,
-                context.getString(R.string.error_changing_budget),
-                Toast.LENGTH_LONG,
-                Gravity.TOP
-            )
-            errorToast.show()
+                message = context.getString(R.string.error_changing_budget),
+                duration = Toast.LENGTH_LONG,
+                position = Gravity.TOP
+            ).show()
         }
     }
 
     fun deletePurchasedItems(user: User, context: Context){
         deletePurchasedItemsUseCase.execute(listData.value!!)
         saveUser(user)
-        val successfulToast = SuccessfulToast(
+        SuccessfulToast(
             context,
-            "",
-            Toast.LENGTH_LONG,
-            Gravity.BOTTOM
-        )
-        successfulToast.show()
+            message = "",
+            duration = Toast.LENGTH_LONG,
+            position = Gravity.BOTTOM
+        ).show()
     }
 
     fun uncheckAllItems(user: User, context: Context){
         uncheckAllItemsUseCase.execute(listData.value!!)
         saveUser(user)
-        val successfulToast = SuccessfulToast(
+        SuccessfulToast(
             context,
-            "",
-            Toast.LENGTH_LONG,
-            Gravity.BOTTOM
-        )
-        successfulToast.show()
+            message = "",
+            duration = Toast.LENGTH_LONG,
+            position = Gravity.BOTTOM
+        ).show()
     }
 }

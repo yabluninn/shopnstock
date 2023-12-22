@@ -13,8 +13,7 @@ class FlagsApiRepository(private val flagsApiService: FlagsApiService): FlagsRep
             response.body()?.byteStream()?.let { inputStream ->
                 BitmapFactory.decodeStream(inputStream)
             }
-        }
-        else{
+        } else{
             null
         }
     }

@@ -22,8 +22,7 @@ class ShoppingListHandlerRepository: ListHandlerRepository {
         val randomId: Int = Random.nextInt(0, 100000)
         if (getListById(user, randomId) == null){
             return randomId
-        }
-        else{
+        } else{
             return generateListId(user)
         }
     }

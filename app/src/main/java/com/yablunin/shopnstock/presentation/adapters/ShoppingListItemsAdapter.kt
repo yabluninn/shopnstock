@@ -34,9 +34,9 @@ class ShoppingListItemsAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(item: ListItem){
             checkbox.isChecked = item.purchased
-            checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            checkbox.setOnCheckedChangeListener { _, isChecked ->
                 item.purchased = isChecked
-                updateItemHolderUI(item)
+                updateHolder(item)
                 listActivity.updateListUI()
 
                 val saveUserUseCase = SaveUserUseCase(FirebaseUserRepository())
@@ -46,21 +46,20 @@ class ShoppingListItemsAdapter(
             itemName.text = item.name
             itemAmount.text = "${item.quantity} ${item.unit}"
 
-            updateItemHolderUI(item)
+            updateHolder(item)
 
             deleteButton.setOnClickListener {
                 listActivity.showDeleteItemPopup(item)
             }
         }
 
-        private fun updateItemHolderUI(item: ListItem){
+        private fun updateHolder(item: ListItem){
             if(item.purchased){
                 layout.setBackgroundResource(R.drawable.list_item_holder_background_checked)
                 itemName.setTextColor(Color.parseColor("#e6994e"))
                 itemName.paintFlags = itemName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 itemAmount.setTextColor(Color.parseColor("#e6994e"))
-            }
-            else{
+            } else{
                 layout.setBackgroundResource(R.drawable.list_item_holder_background)
                 itemName.setTextColor(Color.parseColor("#554538"))
                 itemName.paintFlags = itemName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()

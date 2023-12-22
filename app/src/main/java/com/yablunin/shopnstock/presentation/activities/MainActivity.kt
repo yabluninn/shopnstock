@@ -17,10 +17,11 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), Initiable {
-    private lateinit var binding: ActivityMainBinding
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
+
+    private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
 
     private lateinit var configuration: Configuration
@@ -56,12 +57,8 @@ class MainActivity : AppCompatActivity(), Initiable {
     private fun setAppTheme(){
         if (isConfigurationInitialized){
             when(configuration.theme){
-                AppTheme.THEME_LIGHT ->{
-                    setTheme(R.style.AppThemeLight)
-                }
-                AppTheme.THEME_DARK ->{
-                    setTheme(R.style.AppThemeDark)
-                }
+                AppTheme.THEME_LIGHT -> setTheme(R.style.AppThemeLight)
+                AppTheme.THEME_DARK -> setTheme(R.style.AppThemeDark)
             }
         }
     }
